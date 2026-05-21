@@ -1,10 +1,11 @@
 package com.example.secure_layer.Navigation
 
-import androidx.compose.material3.Text
+import com.example.secure_layer.Screens.EjerciciosScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.secure_layer.Activities.PhishingDetected
 import com.example.secure_layer.Screens.ConsejosScreen
 import com.example.secure_layer.Screens.MainMenu
 import com.example.secure_layer.Screens.Perfil
@@ -28,11 +29,13 @@ fun AppNavigation() {
             WelcomeScreen(navController)
         }
         composable("ejercicios") {
-            Text("Pantalla de Ejercicios")
+            EjerciciosScreen(navController)
         }
         composable("consejos") {
             ConsejosScreen(navController)
         }
-
+        composable("activity1") {
+            PhishingDetected(navController)
+        }
     }
 }

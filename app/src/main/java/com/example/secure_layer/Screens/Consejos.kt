@@ -1,7 +1,5 @@
 package com.example.secure_layer.Screens
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -13,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,7 +22,6 @@ import com.example.secure_layer.R
 
 @Composable
 fun ConsejosScreen(navController: NavController) {
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -117,14 +113,7 @@ fun ConsejosScreen(navController: NavController) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(130.dp)
-                    .clickable {
-                        val urlIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUIcmlja3JvbGw%3D") // Reemplaza con tu link real
-                        )
-                        context.startActivity(urlIntent)
-                    },
+                    .height(130.dp),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
