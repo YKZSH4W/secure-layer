@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Activities.PhishingDetected
 import com.example.secure_layer.Screens.ConsejosScreen
+import com.example.secure_layer.Screens.EncuestaScreen
 import com.example.secure_layer.Screens.LoginScreen
 import com.example.secure_layer.Screens.Perfil
 import com.example.secure_layer.Screens.RegisterScreen
@@ -38,6 +39,9 @@ fun AppNavigation() {
         }
         composable("ejercicios") {
             EjerciciosScreen(navController)
+        }
+        composable("form") {
+            EncuestaScreen(navController)
         }
         composable("consejos") {
             ConsejosScreen(navController)

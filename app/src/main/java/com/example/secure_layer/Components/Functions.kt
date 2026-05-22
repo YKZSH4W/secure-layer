@@ -1,5 +1,6 @@
 package com.example.secure_layer.Components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,11 +18,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
@@ -40,6 +44,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.secure_layer.R
+
+//Colores usados en varias interfaces
+val SecureBlue = Color(0xFF003366)
+val SecureGreen = Color(0xFF2E7D32)
 
 // Funcion para mostrar una tarjeta de consejo o recomendación de seguridad
 @Composable
@@ -174,8 +182,7 @@ fun MedalCard(
     }
 }
 
-val SecureBlue = Color(0xFF003366)
-val SecureGreen = Color(0xFF2E7D32)
+
 
 // Funcion para mostrar un campo de texto personalizado con estilo de la aplicación
 @Composable
@@ -213,11 +220,15 @@ fun LearningNode(
     label: String,
     containerColor: Color,
     isLocked: Boolean,
+    modifier: Modifier = Modifier,
     isCurrent: Boolean = false,
     iconSize: androidx.compose.ui.unit.Dp = 45.dp,
     labelColor: Color? = null
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -265,6 +276,92 @@ fun LearningNode(
                     modifier = Modifier.size(20.dp)
                 )
             }
+        }
+    }
+}
+
+// Función para Mostrar un consejo del dia en diferentes apartados
+@Composable
+fun TipOfDayCard(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    iconContent: @Composable () -> Unit,
+    containerColor: Color = Color(0xFFFFF9E6),
+    contentColor: Color = Color(0xFF856404)
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            iconContent()
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    color = contentColor
+                )
+                Text(
+                    text = description,
+                    fontSize = 13.sp,
+                    color = contentColor
+                )
+            }
+        }
+    }
+}
+
+// Boton primario personalizado
+@Composable
+fun CustomPrimaryButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    containerColor: Color = Color(0xFF003466),
+    icon: @Composable (() -> Unit)? = null
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().height(55.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = containerColor),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            icon?.invoke()
+
+            if (icon != null) Spacer(modifier = Modifier.width(8.dp))
+
+            Text(text, color = Color.White, fontSize = 16.sp)
+        }
+    }
+}
+
+// Boton secundario personalizado
+@Composable
+fun CustomOutlinedButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: @Composable (() -> Unit)? = null
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().height(55.dp),
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(2.dp, SecureBlue)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            icon?.invoke()
+            if (icon != null) Spacer(modifier = Modifier.width(8.dp))
+            Text(text, color = Color(0xFF003366), fontSize = 16.sp)
         }
     }
 }

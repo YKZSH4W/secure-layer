@@ -1,15 +1,16 @@
 package com.example.secure_layer.Screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Components.BottomNavBar
 import com.example.secure_layer.Components.LearningNode
 import com.example.secure_layer.Components.SecureBlue
+import com.example.secure_layer.Components.TipOfDayCard
 import com.example.secure_layer.Components.TopNavBar
 import com.example.secure_layer.R
 
@@ -35,6 +37,7 @@ fun RouteScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .padding(horizontal = 24.dp)
                 .background(Color.White)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -50,55 +53,42 @@ fun RouteScreen(navController: NavController) {
                 label = "Conceptos Básicos",
                 containerColor = SecureGreen,
                 isLocked = false,
+                modifier = Modifier.padding(end = 200.dp)
             )
-            ConnectorLine()
+            Spacer(modifier = Modifier.height(16.dp))
             LearningNode(
                 iconId = R.drawable.mail_ic,
                 label = "Detectando Phishing \n¡ESTÁS AQUÍ!",
                 containerColor = SecureBlue,
                 isLocked = false,
-                isCurrent = true
+                isCurrent = true,
+                modifier = Modifier.padding(start = 200.dp)
             )
-            ConnectorLine()
+            Spacer(modifier = Modifier.height(16.dp))
             LearningNode(
                 iconId = R.drawable.sms_icon,
                 label = "Seguridad en SMS",
                 containerColor = SecureGreen,
-                isLocked = true
+                isLocked = true,
+                modifier = Modifier.padding(end = 200.dp)
             )
-            ConnectorLine()
+            Spacer(modifier = Modifier.height(16.dp))
             LearningNode(
                 iconId = R.drawable.key_ic,
                 label = "Contraseñas Fuertes",
                 containerColor = SecureGreen,
-                isLocked = true
+                isLocked = true,
+                modifier = Modifier.padding(start = 200.dp)
             )
             Spacer(modifier = Modifier.height(32.dp))
-            TipOfDayCard()
+            TipOfDayCard(
+                title = "Consejo del Día",
+                description = "Nunca compartas tus claves.",
+                iconContent = {
+                    Image(painter = painterResource(id = R.drawable.tip_ic), contentDescription = null)
+                }
+            )
             Spacer(modifier = Modifier.height(24.dp))
-        }
-    }
-}
-
-@Composable
-fun ConnectorLine() {
-    Box(modifier = Modifier.width(4.dp).height(40.dp).background(Color(0xFFE0E0E0)))
-}
-
-@Composable
-fun TipOfDayCard() {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF9E6)),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("💡", fontSize = 20.sp)
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(text = "Consejo del Día", fontWeight = FontWeight.Bold, color = Color(0xFF856404))
-                Text(text = "Nunca compartas tus claves por teléfono.", fontSize = 13.sp, color = Color(0xFF856404))
-            }
         }
     }
 }
