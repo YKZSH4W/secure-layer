@@ -18,13 +18,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Components.BottomNavBar
+import com.example.secure_layer.Components.MedalCard
 import com.example.secure_layer.Components.TopNavBar
 import com.example.secure_layer.R
 
@@ -164,40 +164,7 @@ fun Perfil(navController: NavController) {
     }
 }
 
-@Composable
-fun MedalCard(
-    modifier: Modifier,
-    title: String,
-    subtitle: String,
-    iconContent: @Composable () -> Unit
-) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFF7FAFD)),
-                contentAlignment = Alignment.Center
-            ) {
-                iconContent()
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(title, fontWeight = FontWeight.Bold, fontSize = 14.sp, textAlign = TextAlign.Center)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(subtitle, fontSize = 11.sp, color = Color.Gray, textAlign = TextAlign.Center)
-        }
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable

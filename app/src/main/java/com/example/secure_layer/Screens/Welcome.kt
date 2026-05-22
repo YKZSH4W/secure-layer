@@ -3,7 +3,9 @@ package com.example.secure_layer.Screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,17 +22,20 @@ val SecureBlue = Color(0xFF003366)
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp)
-                .background(SecureBlue),
+                .background(Color(0xFF003366)),
             contentAlignment = Alignment.Center
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -74,7 +79,7 @@ fun WelcomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = { navController.navigate("main") },
+            onClick = { navController.navigate("login") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
@@ -94,7 +99,7 @@ fun WelcomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
-            onClick = { navController.navigate("main") },
+            onClick = { navController.navigate("register") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)

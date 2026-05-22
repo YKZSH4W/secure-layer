@@ -7,8 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Activities.PhishingDetected
 import com.example.secure_layer.Screens.ConsejosScreen
-import com.example.secure_layer.Screens.MainMenu
+import com.example.secure_layer.Screens.LoginScreen
 import com.example.secure_layer.Screens.Perfil
+import com.example.secure_layer.Screens.RegisterScreen
+import com.example.secure_layer.Screens.RouteScreen
 import com.example.secure_layer.Screens.WelcomeScreen
 
 @Composable
@@ -19,8 +21,14 @@ fun AppNavigation() {
         navController = navController,
         startDestination = "welcome"
     ) {
-        composable("main") {
-            MainMenu(navController)
+        composable("route") {
+            RouteScreen(navController)
+        }
+        composable("register") {
+            RegisterScreen(navController)
+        }
+        composable("login") {
+            LoginScreen(navController)
         }
         composable("perfil") {
             Perfil(navController)

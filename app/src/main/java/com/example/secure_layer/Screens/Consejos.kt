@@ -2,13 +2,11 @@ package com.example.secure_layer.Screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.secure_layer.Components.BottomNavBar
+import com.example.secure_layer.Components.ConsejoCard
 import com.example.secure_layer.Components.TopNavBar
 import com.example.secure_layer.R
 
@@ -39,7 +38,6 @@ fun ConsejosScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 20.dp)
         ) {
-            // Encabezado
             Text(
                 text = "Consejos de Seguridad",
                 fontSize = 22.sp,
@@ -64,7 +62,7 @@ fun ConsejosScreen(navController: NavController) {
                 iconContainerColor = Color(0xFFD6E4FF),
                 iconContent = {
                     Icon(
-                        painter = painterResource(id = R.drawable.key),
+                        painter = painterResource(id = R.drawable.circular_key_ic),
                         contentDescription = "Llave",
                         tint = Color.Unspecified,
                         modifier = Modifier.size(24.dp)
@@ -157,65 +155,3 @@ fun ConsejosScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun ConsejoCard(
-    title: String,
-    subtitle: String,
-    titleColor: Color,
-    iconContainerColor: Color,
-    onClick: () -> Unit = {},
-    iconContent: @Composable () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(iconContainerColor),
-                    contentAlignment = Alignment.Center
-                ) {
-                    iconContent()
-                }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column {
-                    Text(text = title, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = titleColor)
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(text = subtitle, fontSize = 12.sp, color = Color.DarkGray, lineHeight = 16.sp)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = Color(0xFFEEEEEE), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Ver más", fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Color(0xFF37474F))
-                Icon(
-                    painter = painterResource(id = R.drawable.right_arrow),
-                    contentDescription = "Ir",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        }
-    }
-}

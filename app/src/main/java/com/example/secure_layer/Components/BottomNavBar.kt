@@ -18,8 +18,8 @@ fun BottomNavBar(navController: NavController) {
 
     NavigationBar(containerColor = Color.White) {
         NavigationBarItem(
-            selected = rutaActual == "main",
-            onClick = { navController.navigate("main") },
+            selected = rutaActual == "route",
+            onClick = { navController.navigate("route") },
             label = { Text("Ruta") },
             icon = { Icon(
                 painter = painterResource(id = R.drawable.home),

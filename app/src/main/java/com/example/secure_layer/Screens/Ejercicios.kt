@@ -1,10 +1,8 @@
 package com.example.secure_layer.Screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -15,10 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Components.BottomNavBar
+import com.example.secure_layer.Components.LessonCard
 import com.example.secure_layer.Components.TopNavBar
 import com.example.secure_layer.R
 
@@ -118,69 +116,11 @@ fun EjerciciosScreen(navController: NavController) {
                 "Bloqueada", Color(0xFFE0E0E0),
                 onClick = ({})
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.cellphone_ic),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    text = "Llamadas Telefónicas",
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF003466)
-                )
-            }
-            LessonCard(
-                R.drawable.cell_activity_ic,
-                "El Cuento del Tío",
-                "Reconozca tácticas de presión\n emocional por teléfono.",
-                "Bloqueada",
-                Color(0xFFE0E0E0),
-                onClick = ({})
-            )
         }
     }
 }
 
-@Composable
-fun LessonCard(icon: Int,
-               title: String,
-               desc: String,
-               status: String,
-               statusColor: Color,
-               textColor: Color = Color.Black,
-               onClick: () -> Unit
-)
-{
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = icon), contentDescription = null, modifier = Modifier.size(75.dp))
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(title, fontWeight = FontWeight.Bold)
-                Text(desc, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
-            }
-
-            Surface(color = statusColor, shape = RoundedCornerShape(16.dp)) {
-                Text(status, modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp), fontSize = 11.sp, fontWeight = FontWeight.Bold,color = textColor)
-            }
-        }
-    }
-}
 @Preview(showBackground = true)
 @Composable
 fun EjerciciosScreenPreview() {
