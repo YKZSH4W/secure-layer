@@ -187,8 +187,6 @@ fun MedalCard(
 // Funcion para mostrar un campo de texto personalizado con estilo de la aplicación
 @Composable
 fun CustomTextField(
-
-
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
@@ -220,13 +218,14 @@ fun LearningNode(
     label: String,
     containerColor: Color,
     isLocked: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isCurrent: Boolean = false,
     iconSize: androidx.compose.ui.unit.Dp = 45.dp,
     labelColor: Color? = null
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(enabled = !isLocked) { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(

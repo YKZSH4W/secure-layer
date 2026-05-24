@@ -99,7 +99,7 @@ fun LoginScreen(navController: NavController) {
                 text = "Iniciar Sesión",
                 onClick = {
                     if (correo.isNotEmpty() && password.isNotEmpty()) {
-                        navController.navigate("welcome")
+                        navController.navigate("route")
                     } else {
                         showEmptyError = true
                     }

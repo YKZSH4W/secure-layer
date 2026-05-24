@@ -45,11 +45,13 @@ fun EncuestaScreen(navController: NavController) {
     ) { padding ->
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFF5F5F5))
                 .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text("Marca la opción que mejor describa lo que sueles hacer:", fontSize = 16.sp, modifier = Modifier.padding(bottom = 16.dp))
+            Text("Marca la opción que mejor describa lo que sueles hacer:", fontSize = 16.sp, modifier = Modifier.padding(bottom = 16.dp),color = Color(0xFF003466),fontWeight = FontWeight.Bold)
 
             Column {
                 questions.forEachIndexed { qIndex, question ->
@@ -57,7 +59,7 @@ fun EncuestaScreen(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .padding(vertical = 8.dp)
-                            .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                            .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(8.dp))
                             .padding(16.dp)
                     ) {
                         Column {

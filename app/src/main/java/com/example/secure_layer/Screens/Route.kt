@@ -53,6 +53,7 @@ fun RouteScreen(navController: NavController) {
                 label = "Conceptos Básicos",
                 containerColor = SecureGreen,
                 isLocked = false,
+                onClick = { /* Navegar a Conceptos */ },
                 modifier = Modifier.padding(end = 200.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -62,6 +63,7 @@ fun RouteScreen(navController: NavController) {
                 containerColor = SecureBlue,
                 isLocked = false,
                 isCurrent = true,
+                onClick = { navController.navigate("activity1") },
                 modifier = Modifier.padding(start = 200.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -70,6 +72,7 @@ fun RouteScreen(navController: NavController) {
                 label = "Seguridad en SMS",
                 containerColor = SecureGreen,
                 isLocked = true,
+                onClick = { },
                 modifier = Modifier.padding(end = 200.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -78,6 +81,7 @@ fun RouteScreen(navController: NavController) {
                 label = "Contraseñas Fuertes",
                 containerColor = SecureGreen,
                 isLocked = true,
+                onClick = { },
                 modifier = Modifier.padding(start = 200.dp)
             )
             Spacer(modifier = Modifier.height(32.dp))
