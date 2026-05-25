@@ -41,6 +41,7 @@ fun Perfil(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Background)
                 .padding(padding)
         ) {
             Column(

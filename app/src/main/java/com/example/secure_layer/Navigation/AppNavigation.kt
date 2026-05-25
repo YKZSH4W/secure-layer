@@ -8,7 +8,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Activities.PhishingDetected
 import com.example.secure_layer.Screens.ConsejoPrivacidadTotalScreen
 import com.example.secure_layer.Screens.ConsejosScreen
+import com.example.secure_layer.Screens.ConseptosBasicosScreen
 import com.example.secure_layer.Screens.EncuestaScreen
+import com.example.secure_layer.Screens.FinishedActivityScreen
 import com.example.secure_layer.Screens.LoginScreen
 import com.example.secure_layer.Screens.Perfil
 import com.example.secure_layer.Screens.RegisterScreen
@@ -25,6 +27,9 @@ fun AppNavigation() {
     ) {
         composable("route") {
             RouteScreen(navController)
+        }
+        composable("conceptos básicos") {
+            ConseptosBasicosScreen(navController)
         }
         composable("register") {
             RegisterScreen(navController)
@@ -52,6 +57,9 @@ fun AppNavigation() {
         }
         composable("activity1") {
             PhishingDetected(navController)
+        }
+        composable("actividad completada") {
+            FinishedActivityScreen(navController)
         }
     }
 }

@@ -75,19 +75,20 @@ fun EjerciciosScreen(navController: NavController) {
                     color = Color(0xFF003466)
                 )
             }
+
             LessonCard(R.drawable.phishing_ic,
-                "Detectando el Phishing",
-                "Aprenda a identificar mensajes sospechosos.",
-                "Completada", Color(0xFFC8E6C9),
-                textColor = Color(0xFF087347),
-                onClick = { navController.navigate("activity1") }
-            )
-            LessonCard(R.drawable.link_ic,
                 "Enlaces Peligrosos",
                 "Nunca haga clic sin estar seguro.",
-                "En curso", Color(0xFFFFE0B2),
+                "Completada", Color(0xFFC8E6C9),
+                textColor = Color(0xFF087347),
+                onClick = ({navController.navigate("actividad completada")})
+            )
+            LessonCard(R.drawable.link_ic,
+                "Detectando el Phishing",
+                "Aprenda a identificar mensajes sospechosos.",
+                "Completada", Color(0xFFFFE0B2),
                 textColor = Color(0xFFAF6C00),
-                onClick = ({})
+                onClick = { navController.navigate("activity1") }
             )
 
             Spacer(modifier = Modifier.height(16.dp))

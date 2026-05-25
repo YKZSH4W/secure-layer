@@ -245,7 +245,65 @@ fun AdviceInfoCard(
             color = com.example.secure_layer.Screens.SecureBlue)
     }
 }
+@Composable
+fun BasicConceptCard(
+    title: String,
+    concept: String,
+    advice: String,
+    rule: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = Color(0xFFD9D9D9),
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(14.dp),
+        verticalArrangement = Arrangement.Center
+        //horizontalAlignment = Alignment.Start
+    ) {
+        Spacer(modifier = Modifier.height(17.dp))
 
+        Text(title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text("Concepto: ",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Text(concept,
+            fontSize = 18.sp,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Text("El consejo: ",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Text(advice,
+            fontSize = 18.sp,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Text("Regla de Oro: ",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = com.example.secure_layer.Screens.SecureBlue)
+
+        Text(rule,
+            fontSize = 18.sp,
+            color = com.example.secure_layer.Screens.SecureBlue)
+    }
+}
 // Funcion para mostrar un item en la interfaz de ruta con icono y titulo
 @Composable
 fun LearningNode(
