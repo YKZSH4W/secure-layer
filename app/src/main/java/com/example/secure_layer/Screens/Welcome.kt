@@ -23,6 +23,7 @@ import com.example.secure_layer.Components.CustomPrimaryButton
 import com.example.secure_layer.R
 
 val SecureBlue = Color(0xFF003366)
+val Background = Color(0xFFf7f7f7)
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
@@ -32,14 +33,14 @@ fun WelcomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Background)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(150.dp)
                 .background(SecureBlue),
             contentAlignment = Alignment.Center
         ) {

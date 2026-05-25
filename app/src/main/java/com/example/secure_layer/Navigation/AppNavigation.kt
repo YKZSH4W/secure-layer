@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Activities.PhishingDetected
+import com.example.secure_layer.Screens.ConsejoPrivacidadTotalScreen
 import com.example.secure_layer.Screens.ConsejosScreen
 import com.example.secure_layer.Screens.EncuestaScreen
 import com.example.secure_layer.Screens.LoginScreen
@@ -45,6 +46,9 @@ fun AppNavigation() {
         }
         composable("consejos") {
             ConsejosScreen(navController)
+        }
+        composable("consejo privacidad info", ) {
+            ConsejoPrivacidadTotalScreen(navController)
         }
         composable("activity1") {
             PhishingDetected(navController)

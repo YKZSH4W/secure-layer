@@ -11,9 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.secure_layer.Components.BottomNavBar
 import com.example.secure_layer.Components.ConsejoCard
 import com.example.secure_layer.Components.TopNavBar
@@ -60,6 +62,7 @@ fun ConsejosScreen(navController: NavController) {
                 subtitle = "Nunca compartas tus\ncontraseñas",
                 titleColor = Color(0xFF0D47A1),
                 iconContainerColor = Color(0xFFD6E4FF),
+                onClick = { navController.navigate("consejo privacidad info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.circular_key_ic),
@@ -78,6 +81,7 @@ fun ConsejosScreen(navController: NavController) {
                 subtitle = "Los bancos no piden códigos\npor SMS",
                 titleColor = Color(0xFF00695C),
                 iconContainerColor = Color(0xFFB9F6CA),
+                onClick = { navController.navigate("consejo info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.bank),
@@ -96,6 +100,7 @@ fun ConsejosScreen(navController: NavController) {
                 subtitle = "Duda de los premios\ninesperados",
                 titleColor = Color(0xFF5D4037),
                 iconContainerColor = Color(0xFFFFE0B2),
+                onClick = { navController.navigate("consejo info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.gift),
@@ -153,5 +158,11 @@ fun ConsejosScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ConsejosPreview() {
+    ConsejosScreen(rememberNavController())
 }
 
