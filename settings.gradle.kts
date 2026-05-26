@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ScholarView"
+rootProject.name = "SecureLayer"
 include(":app")
  

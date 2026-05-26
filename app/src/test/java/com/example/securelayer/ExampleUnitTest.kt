@@ -1,4 +1,4 @@
-package com.example.scholarview
+package com.example.securelayer
 
 import org.junit.Test
 

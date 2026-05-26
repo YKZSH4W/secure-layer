@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.scholarview"
+    namespace = "com.example.securelayer"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.scholarview"
+        applicationId = "com.example.securelayer"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
