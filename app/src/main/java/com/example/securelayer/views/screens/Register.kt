@@ -19,12 +19,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
+import com.example.securelayer.views.viewmodel.UsersViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -32,6 +34,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController) {
+    val viewModel: UsersViewModel = viewModel()
+
     var nombre by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -130,6 +134,12 @@ fun RegisterScreen(navController: NavController) {
                 onClick = {
                     if (nombre.isNotBlank() && correo.isNotBlank() && password.isNotBlank() &&
                         confirmPassword.isNotBlank() && birthDate != "Fecha de nacimiento") {
+
+                        viewModel.createUser(
+                            correo, nombre, password,
+                            nombre, nombre, "21/02/2005"
+                        )
+
                         navController.navigate("form")
                     } else {
                         showEmptyError = true

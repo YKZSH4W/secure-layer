@@ -20,21 +20,39 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
+import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    var correo by remember { mutableStateOf("") }
+    val viewModel: UsersViewModel = viewModel()
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showEmptyError by remember { mutableStateOf(false) }
 
     val SecureBlue = Color(0xFF003366)
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(viewModel.loginError) {
+        if (viewModel.loginError) {
+            showErrorDialog = true
+            viewModel.resetLoginError()
+        }
+    }
+
+    LaunchedEffect(viewModel.loginSuccess) {
+        if (viewModel.loginSuccess) {
+            navController.navigate("route")
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
 
@@ -80,12 +98,25 @@ fun LoginScreen(navController: NavController) {
             Text("Iniciar Sesión", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
             Spacer(modifier = Modifier.height(20.dp))
 
-            CustomTextField(correo, { correo = it }, "Correo Electrónico", showEmptyError && correo.isEmpty(), KeyboardType.Email)
+            CustomTextField(email, { email = it }, "Correo Electrónico", showEmptyError && email.isEmpty(), KeyboardType.Email)
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
 
             if (showEmptyError) {
                 Text("Por favor, completa todos los campos", color = Color.Red, modifier = Modifier.padding(vertical = 8.dp))
+            }
+
+            if (showErrorDialog) {
+                AlertDialog(
+                    onDismissRequest = { showErrorDialog = false },
+                    title = { Text("Error") },
+                    text = { Text("Credenciales inválidas, intenta de nuevo.") },
+                    confirmButton = {
+                        TextButton(onClick = { showErrorDialog = false }) {
+                            Text("Aceptar")
+                        }
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -102,8 +133,8 @@ fun LoginScreen(navController: NavController) {
             CustomPrimaryButton(
                 text = "Iniciar Sesión",
                 onClick = {
-                    if (correo.isNotEmpty() && password.isNotEmpty()) {
-                        navController.navigate("route")
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        viewModel.login(email, password)
                     } else {
                         showEmptyError = true
                     }
