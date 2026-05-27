@@ -135,13 +135,29 @@ fun RegisterScreen(navController: NavController) {
                         showEmptyError = true
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.register),
+                        contentDescription = "Icono de registro",
+                        modifier = Modifier.size(24.dp),
+
+                    )
+                }
             )
 
             CustomOutlinedButton(
                 text = "Cancelar",
                 onClick = { navController.navigate("welcome") },
-                modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.cancel_ic),
+                        contentDescription = "Cancelar",
+                        tint = SecureBlue,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             )
 
             Spacer(modifier = Modifier.height(24.dp))

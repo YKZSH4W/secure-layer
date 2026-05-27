@@ -104,10 +104,10 @@ fun WelcomeScreen(navController: NavController) {
                 .padding(horizontal = 32.dp),
             icon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.perfil),
+                    painter = painterResource(id = R.drawable.welcome_user_ic),
                     contentDescription = "Icono de perfil",
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         )
