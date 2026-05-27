@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "secure_layer"
+rootProject.name = "SecureLayer"
 include(":app")
  
