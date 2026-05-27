@@ -53,7 +53,7 @@ fun RouteScreen(navController: NavController) {
                 label = "Conceptos Básicos",
                 containerColor = SecureGreen,
                 isLocked = false,
-                onClick = { /* Navegar a Conceptos */ },
+                onClick = { navController.navigate("conceptos básicos") },
                 modifier = Modifier.padding(end = 200.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
