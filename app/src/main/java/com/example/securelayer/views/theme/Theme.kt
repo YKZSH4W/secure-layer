@@ -1,4 +1,4 @@
-package com.example.securelayer.ui.theme
+package com.example.securelayer.views.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.example.securelayer.screens
+package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.components.BottomNavBar
-import com.example.securelayer.components.ConsejoCard
-import com.example.securelayer.components.TopNavBar
+import com.example.securelayer.views.components.BottomNavBar
+import com.example.securelayer.views.components.ConsejoCard
+import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 
 @Composable

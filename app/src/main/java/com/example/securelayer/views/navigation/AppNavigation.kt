@@ -1,21 +1,21 @@
-package com.example.securelayer.navigation
+package com.example.securelayer.views.navigation
 
-import com.example.securelayer.screens.EjerciciosScreen
+import com.example.securelayer.views.screens.EjerciciosScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.activities.PhishingDetected
-import com.example.securelayer.screens.ConsejoPrivacidadTotalScreen
-import com.example.securelayer.screens.ConsejosScreen
-import com.example.securelayer.screens.ConseptosBasicosScreen
-import com.example.securelayer.screens.EncuestaScreen
-import com.example.securelayer.screens.FinishedActivityScreen
-import com.example.securelayer.screens.LoginScreen
-import com.example.securelayer.screens.Perfil
-import com.example.securelayer.screens.RegisterScreen
-import com.example.securelayer.screens.RouteScreen
-import com.example.securelayer.screens.WelcomeScreen
+import com.example.securelayer.views.activities.PhishingDetected
+import com.example.securelayer.views.screens.ConsejoPrivacidadTotalScreen
+import com.example.securelayer.views.screens.ConsejosScreen
+import com.example.securelayer.views.screens.ConseptosBasicosScreen
+import com.example.securelayer.views.screens.EncuestaScreen
+import com.example.securelayer.views.screens.FinishedActivityScreen
+import com.example.securelayer.views.screens.LoginScreen
+import com.example.securelayer.views.screens.Perfil
+import com.example.securelayer.views.screens.RegisterScreen
+import com.example.securelayer.views.screens.RouteScreen
+import com.example.securelayer.views.screens.WelcomeScreen
 
 @Composable
 fun AppNavigation() {

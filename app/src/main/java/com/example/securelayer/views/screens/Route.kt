@@ -1,4 +1,4 @@
-package com.example.securelayer.screens
+package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.components.BottomNavBar
-import com.example.securelayer.components.LearningNode
-import com.example.securelayer.components.SecureBlue
-import com.example.securelayer.components.TipOfDayCard
-import com.example.securelayer.components.TopNavBar
+import com.example.securelayer.views.components.BottomNavBar
+import com.example.securelayer.views.components.LearningNode
+import com.example.securelayer.views.components.SecureBlue
+import com.example.securelayer.views.components.TipOfDayCard
+import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 
 val SecureGreen = Color(0xFF2ECC71)

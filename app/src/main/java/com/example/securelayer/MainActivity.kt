@@ -9,8 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.securelayer.navigation.AppNavigation
-import com.example.securelayer.ui.theme.SecurelayerTheme
+import com.example.securelayer.views.navigation.AppNavigation
+import com.example.securelayer.views.theme.SecurelayerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

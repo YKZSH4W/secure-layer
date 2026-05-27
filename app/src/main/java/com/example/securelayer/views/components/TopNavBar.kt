@@ -1,4 +1,4 @@
-package com.example.securelayer.components
+package com.example.securelayer.views.components
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

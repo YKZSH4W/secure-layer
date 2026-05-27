@@ -1,4 +1,4 @@
-package com.example.securelayer.screens
+package com.example.securelayer.views.screens
 
 
 import androidx.compose.foundation.background
@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.components.BottomNavBar
-import com.example.securelayer.components.CustomOutlinedButton
-import com.example.securelayer.components.CustomPrimaryButton
-import com.example.securelayer.components.SecureBlue
-import com.example.securelayer.components.TopNavBar
+import com.example.securelayer.views.components.BottomNavBar
+import com.example.securelayer.views.components.CustomOutlinedButton
+import com.example.securelayer.views.components.CustomPrimaryButton
+import com.example.securelayer.views.components.SecureBlue
+import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 
 
@@ -87,7 +87,7 @@ fun FinishedActivityScreen(navController: NavController){
                 Text("¡Excelente trabajo!",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = com.example.securelayer.screens.SecureBlue)
+                    color = com.example.securelayer.views.screens.SecureBlue)
 
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -200,7 +200,7 @@ fun FinishedActivityScreen(navController: NavController){
                         Text(
                             "Cada lección completada fortalece tu seguridad digital ante los estafadores",
                             fontSize = 18.sp,
-                            color = com.example.securelayer.screens.SecureBlue
+                            color = com.example.securelayer.views.screens.SecureBlue
                         )
                     }
                 }

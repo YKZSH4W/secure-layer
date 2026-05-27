@@ -38,6 +38,10 @@ android {
 }
 
 dependencies {
+    //////////////////////////////////////////////
+    // Navigation dependencies
+    //////////////////////////////////////////////
+
     val nav_version = "2.9.7"
     // Jetpack Compose integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -50,6 +54,20 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
+    //////////////////////////////////////////////
+    // API Connection dependencies
+    //////////////////////////////////////////////
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    //////////////////////////////////////////////
+    // Default dependencies
+    //////////////////////////////////////////////
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,6 +78,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

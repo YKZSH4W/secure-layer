@@ -1,4 +1,4 @@
-package com.example.securelayer.screens
+package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.components.CustomOutlinedButton
-import com.example.securelayer.components.CustomPrimaryButton
-import com.example.securelayer.components.CustomTextField
+import com.example.securelayer.views.components.CustomOutlinedButton
+import com.example.securelayer.views.components.CustomPrimaryButton
+import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
 import java.text.SimpleDateFormat
 import java.util.Date

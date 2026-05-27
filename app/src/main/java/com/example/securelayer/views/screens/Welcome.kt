@@ -1,4 +1,4 @@
-package com.example.securelayer.screens
+package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.components.CustomOutlinedButton
-import com.example.securelayer.components.CustomPrimaryButton
+import com.example.securelayer.views.components.CustomOutlinedButton
+import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.R
 
 val SecureBlue = Color(0xFF003366)

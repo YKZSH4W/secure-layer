@@ -1,4 +1,4 @@
-package com.example.securelayer.components
+package com.example.securelayer.views.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -238,11 +238,11 @@ fun AdviceInfoCard(
         Text(title,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text(info,
             fontSize = 18.sp,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
     }
 }
 @Composable
@@ -272,36 +272,36 @@ fun BasicConceptCard(
         Text(title,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Text("Concepto: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text(concept,
             fontSize = 18.sp,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text("El consejo: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text(advice,
             fontSize = 18.sp,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text("Regla de Oro: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
 
         Text(rule,
             fontSize = 18.sp,
-            color = com.example.securelayer.screens.SecureBlue)
+            color = com.example.securelayer.views.screens.SecureBlue)
     }
 }
 // Funcion para mostrar un item en la interfaz de ruta con icono y titulo
