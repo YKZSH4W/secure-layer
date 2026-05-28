@@ -145,7 +145,7 @@ fun LoginScreen(navController: NavController) {
                         painter = painterResource(id = R.drawable.perfil),
                         contentDescription = "Icono",
                         tint = Color.White,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             )

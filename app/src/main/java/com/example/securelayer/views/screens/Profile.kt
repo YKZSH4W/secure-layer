@@ -26,15 +26,12 @@ import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
-import com.example.securelayer.data.SessionManager
 
 @Composable
-fun Perfil(navController: NavController) {
-    val user = SessionManager.currentUser
-
+fun Profile(navController: NavController) {
     Scaffold(
         topBar = {
-            TopNavBar(navController = navController, title = "SecureLayer")
+            TopNavBar(navController = navController, title = "SecurityLayer")
         },
         bottomBar = {
             BottomNavBar(navController = navController)
@@ -75,7 +72,7 @@ fun Perfil(navController: NavController) {
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("Hola, ${user?.name}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text("Hola, María", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 Text("¡Estás haciendo un gran trabajo!", color = Color.Gray)
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -155,5 +152,5 @@ fun Perfil(navController: NavController) {
 @Preview
 @Composable
 fun PerfilPreview() {
-    Perfil(navController = rememberNavController())
+    Profile(navController = rememberNavController())
 }
