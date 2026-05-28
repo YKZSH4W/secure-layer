@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
@@ -24,11 +26,19 @@ import com.example.securelayer.views.components.SecureBlue
 import com.example.securelayer.views.components.TipOfDayCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.views.viewmodel.RoutesViewModel
 
 val SecureGreen = Color(0xFF2ECC71)
 
 @Composable
 fun RouteScreen(navController: NavController) {
+    //test
+    val viewModel: RoutesViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        viewModel.getRoutesByUser()
+    }
+
     Scaffold(
         topBar = {TopNavBar(navController, title = "SecureLayer")},
         bottomBar = { BottomNavBar(navController) }
@@ -45,6 +55,11 @@ fun RouteScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
             Text("Tu Camino Seguro", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
             Text("Sigue los círculos para aprender a\nprotegerte paso a paso.", textAlign = TextAlign.Center, fontSize = 16.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
+
+            //test
+            viewModel.routes.forEach { item ->
+                Text("Nombre ruta: ${item.name}")
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
 

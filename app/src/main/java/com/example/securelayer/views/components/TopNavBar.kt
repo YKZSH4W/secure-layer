@@ -23,7 +23,7 @@ fun TopNavBar(navController: NavController, title: String) {
                 ) }
         },
         actions = {
-            IconButton(onClick = { navController.navigate("") }) {
+            IconButton(onClick = { navController.navigate("perfil") }) {
                 Icon(
                     painter = painterResource(id = R.drawable.configuration),
                     contentDescription = "Icono de Configuracion"

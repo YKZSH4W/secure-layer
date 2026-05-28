@@ -1,6 +1,6 @@
 package com.example.securelayer.data.model
 
-data class Usuario(
+data class User(
     val id: Int,
     val email: String,
     val username: String,
@@ -9,7 +9,6 @@ data class Usuario(
     val lastName: String,
     val birthDate: String,
     val totalXp: Int,
-    val lastaccessed: String,
     val streak: Int,
     val knowledgeLevel: String
 )
