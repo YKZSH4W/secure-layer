@@ -8,21 +8,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.network.RetrofitInstance
+
 import kotlinx.coroutines.launch
 
-class RoutesViewModel: ViewModel() {
-    var routes by mutableStateOf<List<Route>>(emptyList())
+
+class EnrollsViewModel: ViewModel() {
+    var currentRoutes by mutableStateOf<List<Route>>(emptyList())
         private set
 
-    // Get routes
-    fun getRoutesByUser() {
+    // Get user's enrolls
+    fun getEnrollsByUser(userId: Int?) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getRoutes()
-                routes = response
+                val response = RetrofitInstance.api.getEnrollsByUser(userId)
+                currentRoutes = response
             } catch (e: Exception) {
-                Log.e("Routes", "Error: ${e.message}")
+                Log.e("API", "Error: ${e.message}")
             }
         }
     }
+
 }

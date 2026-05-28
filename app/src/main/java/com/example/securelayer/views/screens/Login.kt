@@ -31,7 +31,8 @@ import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    val viewModel: UsersViewModel = viewModel()
+    val userViewModel: UsersViewModel = viewModel()
+
     var showErrorDialog by remember { mutableStateOf(false) }
 
     var email by remember { mutableStateOf("") }
@@ -41,15 +42,15 @@ fun LoginScreen(navController: NavController) {
     val SecureBlue = Color(0xFF003366)
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(viewModel.loginError) {
-        if (viewModel.loginError) {
+    LaunchedEffect(userViewModel.loginError) {
+        if (userViewModel.loginError) {
             showErrorDialog = true
-            viewModel.resetLoginError()
+            userViewModel.resetLoginError()
         }
     }
 
-    LaunchedEffect(viewModel.loginSuccess) {
-        if (viewModel.loginSuccess) {
+    LaunchedEffect(userViewModel.loginSuccess) {
+        if (userViewModel.loginSuccess) {
             navController.navigate("route")
         }
     }
@@ -134,7 +135,7 @@ fun LoginScreen(navController: NavController) {
                 text = "Iniciar Sesión",
                 onClick = {
                     if (email.isNotEmpty() && password.isNotEmpty()) {
-                        viewModel.login(email, password)
+                        userViewModel.login(email, password)
                     } else {
                         showEmptyError = true
                     }

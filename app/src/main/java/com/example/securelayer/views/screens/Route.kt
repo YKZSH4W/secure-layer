@@ -24,23 +24,21 @@ import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.LearningNode
 import com.example.securelayer.views.components.SecureBlue
 import com.example.securelayer.views.components.TipOfDayCard
-import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
-import com.example.securelayer.views.viewmodel.RoutesViewModel
+import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
 val SecureGreen = Color(0xFF2ECC71)
 
 @Composable
 fun RouteScreen(navController: NavController) {
-    //test
-    val viewModel: RoutesViewModel = viewModel()
+    val enrollViewModel: EnrollsViewModel = viewModel()
 
     LaunchedEffect(Unit) {
-        viewModel.getRoutesByUser()
+        enrollViewModel.getEnrollsByUser(SessionManager.currentUser?.id)
     }
 
     Scaffold(
-        topBar = {TopNavBar(navController, title = "SecureLayer")},
         bottomBar = { BottomNavBar(navController) }
     ) { padding ->
         Column(
@@ -56,12 +54,11 @@ fun RouteScreen(navController: NavController) {
             Text("Tu Camino Seguro", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
             Text("Sigue los círculos para aprender a\nprotegerte paso a paso.", textAlign = TextAlign.Center, fontSize = 16.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
 
-            //test
-            viewModel.routes.forEach { item ->
-                Text("Nombre ruta: ${item.name}")
-            }
-
             Spacer(modifier = Modifier.height(32.dp))
+
+            enrollViewModel.currentRoutes.forEach { item ->
+                Text("Ruta: ${item.name}")
+            }
 
             LearningNode(
                 iconId = R.drawable.shield,
@@ -71,7 +68,9 @@ fun RouteScreen(navController: NavController) {
                 onClick = { navController.navigate("conceptos básicos") },
                 modifier = Modifier.padding(end = 200.dp)
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
             LearningNode(
                 iconId = R.drawable.mail_ic,
                 label = "Detectando Phishing \n¡ESTÁS AQUÍ!",
