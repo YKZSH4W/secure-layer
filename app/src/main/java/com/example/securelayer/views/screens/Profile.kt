@@ -28,7 +28,7 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 
 @Composable
-fun Perfil(navController: NavController) {
+fun Profile(navController: NavController) {
     Scaffold(
         topBar = {
             TopNavBar(navController = navController, title = "SecurityLayer")
@@ -152,5 +152,5 @@ fun Perfil(navController: NavController) {
 @Preview
 @Composable
 fun PerfilPreview() {
-    Perfil(navController = rememberNavController())
+    Profile(navController = rememberNavController())
 }
