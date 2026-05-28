@@ -22,7 +22,7 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 
 @Composable
-fun ConsejosScreen(navController: NavController) {
+fun AdvicesScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
@@ -163,6 +163,6 @@ fun ConsejosScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun ConsejosPreview() {
-    ConsejosScreen(rememberNavController())
+    AdvicesScreen(rememberNavController())
 }
 
