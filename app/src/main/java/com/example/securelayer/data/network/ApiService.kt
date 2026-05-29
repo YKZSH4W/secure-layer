@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiService {
-    @POST("/users")
+    @POST("/users/auth/register")
     suspend fun createUser(@Body user: UserRegister): User
 
     @POST("/users/auth/login")

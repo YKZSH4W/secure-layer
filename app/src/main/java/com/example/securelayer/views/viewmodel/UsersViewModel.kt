@@ -20,6 +20,12 @@ class UsersViewModel : ViewModel() {
     var loginSuccess by mutableStateOf(false)
         private set
 
+    var registerSuccess by mutableStateOf(false)
+        private set
+
+    var registerError by mutableStateOf(false)
+        private set
+
     // Create a user
     fun createUser(email: String, username: String, password: String, name: String,
                    lastName: String, birthDate: String) {
@@ -29,7 +35,10 @@ class UsersViewModel : ViewModel() {
                     birthDate)
 
                 RetrofitInstance.api.createUser(newUser)
+
+                registerSuccess = true
             } catch (e: Exception) {
+                registerError = true
                 Log.e("API", "Error: ${e.message}")
             }
         }
@@ -54,5 +63,13 @@ class UsersViewModel : ViewModel() {
     fun resetLoginSuccess() {
         loginSuccess = false
         SessionManager.currentUser = null
+    }
+
+    fun resetRegisterError() {
+        registerError = false
+    }
+
+    fun resetRegisterSuccess() {
+        registerSuccess = false
     }
 }

@@ -27,6 +27,7 @@ import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
+import com.example.securelayer.views.components.secureLayerLogo
 import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
@@ -56,47 +57,20 @@ fun LoginScreen(navController: NavController) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
-
-        Box(
-            modifier = Modifier.fillMaxWidth().height(200.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                val path = Path().apply {
-                    moveTo(0f, 0f)
-                    lineTo(size.width, 0f)
-                    lineTo(size.width, size.height * 0.7f)
-                    quadraticTo(size.width * 0.5f, size.height, 0f, size.height * 0.7f)
-                    close()
-                }
-                drawPath(path, color = SecureBlue)
-            }
-
-            Row(
-                modifier = Modifier.padding(top = 50.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.shield),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(50.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text("SecureLayer", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            }
-        }
+        secureLayerLogo()
 
         // Formulario
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .padding(horizontal = 24.dp)
-                .padding(vertical = 24.dp)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
+
             Text("Iniciar Sesión", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
+
             Spacer(modifier = Modifier.height(20.dp))
 
             CustomTextField(email, { email = it }, "Correo Electrónico", showEmptyError && email.isEmpty(), KeyboardType.Email)
@@ -120,16 +94,22 @@ fun LoginScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
             TextButton(
                 onClick = { navController.navigate("register") },
                 colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF424750))
             ) {
                 Text("¿No tienes cuenta? Regístrate aquí", style = TextStyle(textDecoration = TextDecoration.Underline))
             }
+        }
 
-            Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
 
             CustomPrimaryButton(
                 text = "Iniciar Sesión",
@@ -150,7 +130,7 @@ fun LoginScreen(navController: NavController) {
                 }
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             CustomOutlinedButton(
                 text = "Cancelar",
@@ -164,8 +144,6 @@ fun LoginScreen(navController: NavController) {
                     )
                 }
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

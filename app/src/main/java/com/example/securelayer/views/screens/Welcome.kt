@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.R
+import com.example.securelayer.views.components.secureLayerLogo
 
 val SecureBlue = Color(0xFF003366)
 val Background = Color(0xFFf7f7f7)
@@ -30,108 +31,87 @@ fun WelcomeScreen(navController: NavController) {
     val scrollState = rememberScrollState()
 
     //Generacion del encabezado de la pantalla
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Background)
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .background(SecureBlue),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = R.drawable.shield),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(55.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "SecureLayer",
-                    color = Color.White,
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
+    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
+        secureLayerLogo()
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         //Generacion de la imagen
-        Image(
-            painter = painterResource(id = R.drawable.welcome_img),
-            contentDescription = "Descripción de la imagen",
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
+                .weight(1f)
                 .padding(horizontal = 24.dp)
-        )
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.welcome_img),
+                contentDescription = "Descripción de la imagen",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(290.dp)
+                    .padding(horizontal = 24.dp)
+            )
 
-        Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        // Generacion del texo
-        Text(
-            text = "La forma mas segura de\nnavegar en internet",
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Black,
-            color = Color.Black,
-            lineHeight = 34.sp
-        )
+            Text(
+                text = "La forma mas segura de\nnavegar en internet",
+                textAlign = TextAlign.Center,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                color = Color.Black,
+                lineHeight = 34.sp
+            )
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        Text(
-            text = "Aprende a reconocer facilmente estafas en Internet con metodos de enseñanza interactivos y simulaciones reales.",
-            textAlign = TextAlign.Center,
-            fontSize = 16.sp,
-            color = Color.Gray,
-            modifier = Modifier.padding(horizontal = 40.dp)
-        )
+            Text(
+                text = "Aprende a reconocer facilmente estafas en Internet con metodos de enseñanza interactivos y simulaciones reales.",
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = 40.dp)
+            )
+        }
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        CustomPrimaryButton(
-            text = "Iniciar Sesión",
-            onClick = { navController.navigate("login") },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.welcome_user_ic),
-                    contentDescription = "Icono de perfil",
-                    tint = Color.White,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-        )
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CustomPrimaryButton(
+                text = "Iniciar Sesión",
+                onClick = { navController.navigate("login") },
+                modifier = Modifier.fillMaxWidth(),
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.welcome_user_ic),
+                        contentDescription = "Icono de perfil",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        CustomOutlinedButton(
-            text = "Registrarse",
-            onClick = { navController.navigate("register") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.register),
-                    contentDescription = "Icono de registro",
-                    tint = SecureBlue,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
+            CustomOutlinedButton(
+                text = "Registrarse",
+                onClick = { navController.navigate("register") },
+                modifier = Modifier.fillMaxWidth(),
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.register),
+                        contentDescription = "Icono de registro",
+                        tint = SecureBlue,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            )
+        }
     }
 }
 

@@ -28,7 +28,7 @@ fun AppNavigation() {
         composable("route") {
             RouteScreen(navController)
         }
-        composable("conceptos básicos") {
+        composable("BasicConcepts") {
             BasicConceptsScreen(navController)
         }
         composable("register") {
