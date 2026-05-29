@@ -26,6 +26,7 @@ import com.example.securelayer.views.components.BasicConceptCard
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.TopNavBar
+import com.example.securelayer.views.theme.Background
 
 
 @Composable
@@ -104,6 +105,6 @@ fun BasicConceptsScreen(navController: NavController){
 
 @Preview(showBackground = true)
 @Composable
-fun ConseptosBasicosPreview(){
+fun BasicConceptsPreview(){
     BasicConceptsScreen(rememberNavController())
 }

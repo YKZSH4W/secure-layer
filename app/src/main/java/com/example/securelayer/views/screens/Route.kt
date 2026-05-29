@@ -57,7 +57,7 @@ fun RouteScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(32.dp))
 
             enrollViewModel.currentRoutes.forEach { item ->
-                Text("Ruta: ${item.name}")
+                Text("Ruta: ${item.name}, Id ${item.id}")
             }
 
             LearningNode(

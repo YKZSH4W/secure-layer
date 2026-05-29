@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.securelayer.R
-import com.example.securelayer.views.screens.SecureBlue
 
 //Colores usados en varias interfaces
 val SecureBlue = Color(0xFF003366)
@@ -201,7 +199,7 @@ fun CustomTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(text = label, fontSize = 16.sp, fontWeight = FontWeight.Normal) },
+        label = { Text(label) },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         isError = isError,
@@ -210,8 +208,7 @@ fun CustomTextField(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = SecureBlue,
             unfocusedBorderColor = SecureBlue,
-            focusedLabelColor = SecureBlue,
-            unfocusedLabelColor = Color.Gray
+            focusedLabelColor = SecureBlue
         )
     )
 }
@@ -448,7 +445,6 @@ fun secureLayerLogo() {
         }
     }
 }
-
 
 // Boton primario personalizado
 @Composable

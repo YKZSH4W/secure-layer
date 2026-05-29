@@ -25,6 +25,7 @@ import com.example.securelayer.views.components.AdviceInfoCard
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.TopNavBar
+import com.example.securelayer.views.theme.Background
 
 
 @Composable

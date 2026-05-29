@@ -4,6 +4,7 @@ import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.model.UserRegister
 import com.example.securelayer.data.model.User
 import com.example.securelayer.data.model.UserLogin
+import com.example.securelayer.data.model.advices.Advice
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,4 +22,10 @@ interface ApiService {
 
     @GET("/enrolls/user/{userId}")
     suspend fun getEnrollsByUser(@Path("userId") userId: Int?): List<Route>
+
+    @GET("/routes-advices")
+    suspend fun getAdvices(): List<Advice>
+
+    @GET("/routes-advices/route/{routeId}")
+    suspend fun getAdvicesByRoute(@Path("routeId") routeId: Int?): List<Advice>
 }

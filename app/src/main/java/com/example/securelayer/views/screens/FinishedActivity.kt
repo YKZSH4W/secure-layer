@@ -36,9 +36,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
-import com.example.securelayer.views.components.SecureBlue
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.views.theme.Background
 
 
 val FinishedActivityBorderIcon = Color(0xFFe4f9f0)
@@ -87,7 +88,7 @@ fun FinishedActivityScreen(navController: NavController){
                 Text("¡Excelente trabajo!",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = com.example.securelayer.views.screens.SecureBlue)
+                    color = SecureBlue)
 
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -200,7 +201,7 @@ fun FinishedActivityScreen(navController: NavController){
                         Text(
                             "Cada lección completada fortalece tu seguridad digital ante los estafadores",
                             fontSize = 18.sp,
-                            color = com.example.securelayer.views.screens.SecureBlue
+                            color = SecureBlue
                         )
                     }
                 }

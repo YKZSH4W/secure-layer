@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,15 +15,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.ConsejoCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.viewmodel.AdvicesViewModel
+import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
 @Composable
 fun AdvicesScreen(navController: NavController) {
+    val enrollViewModel: EnrollsViewModel = viewModel()
+    val adviceViewModel: AdvicesViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        enrollViewModel.getEnrollsByUser(SessionManager.currentUser?.id)
+    }
+
 
     Scaffold(
         topBar = {
@@ -53,6 +65,19 @@ fun AdvicesScreen(navController: NavController) {
                 color = Color.Gray,
                 lineHeight = 20.sp
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            enrollViewModel.currentRoutes.forEach { item ->
+                LaunchedEffect(item.id) {
+                    adviceViewModel.getAdvicesByRoute(item.id)
+                }
+
+            }
+
+            adviceViewModel.advicesByRoute.forEach { item ->
+                Text("Id: ${item.id}, RouteId: ${item.routeId}, AdviceTitle: ${item.adviceTitle}")
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
