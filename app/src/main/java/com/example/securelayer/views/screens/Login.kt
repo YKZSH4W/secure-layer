@@ -20,67 +20,60 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
+import com.example.securelayer.views.components.secureLayerLogo
+import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    var correo by remember { mutableStateOf("") }
+    val userViewModel: UsersViewModel = viewModel()
+
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showEmptyError by remember { mutableStateOf(false) }
 
     val SecureBlue = Color(0xFF003366)
     val scrollState = rememberScrollState()
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
-
-        Box(
-            modifier = Modifier.fillMaxWidth().height(200.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                val path = Path().apply {
-                    moveTo(0f, 0f)
-                    lineTo(size.width, 0f)
-                    lineTo(size.width, size.height * 0.7f)
-                    quadraticTo(size.width * 0.5f, size.height, 0f, size.height * 0.7f)
-                    close()
-                }
-                drawPath(path, color = SecureBlue)
-            }
-
-            Row(
-                modifier = Modifier.padding(top = 50.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.shield),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(50.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text("SecureLayer", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            }
+    LaunchedEffect(userViewModel.loginError) {
+        if (userViewModel.loginError) {
+            showErrorDialog = true
+            userViewModel.resetLoginError()
         }
+    }
+
+    LaunchedEffect(userViewModel.loginSuccess) {
+        if (userViewModel.loginSuccess) {
+            navController.navigate("route")
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
+        secureLayerLogo()
 
         // Formulario
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .padding(horizontal = 24.dp)
-                .padding(vertical = 24.dp)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
+
             Text("Iniciar Sesión", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
+
             Spacer(modifier = Modifier.height(20.dp))
 
-            CustomTextField(correo, { correo = it }, "Correo Electrónico", showEmptyError && correo.isEmpty(), KeyboardType.Email)
+            CustomTextField(email, { email = it }, "Correo Electrónico", showEmptyError && email.isEmpty(), KeyboardType.Email)
             Spacer(modifier = Modifier.height(20.dp))
             CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
 
@@ -88,7 +81,18 @@ fun LoginScreen(navController: NavController) {
                 Text("Por favor, completa todos los campos", color = Color.Red, modifier = Modifier.padding(vertical = 8.dp))
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            if (showErrorDialog) {
+                AlertDialog(
+                    onDismissRequest = { showErrorDialog = false },
+                    title = { Text("Error") },
+                    text = { Text("Credenciales inválidas, intenta de nuevo.") },
+                    confirmButton = {
+                        TextButton(onClick = { showErrorDialog = false }) {
+                            Text("Aceptar")
+                        }
+                    }
+                )
+            }
 
             TextButton(
                 onClick = { navController.navigate("register") },
@@ -96,14 +100,22 @@ fun LoginScreen(navController: NavController) {
             ) {
                 Text("¿No tienes cuenta? Regístrate aquí", style = TextStyle(textDecoration = TextDecoration.Underline))
             }
+        }
 
-            Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
 
             CustomPrimaryButton(
                 text = "Iniciar Sesión",
                 onClick = {
-                    if (correo.isNotEmpty() && password.isNotEmpty()) {
-                        navController.navigate("route")
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        userViewModel.login(email, password)
                     } else {
                         showEmptyError = true
                     }
@@ -118,7 +130,7 @@ fun LoginScreen(navController: NavController) {
                 }
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             CustomOutlinedButton(
                 text = "Cancelar",
@@ -132,8 +144,6 @@ fun LoginScreen(navController: NavController) {
                     )
                 }
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

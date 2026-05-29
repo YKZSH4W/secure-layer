@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -405,6 +406,40 @@ fun TipOfDayCard(
                     text = description,
                     fontSize = 13.sp,
                     color = contentColor
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun secureLayerLogo() {
+    Box(
+        modifier = Modifier.fillMaxWidth().height(200.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(painter = painterResource(id = R.drawable.waves), contentDescription = "Waves", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 60.dp)
+
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.shield),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(55.dp)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "SecureLayer",
+                    color = Color.White,
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

@@ -1,6 +1,5 @@
 package com.example.securelayer.views.screens
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,22 +21,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.securelayer.views.components.BasicConceptCard
+import com.example.securelayer.views.components.AdviceInfoCard
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.TopNavBar
+import com.example.securelayer.views.theme.Background
 
 
 @Composable
-fun ConseptosBasicosScreen(navController: NavController){
+fun AdviceScreen(navController: NavController){
 
     Scaffold(
         topBar = { TopNavBar(navController, title = "SecureLayer") },
         bottomBar = { BottomNavBar(navController) },
         floatingActionButton = {
             CustomPrimaryButton(
-                text = "Volver",
-                onClick = { navController.navigate("route") },
+                text = "Entendido",
+                onClick = { navController.navigate("consejos") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp),
@@ -60,38 +60,34 @@ fun ConseptosBasicosScreen(navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text("Conceptos Básicos",
+                Text("Privacidad Total",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black)
 
                 Spacer(modifier = Modifier.height(17.dp))
 
-                BasicConceptCard(
-                    "¿Qué es el Phishing?",
-                    "Es cuando alguien intenta engañarte haciéndose pasar por una empresa, banco o persona conocida",
-                    "Siempre te piden actuar ráoido",
-                    "El banco nunca te pedirá datos personales"
+                AdviceInfoCard(
+                    "La regla de oro de las contraseñas: ",
+                    "Una contraseña es como la llave de tu casa. Nunca la compartas con nadie, ni siquiera con alguien que diga ser de soporte técnico\".\n" +
+                            "\". Intenta que sean frases largas y fáciles de recordar para ti, pero dificiles para los demas."
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
-                BasicConceptCard(
-                    "La importancia de lacontraseña fuerte",
-                    "Es cuando alguien intenta engañarte haciéndose pasar por una empresa, banco o persona conocida",
-                    "Siempre te piden actuar ráoido",
-                    "El banco nunca te pedirá datos personales"
+                AdviceInfoCard(
+                    "La verificación en dos pasos (Tu segunda capa):",
+                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" +
+                            "¡Activa siempre esta opción, es tu mayor seguridad!"
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
-                BasicConceptCard(
-                    "El peligro de los enlaces desconocidos",
-                    "Es cuando alguien intenta engañarte haciéndose pasar por una empresa, banco o persona conocida",
-                    "Siempre te piden actuar ráoido",
-                    "El banco nunca te pedirá datos personales"
+                AdviceInfoCard(
+                    "La verificación en dos pasos (Tu segunda capa):",
+                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" +
+                            "¡Activa siempre esta opción, es tu mayor seguridad!"
                 )
-
                 Spacer(modifier = Modifier.height(45.dp))
             }
 
@@ -104,6 +100,6 @@ fun ConseptosBasicosScreen(navController: NavController){
 
 @Preview(showBackground = true)
 @Composable
-fun ConseptosBasicosPreview(){
-    ConseptosBasicosScreen(rememberNavController())
+fun AdvicePreview(){
+    AdviceScreen(rememberNavController())
 }

@@ -26,6 +26,7 @@ import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.views.theme.Background
 
 @Composable
 fun Profile(navController: NavController) {

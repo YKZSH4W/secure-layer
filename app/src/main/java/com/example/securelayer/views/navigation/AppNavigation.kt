@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.activities.PhishingDetected
-import com.example.securelayer.views.screens.ConsejoPrivacidadTotalScreen
-import com.example.securelayer.views.screens.ConsejosScreen
-import com.example.securelayer.views.screens.ConseptosBasicosScreen
+import com.example.securelayer.views.screens.AdviceScreen
+import com.example.securelayer.views.screens.AdvicesScreen
+import com.example.securelayer.views.screens.BasicConceptsScreen
 import com.example.securelayer.views.screens.EncuestaScreen
 import com.example.securelayer.views.screens.FinishedActivityScreen
 import com.example.securelayer.views.screens.LoginScreen
@@ -28,8 +28,8 @@ fun AppNavigation() {
         composable("route") {
             RouteScreen(navController)
         }
-        composable("conceptos básicos") {
-            ConseptosBasicosScreen(navController)
+        composable("BasicConcepts") {
+            BasicConceptsScreen(navController)
         }
         composable("register") {
             RegisterScreen(navController)
@@ -50,10 +50,10 @@ fun AppNavigation() {
             EncuestaScreen(navController)
         }
         composable("consejos") {
-            ConsejosScreen(navController)
+            AdvicesScreen(navController)
         }
         composable("consejo privacidad info", ) {
-            ConsejoPrivacidadTotalScreen(navController)
+            AdviceScreen(navController)
         }
         composable("activity1") {
             PhishingDetected(navController)

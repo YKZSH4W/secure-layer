@@ -24,7 +24,7 @@ import com.example.securelayer.R
 fun ExercisesScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            TopNavBar(navController = navController, title = "Secure Layer")
+            TopNavBar(navController = navController, title = "SecureLayer")
         },
         bottomBar = {
             BottomNavBar(navController = navController)
@@ -124,6 +124,6 @@ fun ExercisesScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun EjerciciosScreenPreview() {
+fun ExercisesScreenPreview() {
     ExercisesScreen(navController = rememberNavController())
 }
