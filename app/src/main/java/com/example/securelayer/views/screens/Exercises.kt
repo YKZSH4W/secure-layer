@@ -62,7 +62,7 @@ fun ExercisesScreen(navController: NavController) {
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.sms_icon),
+                    painter = painterResource(id = R.drawable.sms_ic),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -111,7 +111,7 @@ fun ExercisesScreen(navController: NavController) {
                 )
             }
             LessonCard(
-                R.drawable.gift_ic,
+                R.drawable.gift_exercise_ic,
                 "Premios Falsos",
                 "Si parece demasiado bueno para ser verdad.",
                 "Bloqueada", Color(0xFFE0E0E0),

@@ -1,14 +1,22 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="56dp"
-    android:height="56dp"
-    android:viewportWidth="56"
-    android:viewportHeight="56">
-
-    <path
-        android:fillColor="#9AF6BE"
-        android:pathData="M28,0 A28,28 0 1,1 28,56 A28,28 0 1,1 28,0 Z" />
-
-    <path
-        android:fillColor="#087347"
-        android:pathData="M18.6667 36V26.6667H21.3333V36H18.6667ZM26.6667 36V26.6667H29.3333V36H26.6667ZM14.6667 41.3334V38.6667H41.3333V41.3334H14.6667ZM34.6667 36V26.6667H37.3333V36H34.6667ZM14.6667 24V21.3334L28 14.6667L41.3333 21.3334V24H14.6667ZM20.6 21.3334H28H35.4H20.6ZM20.6 21.3334H35.4L28 17.6667L20.6 21.3334Z" />
+<!--
+  ~ Copyright (C) 2026 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:viewportHeight="56" android:viewportWidth="56" android:width="24dp">
+      
+    <path android:fillColor="#9AF6BE" android:pathData="M28,0L28,0A28,28 0,0 1,56 28L56,28A28,28 0,0 1,28 56L28,56A28,28 0,0 1,0 28L0,28A28,28 0,0 1,28 0z"/>
+      
+    <path android:fillColor="#087347" android:pathData="M18.667,36V26.667H21.333V36H18.667ZM26.667,36V26.667H29.333V36H26.667ZM14.667,41.333V38.667H41.333V41.333H14.667ZM34.667,36V26.667H37.333V36H34.667ZM14.667,24V21.333L28,14.667L41.333,21.333V24H14.667ZM20.6,21.333H28H35.4H20.6ZM20.6,21.333H35.4L28,17.667L20.6,21.333Z"/>
+    
 </vector>

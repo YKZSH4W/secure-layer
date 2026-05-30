@@ -61,7 +61,7 @@ fun RouteScreen(navController: NavController) {
             }
 
             LearningNode(
-                iconId = R.drawable.shield,
+                iconId = R.drawable.shield_route_ic,
                 label = "Conceptos Básicos",
                 containerColor = SecureGreen,
                 isLocked = false,
@@ -72,7 +72,7 @@ fun RouteScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             LearningNode(
-                iconId = R.drawable.mail_ic,
+                iconId = R.drawable.mail_route_ic,
                 label = "Detectando Phishing \n¡ESTÁS AQUÍ!",
                 containerColor = SecureBlue,
                 isLocked = false,
@@ -82,7 +82,7 @@ fun RouteScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             LearningNode(
-                iconId = R.drawable.sms_icon,
+                iconId = R.drawable.sms_ic,
                 label = "Seguridad en SMS",
                 containerColor = SecureGreen,
                 isLocked = true,
