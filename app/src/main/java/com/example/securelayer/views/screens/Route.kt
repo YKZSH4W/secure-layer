@@ -22,10 +22,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.LearningNode
-import com.example.securelayer.views.components.SecureBlue
 import com.example.securelayer.views.components.TipOfDayCard
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
 val SecureGreen = Color(0xFF2ECC71)
@@ -46,7 +46,6 @@ fun RouteScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 24.dp)
-                .background(Color.White)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

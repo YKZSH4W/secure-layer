@@ -29,6 +29,7 @@ import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
 import com.example.securelayer.views.components.secureLayerLogo
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.UsersViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -57,7 +58,6 @@ fun RegisterScreen(navController: NavController) {
     var showSuccessDialog by remember { mutableStateOf(false) }
 
     // Variables para cuestiones visuales
-    val SecureBlue = Color(0xFF003366)
     val scrollState = rememberScrollState()
 
     LaunchedEffect(viewModel.registerSuccess) {
@@ -115,7 +115,7 @@ fun RegisterScreen(navController: NavController) {
                 shape = RoundedCornerShape(12.dp),
                 border = BorderStroke(
                     1.dp,
-                    if (showEmptyError && birthDate == "Fecha de nacimiento") Color(0xFFB3261E) else Color(0xFF003366)
+                    if (showEmptyError && birthDate == "Fecha de nacimiento") Color(0xFFB3261E) else SecureBlue
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp)
             ) {

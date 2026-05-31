@@ -7,6 +7,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.securelayer.R
+import com.example.securelayer.views.theme.SecureBlue
+
 //import com.example.securelayer.Screens.ConsejoAScreen
 
 

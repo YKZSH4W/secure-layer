@@ -28,6 +28,7 @@ import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
 import com.example.securelayer.views.components.secureLayerLogo
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
@@ -40,7 +41,6 @@ fun LoginScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var showEmptyError by remember { mutableStateOf(false) }
 
-    val SecureBlue = Color(0xFF003366)
     val scrollState = rememberScrollState()
 
     LaunchedEffect(userViewModel.loginError) {

@@ -1,6 +1,7 @@
 package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,73 +30,70 @@ import com.example.securelayer.views.theme.Background
 
 
 @Composable
-fun AdviceScreen(navController: NavController){
+fun AdviceScreen(navController: NavController) {
 
     Scaffold(
         topBar = { TopNavBar(navController, title = "SecureLayer") },
-        bottomBar = { BottomNavBar(navController) },
-        floatingActionButton = {
-            CustomPrimaryButton(
-                text = "Entendido",
-                onClick = { navController.navigate("consejos") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-            )
-        }
+        bottomBar = { BottomNavBar(navController) }
     ) { padding ->
-        Column(
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Background)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = 24.dp)
-                    .padding(vertical = 24.dp),
+                    .padding(vertical = 24.dp)
+                    .padding(bottom = 90.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text("Privacidad Total",
+                Text(
+                    "Privacidad Total",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black)
+                    color = Color.Black
+                )
 
                 Spacer(modifier = Modifier.height(17.dp))
 
                 AdviceInfoCard(
                     "La regla de oro de las contraseñas: ",
-                    "Una contraseña es como la llave de tu casa. Nunca la compartas con nadie, ni siquiera con alguien que diga ser de soporte técnico\".\n" +
-                            "\". Intenta que sean frases largas y fáciles de recordar para ti, pero dificiles para los demas."
+                    "Una contraseña es como la llave de tu casa. Nunca la compartas con nadie, ni siquiera con alguien que diga ser de soporte técnico\".\n" + "\". Intenta que sean frases largas y fáciles de recordar para ti, pero dificiles para los demas."
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
                 AdviceInfoCard(
                     "La verificación en dos pasos (Tu segunda capa):",
-                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" +
-                            "¡Activa siempre esta opción, es tu mayor seguridad!"
+                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" + "¡Activa siempre esta opción, es tu mayor seguridad!"
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
                 AdviceInfoCard(
                     "La verificación en dos pasos (Tu segunda capa):",
-                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" +
-                            "¡Activa siempre esta opción, es tu mayor seguridad!"
+                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" + "¡Activa siempre esta opción, es tu mayor seguridad!"
                 )
-                Spacer(modifier = Modifier.height(45.dp))
             }
 
-
+            CustomPrimaryButton(
+                text = "Entendido",
+                onClick = {
+                    navController.navigate("consejos")
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp, vertical = 16.dp)
+            )
         }
-
     }
-
 }
 
 @Preview(showBackground = true)

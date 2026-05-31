@@ -32,7 +32,7 @@ import com.example.securelayer.views.theme.Background
 fun Profile(navController: NavController) {
     Scaffold(
         topBar = {
-            TopNavBar(navController = navController, title = "SecurityLayer")
+            TopNavBar(navController = navController, title = "SecureLayer")
         },
         bottomBar = {
             BottomNavBar(navController = navController)

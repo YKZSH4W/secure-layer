@@ -19,6 +19,7 @@ import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.LessonCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.views.theme.SecureBlue
 
 @Composable
 fun ExercisesScreen(navController: NavController) {
@@ -72,7 +73,7 @@ fun ExercisesScreen(navController: NavController) {
                 Text(
                     text = "Mensajes de Texto (SMS)",
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF003466)
+                    color = SecureBlue
                 )
             }
 
@@ -107,7 +108,7 @@ fun ExercisesScreen(navController: NavController) {
                 Text(
                     text = "Correos Electrónicos",
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF003466)
+                    color = SecureBlue
                 )
             }
             LessonCard(

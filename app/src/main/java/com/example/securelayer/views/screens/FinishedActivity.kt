@@ -54,7 +54,6 @@ fun FinishedActivityScreen(navController: NavController){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Background)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

@@ -22,8 +22,8 @@ import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.R
 import com.example.securelayer.views.components.secureLayerLogo
+import com.example.securelayer.views.theme.SecureBlue
 
-val SecureBlue = Color(0xFF003366)
 val Background = Color(0xFFf7f7f7)
 
 @Composable

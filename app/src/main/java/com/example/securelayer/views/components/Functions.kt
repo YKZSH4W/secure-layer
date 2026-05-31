@@ -47,9 +47,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.securelayer.R
+import com.example.securelayer.views.theme.SecureBlue
 
 //Colores usados en varias interfaces
-val SecureBlue = Color(0xFF003366)
 val SecureGreen = Color(0xFF2E7D32)
 
 // Funcion para mostrar una tarjeta de consejo o recomendación de seguridad
@@ -220,31 +220,21 @@ fun AdviceInfoCard(
     title: String,
     info: String
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color.White)
-            .border(
-                width = 1.dp,
-                color = Color(0xFFD9D9D9),
-                shape = RoundedCornerShape(12.dp)
-            )
-            .padding(14.dp),
-        verticalArrangement = Arrangement.Center
-        //horizontalAlignment = Alignment.Start
-    ) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ){
         Spacer(modifier = Modifier.height(17.dp))
 
         Text(title,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text(info,
             fontSize = 18.sp,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
     }
 }
 @Composable
@@ -274,36 +264,36 @@ fun BasicConceptCard(
         Text(title,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Text("Concepto: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text(concept,
             fontSize = 18.sp,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text("El consejo: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text(advice,
             fontSize = 18.sp,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text("Regla de Oro: ",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
 
         Text(rule,
             fontSize = 18.sp,
-            color = com.example.securelayer.views.screens.SecureBlue)
+            color = SecureBlue)
     }
 }
 // Funcion para mostrar un item en la interfaz de ruta con icono y titulo
@@ -453,7 +443,7 @@ fun CustomPrimaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Color(0xFF003466),
+    containerColor: Color = SecureBlue,
     icon: @Composable (() -> Unit)? = null
 ) {
     Button(
@@ -489,7 +479,7 @@ fun CustomOutlinedButton(
         Row(verticalAlignment = Alignment.CenterVertically) {
             icon?.invoke()
             if (icon != null) Spacer(modifier = Modifier.width(8.dp))
-            Text(text, color = Color(0xFF003366), fontSize = 16.sp)
+            Text(text, color = SecureBlue, fontSize = 16.sp)
         }
     }
 }
