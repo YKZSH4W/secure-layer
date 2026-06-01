@@ -70,12 +70,13 @@ fun RegisterScreen(navController: NavController) {
     LaunchedEffect(registerUser) {
         if (registerUser) {
             val parts = name.trim().split(" ")
+            val part = if (parts.size == 3) 1 else 2
 
             viewModel.createUser(
                 email,
                 username,
                 password,
-                parts.dropLast(2).joinToString(" "),
+                parts.dropLast(part).joinToString(" "),
                 parts.takeLast(2).joinToString(" "),
                 birthDate
             )
@@ -196,7 +197,6 @@ fun RegisterScreen(navController: NavController) {
                     if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank() &&
                         confirmPassword.isNotBlank() && username.isNotBlank() && birthDate != "Fecha de nacimiento"
                     ) {
-
                         registerUser = true
                     } else {
                         showEmptyError = true

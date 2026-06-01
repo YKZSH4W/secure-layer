@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
@@ -26,7 +28,9 @@ import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
 fun Profile(navController: NavController) {
@@ -68,12 +72,14 @@ fun Profile(navController: NavController) {
                         Icons.Default.CheckCircle,
                         contentDescription = "Verificado",
                         tint = Color(0xFF4CAF50),
-                        modifier = Modifier.size(24.dp).background(Color.White, CircleShape)
+                        modifier = Modifier
+                            .size(24.dp)
+                            .background(Color.White, CircleShape)
                     )
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("Hola, María", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text("Hola, ${SessionManager.currentUser?.name}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 Text("¡Estás haciendo un gran trabajo!", color = Color.Gray)
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -91,7 +97,10 @@ fun Profile(navController: NavController) {
                         }
                         LinearProgressIndicator(
                             progress = { 0.7f },
-                            modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(4.dp)),
                             color = Color(0xFF2E7D32),
                             trackColor = Color(0xFFE0E0E0),
                             strokeCap = StrokeCap.Butt
@@ -121,7 +130,9 @@ fun Profile(navController: NavController) {
                         title = "Escudo de\nOro",
                         subtitle = "Por 7 días sin\nriesgos",
                         iconContent = {
-                            Box(modifier = Modifier.fillMaxSize().background(Color(0xFFFFE0B2)), contentAlignment = Alignment.Center) {
+                            Box(modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFFFFE0B2)), contentAlignment = Alignment.Center) {
                                 Icon(painter = painterResource(id = R.drawable.shield_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
                             }
                         }
@@ -131,7 +142,9 @@ fun Profile(navController: NavController) {
                         title = "Detective de\nFraudes",
                         subtitle = "Detectaste un SMS\nfalso",
                         iconContent = {
-                            Box(modifier = Modifier.fillMaxSize().background(Color(0xFFA5F3C2)), contentAlignment = Alignment.Center) {
+                            Box(modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFFA5F3C2)), contentAlignment = Alignment.Center) {
                                 Icon(painter = painterResource(id = R.drawable.lupa_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
                             }
                         }
