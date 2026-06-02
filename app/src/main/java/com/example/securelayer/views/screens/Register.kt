@@ -55,6 +55,7 @@ fun RegisterScreen(navController: NavController) {
 
     // Variables para dialogs
     var showEmptyError by remember { mutableStateOf(false) }
+    var showPasswordError by remember { mutableStateOf(false) }
     var showSuccessDialog by remember { mutableStateOf(false) }
 
     // Variables para cuestiones visuales
@@ -105,7 +106,7 @@ fun RegisterScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
             CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
             Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(confirmPassword, { confirmPassword = it }, "Confirmar Contraseña", showEmptyError && confirmPassword.isEmpty(), isPassword = true)
+            CustomTextField(confirmPassword, { confirmPassword = it }, "Confirmar Contraseña", (showEmptyError && confirmPassword.isEmpty()) || showPasswordError, isPassword = true)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -155,6 +156,10 @@ fun RegisterScreen(navController: NavController) {
                 Text("Por favor, completa todos los campos", color = Color(0xFFB3261E))
             }
 
+            if (showPasswordError) {
+                Text("Las contraseñas no coinciden", color = Color(0xFFB3261E))
+            }
+
             if (showSuccessDialog) {
                 AlertDialog(
                     onDismissRequest = {
@@ -197,9 +202,17 @@ fun RegisterScreen(navController: NavController) {
                     if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank() &&
                         confirmPassword.isNotBlank() && username.isNotBlank() && birthDate != "Fecha de nacimiento"
                     ) {
-                        registerUser = true
+                        if (password != confirmPassword) {
+                            showPasswordError = true
+                            showEmptyError = false
+                        } else {
+                            showPasswordError = false
+                            showEmptyError = false
+                            registerUser = true
+                        }
                     } else {
                         showEmptyError = true
+                        showPasswordError = false
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

@@ -29,6 +29,7 @@ import com.example.securelayer.views.components.CustomTextField
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.components.secureLayerLogo
+import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.UsersViewModel
 
@@ -57,7 +58,7 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF7FAFD))) {
+    Column(modifier = Modifier.fillMaxSize().background(Background)) {
         secureLayerLogo()
 
         // Formulario

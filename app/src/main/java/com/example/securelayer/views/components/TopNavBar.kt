@@ -12,13 +12,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.theme.SecureBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBar(navController: NavController, title: String) {
     TopAppBar(
-        modifier = Modifier.background(Color(0xFFF7FAFD)),
+        modifier = Modifier.background(Background),
         title = { Text(title, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = SecureBlue) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color(0xFFF7FAFD)

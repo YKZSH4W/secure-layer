@@ -5,5 +5,5 @@ data class Enroll (
     val serId: Int,
     val routeId: Int,
     val finishDate: String,
-    val isCompleted: String
+    val isCompleted: Boolean
 )

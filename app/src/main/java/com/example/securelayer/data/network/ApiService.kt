@@ -1,5 +1,12 @@
 package com.example.securelayer.data.network
 
+import com.example.securelayer.data.model.Activity
+import com.example.securelayer.data.model.ActivityProgress
+import com.example.securelayer.data.model.CompleteActivityRequest
+import com.example.securelayer.data.model.CompleteActivityResult
+import com.example.securelayer.data.model.Lesson
+import com.example.securelayer.data.model.Option
+import com.example.securelayer.data.model.Question
 import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.model.UserRegister
 import com.example.securelayer.data.model.User
@@ -28,4 +35,28 @@ interface ApiService {
 
     @GET("/routes-advices/route/{routeId}")
     suspend fun getAdvicesByRoute(@Path("routeId") routeId: Int?): List<Advice>
+
+    @GET("/lessons/route/{routeId}")
+    suspend fun getLessonsByRoute(@Path("routeId") routeId: Int?): List<Lesson>
+
+    @GET("/lessons/route/{routeId}/user/{userId}")
+    suspend fun getLessonsByRouteWithProgress(
+        @Path("routeId") routeId: Int?,
+        @Path("userId") userId: Int?
+    ): List<Lesson>
+
+    @GET("/activities/lesson/{lessonId}")
+    suspend fun getActivitiesByLesson(@Path("lessonId") lessonId: Int?): List<Activity>
+
+    @GET("/questions/activity/{activityId}")
+    suspend fun getQuestionsByActivity(@Path("activityId") activityId: Int?): List<Question>
+
+    @GET("/options/question/{questionId}")
+    suspend fun getOptionsByQuestion(@Path("questionId") questionId: Int?): List<Option>
+
+    @GET("/activities-progress/user/{userId}")
+    suspend fun getActivitiesProgressByUser(@Path("userId") userId: Int?): List<ActivityProgress>
+
+    @POST("/activities-progress/complete")
+    suspend fun completeActivity(@Body body: CompleteActivityRequest): CompleteActivityResult
 }

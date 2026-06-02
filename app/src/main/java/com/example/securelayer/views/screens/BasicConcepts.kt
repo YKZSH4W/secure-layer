@@ -1,7 +1,6 @@
 package com.example.securelayer.views.screens
 
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +44,7 @@ fun BasicConceptsScreen(navController: NavController){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF7FAFD))
+                .background(Background)
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {

@@ -55,7 +55,7 @@ fun AdviceScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF7FAFD))
+                .background(Background)
                 .padding(padding)
         ) {
 

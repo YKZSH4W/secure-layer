@@ -27,6 +27,7 @@ import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.theme.Background
 
 @Composable
 fun Profile(navController: NavController) {
@@ -37,7 +38,7 @@ fun Profile(navController: NavController) {
         bottomBar = {
             BottomNavBar(navController = navController)
         },
-        containerColor = Color(0xFFF7FAFD)
+        containerColor = Background
     ) { padding ->
 
         Box(
@@ -151,7 +152,12 @@ fun Profile(navController: NavController) {
 
             CustomOutlinedButton(
                 text = "Cerrar Sesion",
-                onClick = { navController.navigate("welcome") },
+                onClick = {
+                    SessionManager.logout()
+                    navController.navigate("welcome") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(16.dp)

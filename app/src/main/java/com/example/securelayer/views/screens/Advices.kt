@@ -23,6 +23,7 @@ import com.example.securelayer.views.components.ConsejoCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.viewmodel.AdvicesViewModel
 import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
@@ -43,7 +44,7 @@ fun AdvicesScreen(navController: NavController) {
         bottomBar = {
             BottomNavBar(navController = navController)
         },
-        containerColor = Color(0xFFF7FAFD)
+        containerColor = Background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -86,42 +87,23 @@ fun AdvicesScreen(navController: NavController) {
                     title = type,
                     subtitle = "",
                     titleColor = Color(0xFF0D47A1),
-                    iconContainerColor = Color(0xFFD6E4FF),
+                    iconContainerColor = mapAdvicesIconColor(type),
                     onClick = {
                         SessionManager.currentAdviceType = type
-                        navController.navigate("consejo privacidad info")
+                        navController.navigate("consejo_privacidad_info")
                     },
                     iconContent = {
                         Icon(
-                            painter = painterResource(id = R.drawable.circular_key_ic),
+                            painter = painterResource(id = mapAdvicesIcon(type)),
                             contentDescription = null,
                             tint = Color.Unspecified,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(45.dp)
                         )
                     }
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
             }
-
-            ConsejoCard(
-                title = "Privacidad total",
-                subtitle = "mdakdakj",
-                titleColor = Color(0xFF0D47A1),
-                iconContainerColor = Color(0xFFD6E4FF),
-                onClick = {
-                    SessionManager.currentAdviceType = "type"
-                    navController.navigate("consejo privacidad info")
-                },
-                iconContent = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.circular_key_ic),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -169,6 +151,24 @@ fun AdvicesScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+fun mapAdvicesIcon(icon: String): Int {
+    return when (icon.lowercase()) {
+        "privacidad total"   -> R.drawable.circular_key_ic
+        "cuidado bancario"   -> R.drawable.bank
+        "mantente alerta"    -> R.drawable.gift
+        else              -> R.drawable.shield_route_ic
+    }
+}
+
+fun mapAdvicesIconColor(icon:String): Color {
+    return when (icon.lowercase()){
+        "privacidad total"  -> Color(0xFFD6E4FF)
+        "cuidado bancario"  -> Color(0xFFB9F6CA)
+        "mantente alerta"   -> Color(0xFFFFE0B2)
+        else -> Color(0xFFD6E4FF)
     }
 }
 

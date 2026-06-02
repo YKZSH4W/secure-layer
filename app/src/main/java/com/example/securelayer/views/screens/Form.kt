@@ -15,6 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,12 +35,14 @@ import com.example.securelayer.data.model.QuizQuestion
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.QuizActivityCard
 import com.example.securelayer.views.components.TopNavBar
+import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.viewmodel.QuizViewModel
 
 
 @Composable
 fun FormScreen(navController: NavController) {
     val viewModel: QuizViewModel = viewModel()
+    var showUnansweredError by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadQuestions(listOf(
@@ -60,14 +66,14 @@ fun FormScreen(navController: NavController) {
 
     Scaffold(
         topBar = { TopNavBar(navController, title = "SecureLayer") },
-        containerColor = Color(0xFFF7FAFD)
+        containerColor = Background
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .background(Color(0xFFF7FAFD))
+                .background(Background)
         ) {
             Text("Encuesta",
                 fontSize = 28.sp,
@@ -95,9 +101,25 @@ fun FormScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                if (showUnansweredError) {
+                    Text(
+                        "Por favor responde todas las preguntas",
+                        color = Color(0xFFB3261E),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+
                 CustomPrimaryButton(
                     text = "Enviar",
-                    onClick = { navController.navigate("login") },
+                    onClick = {
+                        if (viewModel.selectedAnswers.size == viewModel.questions.size) {
+                            showUnansweredError = false
+                            viewModel.validateAnswers()
+                            navController.navigate("login")
+                        } else {
+                            showUnansweredError = true
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     icon = {
                         Icon(

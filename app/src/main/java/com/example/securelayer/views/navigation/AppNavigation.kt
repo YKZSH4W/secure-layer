@@ -13,6 +13,7 @@ import com.example.securelayer.views.screens.BasicConceptsScreen
 import com.example.securelayer.views.screens.FinishedActivityScreen
 import com.example.securelayer.views.screens.LoginScreen
 import com.example.securelayer.views.screens.Profile
+import com.example.securelayer.views.screens.QuizScreen
 import com.example.securelayer.views.screens.RegisterScreen
 import com.example.securelayer.views.screens.RouteScreen
 import com.example.securelayer.views.screens.WelcomeScreen
@@ -49,16 +50,19 @@ fun AppNavigation() {
         composable("ejercicios") {
             ExercisesScreen(navController)
         }
+        composable("quiz") {
+            QuizScreen(navController)
+        }
         composable("consejos") {
             AdvicesScreen(navController)
         }
-        composable("consejo privacidad info", ) {
+        composable("consejo_privacidad_info") {
             AdviceScreen(navController)
         }
         composable("activity1") {
             PhishingDetected(navController)
         }
-        composable("actividad completada") {
+        composable("actividad_completada") {
             FinishedActivityScreen(navController)
         }
     }

@@ -12,6 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 val SecureBlue = Color(0xFF003366)
 
-val Background = Color(0xFFf7f7f7)
+val Background = Color(0xFFF7FAFD)
 
 val SecureGreen = Color(0xFF2ECC71)
