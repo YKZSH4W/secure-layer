@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.activities.PhishingDetected
+import com.example.securelayer.views.screens.FormScreen
 import com.example.securelayer.views.screens.AdviceScreen
 import com.example.securelayer.views.screens.AdvicesScreen
 import com.example.securelayer.views.screens.BasicConceptsScreen
-import com.example.securelayer.views.screens.EncuestaScreen
 import com.example.securelayer.views.screens.FinishedActivityScreen
 import com.example.securelayer.views.screens.LoginScreen
 import com.example.securelayer.views.screens.Profile
@@ -28,6 +28,9 @@ fun AppNavigation() {
         composable("route") {
             RouteScreen(navController)
         }
+        composable("form") {
+            FormScreen(navController)
+        }
         composable("BasicConcepts") {
             BasicConceptsScreen(navController)
         }
@@ -45,9 +48,6 @@ fun AppNavigation() {
         }
         composable("ejercicios") {
             ExercisesScreen(navController)
-        }
-        composable("form") {
-            EncuestaScreen(navController)
         }
         composable("consejos") {
             AdvicesScreen(navController)

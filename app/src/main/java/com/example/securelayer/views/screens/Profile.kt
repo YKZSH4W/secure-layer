@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
@@ -29,8 +27,6 @@ import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
-import com.example.securelayer.views.theme.Background
-import com.example.securelayer.views.viewmodel.UsersViewModel
 
 @Composable
 fun Profile(navController: NavController) {
@@ -40,13 +36,14 @@ fun Profile(navController: NavController) {
         },
         bottomBar = {
             BottomNavBar(navController = navController)
-        }
+        },
+        containerColor = Color(0xFFF7FAFD)
     ) { padding ->
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Background)
+                .background(Color(0xFFF7FAFD))
                 .padding(padding)
         ) {
             Column(

@@ -43,6 +43,7 @@ fun AdvicesScreen(navController: NavController) {
         bottomBar = {
             BottomNavBar(navController = navController)
         },
+        containerColor = Color(0xFFF7FAFD)
     ) { padding ->
         Column(
             modifier = Modifier
@@ -50,6 +51,7 @@ fun AdvicesScreen(navController: NavController) {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 20.dp)
+                .background(Color(0xFFF7FAFD))
         ) {
             Text(
                 text = "Consejos de Seguridad",

@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +48,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.securelayer.R
 import com.example.securelayer.views.theme.SecureBlue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.font.Font
+import com.example.securelayer.data.model.QuizQuestion
+import com.example.securelayer.views.viewmodel.QuizViewModel
 
 //Colores usados en varias interfaces
 val SecureGreen = Color(0xFF2E7D32)
@@ -244,58 +251,126 @@ fun BasicConceptCard(
     advice: String,
     rule: String
 ) {
-    Column(
+    Card(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(10.dp)
-            .clip(RoundedCornerShape(20.dp))
             .background(Color.White)
             .border(
                 width = 1.dp,
                 color = Color(0xFFD9D9D9),
                 shape = RoundedCornerShape(12.dp)
-            )
-            .padding(14.dp),
-        verticalArrangement = Arrangement.Center
-        //horizontalAlignment = Alignment.Start
+            ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        Spacer(modifier = Modifier.height(17.dp))
+        Column(
+            modifier = Modifier.fillMaxSize().padding(14.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.height(17.dp))
 
-        Text(title,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecureBlue)
+            Text(title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = SecureBlue)
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        Text("Concepto: ",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecureBlue)
+            Text("Concepto: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black)
 
-        Text(concept,
-            fontSize = 18.sp,
-            color = SecureBlue)
+            Text(concept,
+                fontSize = 18.sp,
+                color = Color(0xFF424750))
 
-        Text("El consejo: ",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecureBlue)
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Text(advice,
-            fontSize = 18.sp,
-            color = SecureBlue)
+            Text("El consejo: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black)
 
-        Text("Regla de Oro: ",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecureBlue)
+            Text(advice,
+                fontSize = 18.sp,
+                color = Color(0xFF424750))
 
-        Text(rule,
-            fontSize = 18.sp,
-            color = SecureBlue)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text("Regla de Oro: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black)
+
+            Text(rule,
+                fontSize = 18.sp,
+                color = Color(0xFF424750))
+        }
     }
 }
+
+@Composable
+fun QuizActivityCard(
+    index: Int,
+    question: QuizQuestion,
+    viewModel: QuizViewModel
+) {
+    val selected = viewModel.selectedAnswers[index]?: ""
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = Color(0xFFD9D9D9),
+                shape = RoundedCornerShape(12.dp)
+            ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(14.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = question.question,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF181C1E)
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            question.answers.forEach { answer ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { viewModel.selectAnswer(index, answer) }
+                ) {
+                    RadioButton(
+                        selected = selected == answer,
+                        onClick = { viewModel.selectAnswer(index, answer) }
+                    )
+
+                    Text(
+                        text = answer,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF424750)
+                    )
+                }
+            }
+        }
+    }
+}
+
 // Funcion para mostrar un item en la interfaz de ruta con icono y titulo
 @Composable
 fun LearningNode(
@@ -316,16 +391,22 @@ fun LearningNode(
         Box(
             modifier = Modifier
                 .size(100.dp)
-                // Efecto de borde si es el nodo actual
-                .then(if (isCurrent) Modifier.border(4.dp, SecureBlue, CircleShape) else Modifier)
+                .border(
+                    4.dp,
+                    when {
+                        isLocked -> Color(0xFFC3C6D1)
+                        else -> Color.White
+                    },
+                    CircleShape
+                )
                 .clip(CircleShape)
-                .background(if (isLocked) Color(0xFFE0E0E0) else containerColor),
+                .background(if (isLocked) Color(0xFFE0E3E6) else containerColor),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(id = iconId),
                 contentDescription = null,
-                tint = Color.White,
+                tint = if (isLocked) Color(0xFF7E8186) else Color.White,
                 modifier = Modifier.size(iconSize)
             )
         }
@@ -337,16 +418,16 @@ fun LearningNode(
             horizontalArrangement = Arrangement.Center
         ) {
             Surface(
-                color = labelColor ?: (if (isCurrent) SecureBlue else if (isLocked) Color.Transparent else SecureGreen),
+                color = labelColor ?: (if (isCurrent) SecureBlue else if (isLocked) Color.Transparent else Color(0xFF9AF6BE)),
                 shape = RoundedCornerShape(16.dp),
                 modifier = if (isLocked) Modifier.border(1.dp, Color.LightGray, RoundedCornerShape(16.dp)) else Modifier
             ) {
                 Text(
                     text = label,
-                    color = if (isLocked) Color.Gray else Color.White,
+                    color = if (isLocked) Color.Gray else if (isCurrent) Color.White else Color(0xFF006D42),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center
                 )
             }

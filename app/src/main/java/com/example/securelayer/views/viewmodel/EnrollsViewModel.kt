@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.securelayer.data.SessionManager
 import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.network.RetrofitInstance
 
@@ -22,6 +23,8 @@ class EnrollsViewModel: ViewModel() {
             try {
                 val response = RetrofitInstance.api.getEnrollsByUser(userId)
                 currentRoutes = response
+
+                SessionManager.currentRoute = currentRoutes.find { !it.isCompleted }
             } catch (e: Exception) {
                 Log.e("API", "Error: ${e.message}")
             }

@@ -30,13 +30,11 @@ val Background = Color(0xFFf7f7f7)
 fun WelcomeScreen(navController: NavController) {
     val scrollState = rememberScrollState()
 
-    //Generacion del encabezado de la pantalla
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
+    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF7FAFD))) {
         secureLayerLogo()
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        //Generacion de la imagen
         Column(
             modifier = Modifier
                 .weight(1f)

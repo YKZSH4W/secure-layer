@@ -38,7 +38,10 @@ fun RouteScreen(navController: NavController) {
         enrollViewModel.getEnrollsByUser(SessionManager.currentUser?.id)
     }
 
+    val currentRoute = SessionManager.currentRoute
+
     Scaffold(
+        containerColor = Color(0xFFF7FAFD),
         bottomBar = { BottomNavBar(navController) }
     ) { padding ->
         Column(
@@ -46,23 +49,26 @@ fun RouteScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .background(Color(0xFFF7FAFD)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Text("Tu Camino Seguro", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
-            Text("Sigue los círculos para aprender a\nprotegerte paso a paso.", textAlign = TextAlign.Center, fontSize = 16.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
+            Text("${currentRoute?.name}", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = SecureBlue)
+            Text("${currentRoute?.description}", textAlign = TextAlign.Center, fontSize = 16.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            enrollViewModel.currentRoutes.forEach { item ->
-                Text("Ruta: ${item.name}, Id ${item.id}")
-            }
+            /* Probar rutas disponibles por el usuario
+                enrollViewModel.currentRoutes.forEach { item ->
+                    Text("Ruta: ${item.name}, Id ${item.id}")
+                }
+            */
 
             LearningNode(
                 iconId = R.drawable.shield_route_ic,
                 label = "Conceptos Básicos",
-                containerColor = SecureGreen,
+                containerColor = Color(0xFF006D42),
                 isLocked = false,
                 onClick = { navController.navigate("conceptos básicos") },
                 modifier = Modifier.padding(end = 200.dp)
@@ -81,7 +87,7 @@ fun RouteScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             LearningNode(
-                iconId = R.drawable.sms_ic,
+                iconId = R.drawable.message_dots,
                 label = "Seguridad en SMS",
                 containerColor = SecureGreen,
                 isLocked = true,

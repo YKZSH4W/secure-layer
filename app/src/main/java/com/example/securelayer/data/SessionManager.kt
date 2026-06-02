@@ -8,4 +8,5 @@ import com.example.securelayer.data.model.User
 
 object SessionManager {
     var currentUser: User? by mutableStateOf(null)
+    var currentRoute: Route? by mutableStateOf(null)
 }

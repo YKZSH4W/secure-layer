@@ -1,6 +1,7 @@
 package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +25,7 @@ import com.example.securelayer.views.theme.SecureBlue
 @Composable
 fun ExercisesScreen(navController: NavController) {
     Scaffold(
+        containerColor = Color(0xFFF7FAFD),
         topBar = {
             TopNavBar(navController = navController, title = "SecureLayer")
         },
@@ -37,6 +39,7 @@ fun ExercisesScreen(navController: NavController) {
                 .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
+                .background(Color(0xFFF7FAFD))
         ) {
             Text("Biblioteca de Lecciones", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Text("Aprenda a protegerse paso a paso con nuestras guías sencillas.", color = Color.Gray)
@@ -63,7 +66,7 @@ fun ExercisesScreen(navController: NavController) {
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.sms_ic),
+                    painter = painterResource(id = R.drawable.message_dots),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

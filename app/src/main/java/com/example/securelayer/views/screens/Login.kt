@@ -57,7 +57,7 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF9F9F9))) {
+    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF7FAFD))) {
         secureLayerLogo()
 
         // Formulario
