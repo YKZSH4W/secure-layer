@@ -10,6 +10,7 @@ import com.example.securelayer.views.screens.FormScreen
 import com.example.securelayer.views.screens.AdviceScreen
 import com.example.securelayer.views.screens.AdvicesScreen
 import com.example.securelayer.views.screens.BasicConceptsScreen
+import com.example.securelayer.views.screens.EditProfileScreen
 import com.example.securelayer.views.screens.FinishedActivityScreen
 import com.example.securelayer.views.screens.LoginScreen
 import com.example.securelayer.views.screens.Profile
@@ -43,6 +44,9 @@ fun AppNavigation() {
         }
         composable("perfil") {
             Profile(navController)
+        }
+        composable("editar_perfil") {
+            EditProfileScreen(navController)
         }
         composable("welcome") {
             WelcomeScreen(navController)

@@ -15,10 +15,12 @@ import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.model.UserRegister
 import com.example.securelayer.data.model.User
 import com.example.securelayer.data.model.UserLogin
+import com.example.securelayer.data.model.UserUpdateRequest
 import com.example.securelayer.data.model.advices.Advice
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -27,6 +29,9 @@ interface ApiService {
 
     @POST("/users/auth/login")
     suspend fun login(@Body user: UserLogin): User
+
+    @PUT("/users/{id}")
+    suspend fun updateUser(@Path("id") id: Int?, @Body body: UserUpdateRequest): User
 
     @GET("/routes")
     suspend fun getRoutes(): List<Route>

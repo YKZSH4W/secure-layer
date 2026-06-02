@@ -8,5 +8,6 @@ data class Activity (
     val icon: String,
     val isCompleted: Boolean,
     val type: String,
-    val xp: Int
+    val xp: Int,
+    val category: String? = null
 )

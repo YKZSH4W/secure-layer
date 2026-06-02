@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -22,6 +23,7 @@ import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.LessonCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.ActivitiesViewModel
 
 @Composable
@@ -125,29 +127,46 @@ fun ExercisesScreen(navController: NavController) {
                 }
 
                 else -> {
-                    activitiesViewModel.activities.forEach { activity ->
-                        val completed = activitiesViewModel.isCompleted(activity.id)
+                    // Agrupa las actividades por categoría (las sin categoría → "General")
+                    val groupedActivities = activitiesViewModel.activities
+                        .groupBy { it.category ?: "General" }
 
-                        val (statusText, statusColor, statusTextColor) = if (completed) {
-                            Triple("Completada", Color(0xFFC8E6C9), Color(0xFF087347))
-                        } else {
-                            Triple("Disponible", Color(0xFFFFDDB5), Color(0xFFAF6C00))
+                    groupedActivities.forEach { (category, activities) ->
+                        // Encabezado de la sección (texto arriba)
+                        Text(
+                            text = category,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = SecureBlue,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                        )
+
+                        activities.forEach { activity ->
+                            val completed = activitiesViewModel.isCompleted(activity.id)
+
+                            val (statusText, statusColor, statusTextColor) = if (completed) {
+                                Triple("Completada", Color(0xFFC8E6C9), Color(0xFF087347))
+                            } else {
+                                Triple("Disponible", Color(0xFFFFDDB5), Color(0xFFAF6C00))
+                            }
+
+                            LessonCard(
+                                icon = mapLessonIcon(activity.icon),
+                                title = activity.name,
+                                desc = activity.description,
+                                status = statusText,
+                                statusColor = statusColor,
+                                textColor = statusTextColor,
+                                onClick = {
+                                    SessionManager.currentActivity = activity
+                                    SessionManager.currentActivityCompleted = completed
+                                    navController.navigate("quiz")
+                                },
+                                iconTint = statusTextColor
+                            )
                         }
 
-                        LessonCard(
-                            icon = mapLessonIcon(activity.icon),
-                            title = activity.name,
-                            desc = activity.description,
-                            status = statusText,
-                            statusColor = statusColor,
-                            textColor = statusTextColor,
-                            onClick = {
-                                SessionManager.currentActivity = activity
-                                SessionManager.currentActivityCompleted = completed
-                                navController.navigate("quiz")
-                            },
-                            iconTint = statusTextColor
-                        )
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
             }

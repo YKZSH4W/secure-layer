@@ -8,5 +8,6 @@ data class User(
     val lastName: String,
     val totalXp: Int,
     val streak: Int,
-    val knowledgeLevel: String
+    val knowledgeLevel: String,
+    val profilePicture: String? = null
 )
