@@ -76,23 +76,47 @@ fun AdvicesScreen(navController: NavController) {
 
             }
 
-            adviceViewModel.advicesByRoute.forEach { item ->
-                Text("Id: ${item.id}, RouteId: ${item.routeId}, AdviceTitle: ${item.adviceTitle}")
+            val adviceTypes = adviceViewModel.advicesByRoute
+                .map { it.type }
+                .distinct()
+
+            adviceTypes.forEach { type ->
+
+                ConsejoCard(
+                    title = type,
+                    subtitle = "",
+                    titleColor = Color(0xFF0D47A1),
+                    iconContainerColor = Color(0xFFD6E4FF),
+                    onClick = {
+                        SessionManager.currentAdviceType = type
+                        navController.navigate("consejo privacidad info")
+                    },
+                    iconContent = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.circular_key_ic),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            //Tarjeta Privacidad Total
             ConsejoCard(
                 title = "Privacidad total",
-                subtitle = "Nunca compartas tus\ncontraseñas",
+                subtitle = "mdakdakj",
                 titleColor = Color(0xFF0D47A1),
                 iconContainerColor = Color(0xFFD6E4FF),
-                onClick = { navController.navigate("consejo privacidad info") },
+                onClick = {
+                    SessionManager.currentAdviceType = "type"
+                    navController.navigate("consejo privacidad info")
+                },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.circular_key_ic),
-                        contentDescription = "Llave",
+                        contentDescription = null,
                         tint = Color.Unspecified,
                         modifier = Modifier.size(24.dp)
                     )
@@ -100,44 +124,6 @@ fun AdvicesScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-
-            //Tarjeta Cuidado Bancario
-            ConsejoCard(
-                title = "Cuidado bancario",
-                subtitle = "Los bancos no piden códigos\npor SMS",
-                titleColor = Color(0xFF00695C),
-                iconContainerColor = Color(0xFFB9F6CA),
-                onClick = { navController.navigate("consejo info") },
-                iconContent = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.bank),
-                        contentDescription = "Banco",
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            //Tarjeta Mantente Alerta
-            ConsejoCard(
-                title = "Mantente alerta",
-                subtitle = "Duda de los premios\ninesperados",
-                titleColor = Color(0xFF5D4037),
-                iconContainerColor = Color(0xFFFFE0B2),
-                onClick = { navController.navigate("consejo info") },
-                iconContent = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.gift),
-                        contentDescription = "Regalo",
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
 
             Card(
                 modifier = Modifier

@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,17 +21,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.securelayer.data.SessionManager
+import com.example.securelayer.data.SessionManager.currentAdviceType
+import com.example.securelayer.data.SessionManager.currentRoute
 import com.example.securelayer.views.components.AdviceInfoCard
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.views.theme.SecureBlue
+import com.example.securelayer.views.viewmodel.AdvicesViewModel
+import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
 
 @Composable
 fun AdviceScreen(navController: NavController) {
+
+    val enrollViewModel: EnrollsViewModel = viewModel()
+    val adviceViewModel: AdvicesViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        enrollViewModel.getEnrollsByUser(SessionManager.currentUser?.id)
+    }
 
     Scaffold(
         topBar = { TopNavBar(navController, title = "SecureLayer") },
@@ -40,6 +55,7 @@ fun AdviceScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color(0xFFF7FAFD))
                 .padding(padding)
         ) {
 
@@ -53,33 +69,34 @@ fun AdviceScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(
-                    "Privacidad Total",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
+                currentAdviceType?.let {
+                    Text(
+                        it,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(17.dp))
 
-                AdviceInfoCard(
-                    "La regla de oro de las contraseñas: ",
-                    "Una contraseña es como la llave de tu casa. Nunca la compartas con nadie, ni siquiera con alguien que diga ser de soporte técnico\".\n" + "\". Intenta que sean frases largas y fáciles de recordar para ti, pero dificiles para los demas."
-                )
+                enrollViewModel.currentRoutes.forEach { item ->
+                    LaunchedEffect(item.id) {
+                        adviceViewModel.getAdvicesByRoute(item.id)
+                    }
 
-                Spacer(modifier = Modifier.height(7.dp))
+                }
 
-                AdviceInfoCard(
-                    "La verificación en dos pasos (Tu segunda capa):",
-                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" + "¡Activa siempre esta opción, es tu mayor seguridad!"
-                )
+                adviceViewModel.advicesByRoute.forEach { item ->
+                    if (item.type == currentAdviceType) {
+                        AdviceInfoCard(
+                            title = item.adviceTitle,
+                            info = item.adviceText
+                        )
 
-                Spacer(modifier = Modifier.height(7.dp))
+                        Spacer(modifier = Modifier.height(7.dp))
+                    }
+                }
 
-                AdviceInfoCard(
-                    "La verificación en dos pasos (Tu segunda capa):",
-                    "Es como tener una cerradura extra en la puerta. Cuando inicies sesión en un lugar nuevo, el sistema te enviarà un código a tu teléfono para confirmar que eres tu.\n" + "¡Activa siempre esta opción, es tu mayor seguridad!"
-                )
             }
 
             CustomPrimaryButton(

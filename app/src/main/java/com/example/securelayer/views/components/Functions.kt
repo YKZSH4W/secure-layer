@@ -228,20 +228,32 @@ fun AdviceInfoCard(
     info: String
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ){
-        Spacer(modifier = Modifier.height(17.dp))
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Spacer(modifier = Modifier.height(17.dp))
 
-        Text(title,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = SecureBlue)
+            Text(
+                text = title,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = SecureBlue
+            )
 
-        Text(info,
-            fontSize = 18.sp,
-            color = SecureBlue)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = info,
+                fontSize = 18.sp,
+                color = Color(0xFF424750)
+            )
+        }
     }
 }
 @Composable
