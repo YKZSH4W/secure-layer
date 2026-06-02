@@ -28,10 +28,10 @@ fun ExercisesScreen(navController: NavController) {
 
     val currentLesson = SessionManager.currentLesson
 
-    // Carga las actividades de la lección seleccionada
+    // Carga las actividades de la lección y el progreso del usuario
     LaunchedEffect(currentLesson) {
         currentLesson?.id?.let { lessonId ->
-            activitiesViewModel.getActivitiesByLesson(lessonId)
+            activitiesViewModel.getActivitiesByLesson(lessonId, SessionManager.currentUser?.id)
         }
     }
 
@@ -86,7 +86,9 @@ fun ExercisesScreen(navController: NavController) {
 
                 else -> {
                     activitiesViewModel.activities.forEach { activity ->
-                        val (statusText, statusColor, statusTextColor) = if (activity.isCompleted) {
+                        val completed = activitiesViewModel.isCompleted(activity.id)
+
+                        val (statusText, statusColor, statusTextColor) = if (completed) {
                             Triple("Completada", Color(0xFFC8E6C9), Color(0xFF087347))
                         } else {
                             Triple("Disponible", Color(0xFFFFDDB5), Color(0xFFAF6C00))
@@ -101,6 +103,7 @@ fun ExercisesScreen(navController: NavController) {
                             textColor = statusTextColor,
                             onClick = {
                                 SessionManager.currentActivity = activity
+                                SessionManager.currentActivityCompleted = completed
                                 navController.navigate("quiz")
                             },
                             iconTint = statusTextColor

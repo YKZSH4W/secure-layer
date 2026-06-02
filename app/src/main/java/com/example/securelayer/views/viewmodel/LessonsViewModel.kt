@@ -17,11 +17,12 @@ class LessonsViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    fun getLessonsByRoute(routeId: Int?) {
+    fun getLessonsByRoute(routeId: Int?, userId: Int?) {
         viewModelScope.launch {
             isLoading = true
             try {
-                val response = RetrofitInstance.api.getLessonsByRoute(routeId)
+                // Trae las lecciones con su estado de completado calculado por usuario
+                val response = RetrofitInstance.api.getLessonsByRouteWithProgress(routeId, userId)
                 lessons = response
             } catch (e: Exception) {
                 Log.e("Lessons", "Error al obtener lecciones: ${e.message}")

@@ -17,6 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -48,7 +50,6 @@ val FinishedActivityBorderIcon = Color(0xFFe4f9f0)
 
 @Composable
 fun FinishedActivityScreen(navController: NavController){
-
     val score = SessionManager.lastQuizScore
     val total = SessionManager.lastQuizTotal
     val earnedXp = SessionManager.lastQuizEarnedXp
@@ -72,7 +73,8 @@ fun FinishedActivityScreen(navController: NavController){
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .background(Color(0xFFF7FAFD)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
@@ -102,10 +104,12 @@ fun FinishedActivityScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.height(17.dp))
 
-                Text(title,
+                Text(
+                    title,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = SecureBlue)
+                    color = SecureBlue
+                )
 
                 SessionManager.currentActivity?.name?.let { activityName ->
                     Spacer(modifier = Modifier.height(4.dp))
@@ -117,75 +121,99 @@ fun FinishedActivityScreen(navController: NavController){
                     )
                 }
 
+                // Aviso cuando la actividad ya se había completado (no se dan puntos de nuevo)
+                if (SessionManager.currentActivityCompleted) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        "Ya habías completado esta actividad, por eso no obtienes puntos nuevamente.",
+                        fontSize = 13.sp,
+                        color = Color(0xFFAF6C00),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(14.dp))
 
                 // Resumen de puntos y aciertos
-                Column(
+                Card(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(10.dp)
-                        .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
                         .border(
                             width = 1.dp,
                             color = Color(0xFFD9D9D9),
                             shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        ),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-
-                    Row(
+                    Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 15.dp)
-                            .padding(vertical = 10.dp)
+                            .padding(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Column(
+                        Row(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(15.dp))
-                                .background(Background)
-                                .padding(horizontal = 25.dp)
-                                .padding(vertical = 15.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .fillMaxSize()
+                                .padding(horizontal = 15.dp)
+                                .padding(vertical = 10.dp)
                         ) {
-                            Text("+$earnedXp puntos",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF006d42))
 
-                            Spacer(modifier = Modifier.height(7.dp))
+                            Column(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .background(Background)
+                                    .padding(horizontal = 25.dp)
+                                    .padding(vertical = 15.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    "+$earnedXp puntos",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF006d42)
+                                )
 
-                            Text("Obtenidos",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF424750))
-                        }
+                                Spacer(modifier = Modifier.height(7.dp))
 
-                        Spacer(modifier = Modifier.weight(1f))
+                                Text(
+                                    "Obtenidos",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color(0xFF424750)
+                                )
+                            }
 
-                        Column(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15.dp))
-                                .background(Background)
-                                .padding(horizontal = 25.dp)
-                                .padding(vertical = 15.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                if (hasResults) "$score/$total" else "10% más",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF006d42))
+                            Spacer(modifier = Modifier.weight(1f))
 
-                            Spacer(modifier = Modifier.height(7.dp))
+                            Column(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .background(Background)
+                                    .padding(horizontal = 25.dp)
+                                    .padding(vertical = 15.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    if (hasResults) "$score/$total" else "10% más",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF006d42)
+                                )
 
-                            Text(
-                                if (hasResults) "Correctas" else "Protegido",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF424750))
+                                Spacer(modifier = Modifier.height(7.dp))
+
+                                Text(
+                                    if (hasResults) "Correctas" else "Protegido",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color(0xFF424750)
+                                )
+                            }
                         }
                     }
                 }
@@ -208,7 +236,7 @@ fun FinishedActivityScreen(navController: NavController){
                         FeedbackCard(item)
                     }
                 } else {
-                    // Fallback cuando se llega sin datos de quiz
+                    // Cuando se llega sin datos de quiz
                     Column(
                         modifier = Modifier
                             .fillMaxSize()

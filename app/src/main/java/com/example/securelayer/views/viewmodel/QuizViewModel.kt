@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.Question
 import com.example.securelayer.data.model.QuizFeedbackItem
 import com.example.securelayer.data.model.QuizQuestion
@@ -73,6 +74,19 @@ class QuizViewModel : ViewModel() {
         }
 
         return correct
+    }
+
+    // Marca la actividad como completada en el backend (idempotente).
+    fun markActivityCompleted(userId: Int?, activityId: Int?) {
+        viewModelScope.launch {
+            try {
+                RetrofitInstance.api.completeActivity(
+                    CompleteActivityRequest(userId, activityId)
+                )
+            } catch (e: Exception) {
+                Log.e("Quiz", "Error al marcar actividad completada: ${e.message}")
+            }
+        }
     }
 
     // Construye la retroalimentación por pregunta para la pantalla de resultados

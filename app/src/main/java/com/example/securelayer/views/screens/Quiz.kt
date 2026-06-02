@@ -120,13 +120,27 @@ fun QuizScreen(navController: NavController) {
                                     val score = viewModel.validateAnswers()
                                     val total = viewModel.questions.size
                                     val activityXp = currentActivity?.xp ?: 0
+                                    // Si la actividad ya estaba completada, no se otorgan puntos de nuevo
+                                    val alreadyCompleted = SessionManager.currentActivityCompleted
 
                                     // Guarda el resultado para la pantalla de retroalimentación
                                     SessionManager.lastQuizScore = score
                                     SessionManager.lastQuizTotal = total
-                                    SessionManager.lastQuizEarnedXp =
-                                        if (total > 0) activityXp * score / total else 0
+                                    SessionManager.lastQuizEarnedXp = when {
+                                        alreadyCompleted -> 0
+                                        total > 0 -> activityXp * score / total
+                                        else -> 0
+                                    }
                                     SessionManager.lastQuizFeedback = viewModel.buildFeedback()
+
+                                    // Marca la actividad como completada en el backend
+                                    viewModel.markActivityCompleted(
+                                        SessionManager.currentUser?.id,
+                                        currentActivity?.id
+                                    )
+
+                                    // Fuerza que la ruta recargue el progreso de las lecciones
+                                    SessionManager.progressRefreshTrigger++
 
                                     navController.navigate("actividad_completada")
                                 } else {

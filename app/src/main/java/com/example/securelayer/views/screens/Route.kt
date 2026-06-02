@@ -42,10 +42,11 @@ fun RouteScreen(navController: NavController) {
         enrollsViewModel.getEnrollsByUser(SessionManager.currentUser?.id)
     }
 
-    // 2. Cuando currentRoute cambia de null a un valor real, carga las lecciones
-    LaunchedEffect(currentRoute) {
+    // 2. Carga las lecciones con su progreso. Se recarga cuando cambia la ruta
+    //    o cuando se completa una actividad (progressRefreshTrigger).
+    LaunchedEffect(currentRoute, SessionManager.progressRefreshTrigger) {
         currentRoute?.id?.let { routeId ->
-            lessonsViewModel.getLessonsByRoute(routeId)
+            lessonsViewModel.getLessonsByRoute(routeId, SessionManager.currentUser?.id)
         }
     }
 

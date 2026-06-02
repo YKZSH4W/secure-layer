@@ -14,6 +14,11 @@ object SessionManager {
     var currentRoute: Route? by mutableStateOf(null)
     var currentLesson: Lesson? by mutableStateOf(null)
     var currentActivity: Activity? by mutableStateOf(null)
+    // Indica si la actividad abierta ya había sido completada antes (para no dar puntos de nuevo)
+    var currentActivityCompleted: Boolean by mutableStateOf(false)
+
+    // Se incrementa al completar una actividad para forzar que la ruta recargue el progreso
+    var progressRefreshTrigger: Int by mutableStateOf(0)
 
     // Resultado del último quiz enviado (usado en la pantalla de retroalimentación)
     var lastQuizScore: Int by mutableStateOf(0)
@@ -26,6 +31,7 @@ object SessionManager {
         currentRoute = null
         currentLesson = null
         currentActivity = null
+        currentActivityCompleted = false
         lastQuizScore = 0
         lastQuizTotal = 0
         lastQuizEarnedXp = 0

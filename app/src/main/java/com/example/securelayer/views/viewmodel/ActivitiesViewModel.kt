@@ -14,15 +14,25 @@ class ActivitiesViewModel : ViewModel() {
     var activities by mutableStateOf<List<Activity>>(emptyList())
         private set
 
+    // IDs de las actividades que el usuario ya completó (progreso por usuario)
+    var completedActivityIds by mutableStateOf<Set<Int>>(emptySet())
+        private set
+
     var isLoading by mutableStateOf(false)
         private set
 
-    fun getActivitiesByLesson(lessonId: Int?) {
+    fun getActivitiesByLesson(lessonId: Int?, userId: Int?) {
         viewModelScope.launch {
             isLoading = true
             try {
-                val response = RetrofitInstance.api.getActivitiesByLesson(lessonId)
-                activities = response
+                activities = RetrofitInstance.api.getActivitiesByLesson(lessonId)
+
+                // Carga el progreso del usuario para saber qué actividades están completadas
+                val progress = RetrofitInstance.api.getActivitiesProgressByUser(userId)
+                completedActivityIds = progress
+                    .filter { it.isCompleted }
+                    .map { it.activityId }
+                    .toSet()
             } catch (e: Exception) {
                 Log.e("Activities", "Error al obtener actividades: ${e.message}")
             } finally {
@@ -30,4 +40,6 @@ class ActivitiesViewModel : ViewModel() {
             }
         }
     }
+
+    fun isCompleted(activityId: Int): Boolean = activityId in completedActivityIds
 }
