@@ -19,7 +19,7 @@ class AdvicesViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitInstance.api.getAdvicesByRoute(routeId)
-                advicesByRoute = advicesByRoute + response
+                advicesByRoute = response
             } catch (e: Exception) {
                 Log.e("Advices", "Error: ${e.message}")
             }

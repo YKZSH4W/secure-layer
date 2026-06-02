@@ -151,7 +151,12 @@ fun Profile(navController: NavController) {
 
             CustomOutlinedButton(
                 text = "Cerrar Sesion",
-                onClick = { navController.navigate("welcome") },
+                onClick = {
+                    SessionManager.logout()
+                    navController.navigate("welcome") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(16.dp)

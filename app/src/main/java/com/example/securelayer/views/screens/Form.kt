@@ -15,6 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +41,7 @@ import com.example.securelayer.views.viewmodel.QuizViewModel
 @Composable
 fun FormScreen(navController: NavController) {
     val viewModel: QuizViewModel = viewModel()
+    var showUnansweredError by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadQuestions(listOf(
@@ -95,9 +100,25 @@ fun FormScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                if (showUnansweredError) {
+                    Text(
+                        "Por favor responde todas las preguntas",
+                        color = Color(0xFFB3261E),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+
                 CustomPrimaryButton(
                     text = "Enviar",
-                    onClick = { navController.navigate("login") },
+                    onClick = {
+                        if (viewModel.selectedAnswers.size == viewModel.questions.size) {
+                            showUnansweredError = false
+                            viewModel.validateAnswers()
+                            navController.navigate("login")
+                        } else {
+                            showUnansweredError = true
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     icon = {
                         Icon(

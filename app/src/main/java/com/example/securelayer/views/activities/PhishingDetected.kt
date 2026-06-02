@@ -9,6 +9,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +35,26 @@ import com.example.securelayer.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhishingDetected(navController: NavController) {
+    var showWrongDialog by remember { mutableStateOf(false) }
+
+    if (showWrongDialog) {
+        AlertDialog(
+            onDismissRequest = { showWrongDialog = false },
+            title = { Text("¡Incorrecto!") },
+            text = {
+                Text(
+                    "Este mensaje es phishing. Los bancos reales nunca usan " +
+                    "enlaces cortos ni te presionan para actuar inmediatamente por SMS."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showWrongDialog = false }) {
+                    Text("Entendido")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopNavBar(navController = navController, title = "SecurityLayer")
@@ -139,8 +163,8 @@ fun PhishingDetected(navController: NavController) {
             // Botones
             CustomPrimaryButton(
                 text = "No, es una estafa",
-                onClick = { /* Lógica aquí */ },
-                containerColor = Color(0xFF00674F) ,
+                onClick = { navController.navigate("actividad_completada") },
+                containerColor = Color(0xFF00674F),
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.correct_ic),
@@ -154,7 +178,7 @@ fun PhishingDetected(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
             CustomOutlinedButton(
                 text = "Parece seguro",
-                onClick = { /* Lógica aquí */ },
+                onClick = { showWrongDialog = true },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.incorrect_ic),

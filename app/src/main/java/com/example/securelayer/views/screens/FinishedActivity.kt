@@ -39,12 +39,30 @@ import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
+import com.example.securelayer.data.SessionManager
+import com.example.securelayer.data.model.QuizFeedbackItem
 import com.example.securelayer.views.theme.Background
 
 
 val FinishedActivityBorderIcon = Color(0xFFe4f9f0)
+
 @Composable
 fun FinishedActivityScreen(navController: NavController){
+
+    val score = SessionManager.lastQuizScore
+    val total = SessionManager.lastQuizTotal
+    val earnedXp = SessionManager.lastQuizEarnedXp
+    val feedback = SessionManager.lastQuizFeedback
+
+    val hasResults = total > 0
+
+    // Mensaje según el desempeño
+    val title = when {
+        !hasResults -> "¡Excelente trabajo!"
+        score == total -> "¡Perfecto!"
+        score >= total / 2.0 -> "¡Buen trabajo!"
+        else -> "¡Sigue practicando!"
+    }
 
     Scaffold(
         topBar = { TopNavBar(navController, title = "SecureLayer") },
@@ -84,13 +102,24 @@ fun FinishedActivityScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.height(17.dp))
 
-                Text("¡Excelente trabajo!",
+                Text(title,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = SecureBlue)
 
+                SessionManager.currentActivity?.name?.let { activityName ->
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        activityName,
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(14.dp))
 
+                // Resumen de puntos y aciertos
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -121,7 +150,7 @@ fun FinishedActivityScreen(navController: NavController){
                                 .padding(vertical = 15.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("+50 puntos",
+                            Text("+$earnedXp puntos",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF006d42))
@@ -144,64 +173,65 @@ fun FinishedActivityScreen(navController: NavController){
                                 .padding(vertical = 15.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("10% más",
+                            Text(
+                                if (hasResults) "$score/$total" else "10% más",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF006d42))
 
                             Spacer(modifier = Modifier.height(7.dp))
 
-                            Text("Protegido",
+                            Text(
+                                if (hasResults) "Correctas" else "Protegido",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = Color(0xFF424750))
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(7.dp))
-
-                    Column(
-                        modifier = Modifier
-                            .padding(18.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text("Has aprendido a identificar mensajes de phishing. ¡Sigue así!",
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Center,
-                            color = Color(0xFF424750))
-                    }
-
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(0xFFd5e3ff))
-                        .padding(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
+                // Retroalimentación por pregunta
+                if (feedback.isNotEmpty()) {
+                    Text(
+                        "Retroalimentación",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SecureBlue,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, top = 8.dp, bottom = 4.dp)
+                    )
+
+                    feedback.forEach { item ->
+                        FeedbackCard(item)
+                    }
+                } else {
+                    // Fallback cuando se llega sin datos de quiz
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(0xFFd5e3ff))
+                            .padding(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-
-                        Icon(
-                            painter = painterResource(id =  R.drawable.incorrect_ic),
-                            contentDescription = "Icono",
-                            tint = SecureBlue,
-                            modifier = Modifier.size(20.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(13.dp))
-
-                        Text(
-                            "Cada lección completada fortalece tu seguridad digital ante los estafadores",
-                            fontSize = 18.sp,
-                            color = SecureBlue
-                        )
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.incorrect_ic),
+                                contentDescription = "Icono",
+                                tint = SecureBlue,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(13.dp))
+                            Text(
+                                "Cada lección completada fortalece tu seguridad digital ante los estafadores",
+                                fontSize = 18.sp,
+                                color = SecureBlue
+                            )
+                        }
                     }
                 }
 
@@ -242,15 +272,70 @@ fun FinishedActivityScreen(navController: NavController){
                         )
                     }
                 )
-
-
             }
+        }
+    }
+}
 
+// Tarjeta de retroalimentación de una pregunta
+@Composable
+fun FeedbackCard(item: QuizFeedbackItem) {
+    val accentColor = if (item.isCorrect) Color(0xFF006d42) else Color(0xFFB3261E)
+    val containerColor = if (item.isCorrect) Color(0xFFe4f9f0) else Color(0xFFFDEAEA)
+    val iconRes = if (item.isCorrect) R.drawable.correct_ic else R.drawable.incorrect_ic
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(containerColor)
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = null,
+                tint = accentColor,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                item.question,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF181C1E)
+            )
         }
 
-    }
+        Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            "Tu respuesta: ${item.userAnswer}",
+            fontSize = 14.sp,
+            color = accentColor,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        if (!item.isCorrect) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                "Respuesta correcta: ${item.correctAnswer}",
+                fontSize = 14.sp,
+                color = Color(0xFF006d42),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        if (item.explanation.isNotBlank()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                item.explanation,
+                fontSize = 14.sp,
+                color = Color(0xFF424750)
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)

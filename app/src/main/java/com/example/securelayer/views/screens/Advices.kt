@@ -76,10 +76,6 @@ fun AdvicesScreen(navController: NavController) {
 
             }
 
-            adviceViewModel.advicesByRoute.forEach { item ->
-                Text("Id: ${item.id}, RouteId: ${item.routeId}, AdviceTitle: ${item.adviceTitle}")
-            }
-
             Spacer(modifier = Modifier.height(24.dp))
 
             //Tarjeta Privacidad Total
@@ -88,7 +84,7 @@ fun AdvicesScreen(navController: NavController) {
                 subtitle = "Nunca compartas tus\ncontraseñas",
                 titleColor = Color(0xFF0D47A1),
                 iconContainerColor = Color(0xFFD6E4FF),
-                onClick = { navController.navigate("consejo privacidad info") },
+                onClick = { navController.navigate("consejo_privacidad_info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.circular_key_ic),
@@ -107,7 +103,7 @@ fun AdvicesScreen(navController: NavController) {
                 subtitle = "Los bancos no piden códigos\npor SMS",
                 titleColor = Color(0xFF00695C),
                 iconContainerColor = Color(0xFFB9F6CA),
-                onClick = { navController.navigate("consejo info") },
+                onClick = { navController.navigate("consejo_privacidad_info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.bank),
@@ -126,7 +122,7 @@ fun AdvicesScreen(navController: NavController) {
                 subtitle = "Duda de los premios\ninesperados",
                 titleColor = Color(0xFF5D4037),
                 iconContainerColor = Color(0xFFFFE0B2),
-                onClick = { navController.navigate("consejo info") },
+                onClick = { navController.navigate("consejo_privacidad_info") },
                 iconContent = {
                     Icon(
                         painter = painterResource(id = R.drawable.gift),

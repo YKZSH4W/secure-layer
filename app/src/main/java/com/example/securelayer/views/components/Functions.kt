@@ -131,6 +131,7 @@ fun LessonCard(icon: Int,
                status: String,
                statusColor: Color,
                textColor: Color = Color.Black,
+               iconTint: Color? = null,
                onClick: () -> Unit
 )
 {
@@ -140,7 +141,20 @@ fun LessonCard(icon: Int,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = icon), contentDescription = null, modifier = Modifier.size(75.dp))
+            Box(
+                modifier = Modifier
+                    .size(55.dp)
+                    .clip(CircleShape)
+                    .background(statusColor),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp),
+                    tint = iconTint ?: Color.Black
+                )
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -148,6 +162,8 @@ fun LessonCard(icon: Int,
                 Text(title, fontWeight = FontWeight.Bold)
                 Text(desc, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
             }
+
+            Spacer(modifier = Modifier.width(16.dp))
 
             Surface(color = statusColor, shape = RoundedCornerShape(16.dp)) {
                 Text(status, modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp), fontSize = 11.sp, fontWeight = FontWeight.Bold,color = textColor)
