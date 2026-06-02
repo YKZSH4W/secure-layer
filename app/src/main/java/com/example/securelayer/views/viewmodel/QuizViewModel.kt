@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.securelayer.data.SessionManager
+import com.example.securelayer.data.model.AttemptRequest
 import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.Question
 import com.example.securelayer.data.model.QuizFeedbackItem
@@ -21,27 +23,21 @@ class QuizViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    // Preguntas crudas de la API (conservan la explicación para la retroalimentación)
     private var apiQuestions: List<Question> = emptyList()
 
-    // Carga preguntas locales (usado en la encuesta inicial de Form)
     fun loadQuestions(list: List<QuizQuestion>) {
         questions = list
         selectedAnswers = mapOf()
     }
 
-    // Carga preguntas + opciones desde la API para una actividad (una sola llamada)
     fun loadQuestionsByActivity(activityId: Int?) {
         viewModelScope.launch {
             isLoading = true
             try {
-                // La API ya devuelve las preguntas ordenadas y con sus opciones anidadas.
                 val response = RetrofitInstance.api.getQuestionsByActivity(activityId)
                 apiQuestions = response
 
                 val quizQuestions = response.map { question ->
-                    // La respuesta correcta es el texto de la opción marcada como correcta;
-                    // si no hay ninguna, se usa el campo correctAnswer de la pregunta.
                     val rightAnswer = question.options.find { it.isCorrect }?.optionText
                         ?: question.correctAnswer
 
@@ -76,20 +72,37 @@ class QuizViewModel : ViewModel() {
         return correct
     }
 
-    // Marca la actividad como completada en el backend (idempotente).
     fun markActivityCompleted(userId: Int?, activityId: Int?) {
         viewModelScope.launch {
             try {
-                RetrofitInstance.api.completeActivity(
+                val result = RetrofitInstance.api.completeActivity(
                     CompleteActivityRequest(userId, activityId)
                 )
+
+                result.totalXp?.let { newTotalXp ->
+                    SessionManager.currentUser =
+                        SessionManager.currentUser?.copy(totalXp = newTotalXp)
+                }
             } catch (e: Exception) {
                 Log.e("Quiz", "Error al marcar actividad completada: ${e.message}")
             }
         }
     }
 
-    // Construye la retroalimentación por pregunta para la pantalla de resultados
+    // Registra cada intento del usuario en el historial (tabla attempts).
+    // score = porcentaje de aciertos (0-100); isCorrect = todas correctas.
+    fun registerAttempt(userId: Int?, activityId: Int?, isCorrect: Boolean, score: Int) {
+        viewModelScope.launch {
+            try {
+                RetrofitInstance.api.createAttempt(
+                    AttemptRequest(userId, activityId, isCorrect, score)
+                )
+            } catch (e: Exception) {
+                Log.e("Quiz", "Error al registrar intento: ${e.message}")
+            }
+        }
+    }
+
     fun buildFeedback(): List<QuizFeedbackItem> {
         return questions.mapIndexed { index, question ->
             val userAnswer = selectedAnswers[index] ?: ""

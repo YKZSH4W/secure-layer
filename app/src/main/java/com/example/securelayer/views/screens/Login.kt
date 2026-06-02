@@ -37,20 +37,11 @@ import com.example.securelayer.views.viewmodel.UsersViewModel
 fun LoginScreen(navController: NavController) {
     val userViewModel: UsersViewModel = viewModel()
 
-    var showErrorDialog by remember { mutableStateOf(false) }
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showEmptyError by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
-
-    LaunchedEffect(userViewModel.loginError) {
-        if (userViewModel.loginError) {
-            showErrorDialog = true
-            userViewModel.resetLoginError()
-        }
-    }
 
     LaunchedEffect(userViewModel.loginSuccess) {
         if (userViewModel.loginSuccess) {
@@ -75,25 +66,17 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            CustomTextField(email, { email = it }, "Correo Electrónico", showEmptyError && email.isEmpty(), KeyboardType.Email)
+            CustomTextField(email, { email = it }, "Correo Electrónico", (showEmptyError && email.isEmpty()) || userViewModel.loginError, KeyboardType.Email)
             Spacer(modifier = Modifier.height(20.dp))
-            CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
+            CustomTextField(password, { password = it }, "Contraseña", (showEmptyError && password.isEmpty()) || userViewModel.loginError, isPassword = true)
 
             if (showEmptyError) {
                 Text("Por favor, completa todos los campos", color = Color.Red, modifier = Modifier.padding(vertical = 8.dp))
             }
 
-            if (showErrorDialog) {
-                AlertDialog(
-                    onDismissRequest = { showErrorDialog = false },
-                    title = { Text("Error") },
-                    text = { Text("Credenciales inválidas, intenta de nuevo.") },
-                    confirmButton = {
-                        TextButton(onClick = { showErrorDialog = false }) {
-                            Text("Aceptar")
-                        }
-                    }
-                )
+            // Error de credenciales: ambos campos en rojo y un único mensaje
+            if (userViewModel.loginError) {
+                Text("Correo o contraseña incorrectos", color = Color.Red, modifier = Modifier.padding(vertical = 8.dp))
             }
 
             TextButton(
@@ -117,6 +100,7 @@ fun LoginScreen(navController: NavController) {
                 text = "Iniciar Sesión",
                 onClick = {
                     if (email.isNotEmpty() && password.isNotEmpty()) {
+                        userViewModel.resetLoginError()   // limpia el error previo antes de reintentar
                         userViewModel.login(email, password)
                     } else {
                         showEmptyError = true

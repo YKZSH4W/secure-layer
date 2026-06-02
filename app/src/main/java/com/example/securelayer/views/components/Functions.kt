@@ -367,7 +367,7 @@ fun QuizActivityCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = question.question,
+                text = "${index + 1}. ${question.question}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF181C1E)
@@ -553,10 +553,12 @@ fun CustomPrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = SecureBlue,
+    enabled: Boolean = true,
     icon: @Composable (() -> Unit)? = null
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier.fillMaxWidth().height(55.dp),
         colors = ButtonDefaults.buttonColors(containerColor = containerColor),
         shape = RoundedCornerShape(12.dp)

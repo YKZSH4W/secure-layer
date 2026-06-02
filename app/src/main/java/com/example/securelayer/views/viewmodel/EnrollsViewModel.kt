@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.data.model.CompleteRouteRequest
 import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.network.RetrofitInstance
 
@@ -17,7 +18,6 @@ class EnrollsViewModel: ViewModel() {
     var currentRoutes by mutableStateOf<List<Route>>(emptyList())
         private set
 
-    // Get user's enrolls
     fun getEnrollsByUser(userId: Int?) {
         viewModelScope.launch {
             try {
@@ -27,6 +27,25 @@ class EnrollsViewModel: ViewModel() {
                 SessionManager.currentRoute = currentRoutes.find { !it.isCompleted }
             } catch (e: Exception) {
                 Log.e("API", "Error: ${e.message}")
+            }
+        }
+    }
+
+    fun completeRouteAndAdvance(userId: Int?, routeId: Int?) {
+        viewModelScope.launch {
+            try {
+                RetrofitInstance.api.completeRouteAndAdvance(
+                    CompleteRouteRequest(userId, routeId)
+                )
+
+                val response = RetrofitInstance.api.getEnrollsByUser(userId)
+                currentRoutes = response
+                SessionManager.currentRoute = currentRoutes.find { !it.isCompleted }
+
+                SessionManager.currentLesson = null
+                SessionManager.currentActivity = null
+            } catch (e: Exception) {
+                Log.e("Enrolls", "Error al avanzar de ruta: ${e.message}")
             }
         }
     }

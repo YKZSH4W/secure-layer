@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,8 +30,9 @@ fun ExercisesScreen(navController: NavController) {
 
     val currentLesson = SessionManager.currentLesson
 
-    // Carga las actividades de la lección y el progreso del usuario
-    LaunchedEffect(currentLesson) {
+    // Carga las actividades de la lección y el progreso del usuario.
+    // Se recarga también al completar una actividad (progressRefreshTrigger).
+    LaunchedEffect(currentLesson, SessionManager.progressRefreshTrigger) {
         currentLesson?.id?.let { lessonId ->
             activitiesViewModel.getActivitiesByLesson(lessonId, SessionManager.currentUser?.id)
         }
@@ -63,6 +65,40 @@ fun ExercisesScreen(navController: NavController) {
                 color = Color.Gray
             )
 
+            // Barra de progreso de la lección: actividades completadas / total
+            val totalActivities = activitiesViewModel.activities.size
+            val completedCount = activitiesViewModel.activities.count {
+                activitiesViewModel.isCompleted(it.id)
+            }
+            val progress = if (totalActivities > 0) {
+                completedCount.toFloat() / totalActivities
+            } else 0f
+
+            if (totalActivities > 0) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Tu progreso", fontWeight = FontWeight.Medium)
+                    Text(
+                        "${(progress * 100).toInt()}%",
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF006D42)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp),
+                    color = Color(0xFF006D42),
+                    trackColor = Color(0xFFE0E0E0),
+                    strokeCap = StrokeCap.Round
+                )
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             when {
@@ -79,7 +115,10 @@ fun ExercisesScreen(navController: NavController) {
 
                 activitiesViewModel.activities.isEmpty() -> {
                     Text(
-                        text = "No hay actividades disponibles para esta lección.",
+                        text = if (currentLesson == null)
+                            "Selecciona una lección desde tu ruta para ver sus actividades."
+                        else
+                            "No hay actividades disponibles para esta lección.",
                         color = Color.Gray,
                         modifier = Modifier.padding(vertical = 16.dp)
                     )

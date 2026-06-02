@@ -8,12 +8,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +30,7 @@ import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.QuizActivityCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.QuizViewModel
 
 @Composable
@@ -36,7 +39,8 @@ fun QuizScreen(navController: NavController) {
 
     val currentActivity = SessionManager.currentActivity
 
-    var showUnansweredError by remember { mutableStateOf(false) }
+    // Índice de la pregunta que se muestra actualmente (una por pantalla)
+    var currentQuestionIndex by remember { mutableIntStateOf(0) }
 
     // Carga las preguntas + opciones de la actividad seleccionada
     LaunchedEffect(currentActivity) {
@@ -53,7 +57,6 @@ fun QuizScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .verticalScroll(rememberScrollState())
                 .background(Color(0xFFF7FAFD))
         ) {
             Text(
@@ -63,78 +66,111 @@ fun QuizScreen(navController: NavController) {
                 color = Color.Black,
                 modifier = Modifier.padding(start = 24.dp, top = 8.dp)
             )
-            Text(
-                text = currentActivity?.description ?: "Responde las siguientes preguntas.",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 4.dp)
-            )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .padding(vertical = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                when {
-                    viewModel.isLoading -> {
-                        CircularProgressIndicator(
-                            color = Color(0xFF003366),
-                            modifier = Modifier.padding(32.dp)
-                        )
+            when {
+                viewModel.isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = SecureBlue)
                     }
+                }
 
-                    viewModel.questions.isEmpty() -> {
+                viewModel.questions.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Text(
                             text = "No hay preguntas disponibles para esta actividad.",
-                            color = Color.Gray,
-                            modifier = Modifier.padding(vertical = 16.dp)
+                            color = Color.Gray
+                        )
+                    }
+                }
+
+                else -> {
+                    val total = viewModel.questions.size
+                    // Mantiene el índice dentro de rango por seguridad
+                    val index = currentQuestionIndex.coerceIn(0, total - 1)
+                    val question = viewModel.questions[index]
+                    val isLastQuestion = index == total - 1
+                    val currentAnswered = viewModel.selectedAnswers[index] != null
+
+                    // Barra de progreso del quiz (pregunta actual / total)
+                    Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
+                        Text(
+                            text = "Pregunta ${index + 1} de $total",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF424750)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LinearProgressIndicator(
+                            progress = { (index + 1).toFloat() / total },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(10.dp),
+                            color = SecureBlue,
+                            trackColor = Color(0xFFE0E0E0),
+                            strokeCap = StrokeCap.Round
                         )
                     }
 
-                    else -> {
-                        viewModel.questions.forEachIndexed { index, question ->
-                            QuizActivityCard(
-                                index = index,
-                                question = question,
-                                viewModel = viewModel
-                            )
-                        }
+                    // Pregunta actual (ocupa el espacio disponible)
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = 24.dp)
+                    ) {
+                        QuizActivityCard(
+                            index = index,
+                            question = question,
+                            viewModel = viewModel
+                        )
+                    }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        if (showUnansweredError) {
-                            Text(
-                                "Por favor responde todas las preguntas",
-                                color = Color(0xFFB3261E),
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                        }
-
+                    // Botón inferior: "Siguiente" hasta la última pregunta, donde es "Enviar".
+                    // Se habilita solo cuando la pregunta actual está contestada.
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                            .padding(bottom = 24.dp, top = 8.dp)
+                    ) {
                         CustomPrimaryButton(
-                            text = "Enviar",
+                            text = if (isLastQuestion) "Enviar" else "Siguiente",
+                            enabled = currentAnswered,
                             onClick = {
-                                if (viewModel.selectedAnswers.size == viewModel.questions.size) {
-                                    showUnansweredError = false
-
+                                if (!isLastQuestion) {
+                                    currentQuestionIndex = index + 1
+                                } else {
+                                    // === Flujo de envío (idéntico al anterior) ===
                                     val score = viewModel.validateAnswers()
-                                    val total = viewModel.questions.size
                                     val activityXp = currentActivity?.xp ?: 0
                                     // Si la actividad ya estaba completada, no se otorgan puntos de nuevo
                                     val alreadyCompleted = SessionManager.currentActivityCompleted
 
-                                    // Guarda el resultado para la pantalla de retroalimentación
                                     SessionManager.lastQuizScore = score
                                     SessionManager.lastQuizTotal = total
-                                    SessionManager.lastQuizEarnedXp = when {
-                                        alreadyCompleted -> 0
-                                        total > 0 -> activityXp * score / total
-                                        else -> 0
-                                    }
+                                    SessionManager.lastQuizEarnedXp =
+                                        if (alreadyCompleted) 0 else activityXp
                                     SessionManager.lastQuizFeedback = viewModel.buildFeedback()
 
-                                    // Marca la actividad como completada en el backend
+                                    // Registra este intento en el historial (siempre, también en repeticiones)
+                                    viewModel.registerAttempt(
+                                        userId = SessionManager.currentUser?.id,
+                                        activityId = currentActivity?.id,
+                                        isCorrect = score == total,
+                                        score = if (total > 0) score * 100 / total else 0
+                                    )
+
+                                    // Marca la actividad como completada en el backend (suma XP)
                                     viewModel.markActivityCompleted(
                                         SessionManager.currentUser?.id,
                                         currentActivity?.id
@@ -144,17 +180,16 @@ fun QuizScreen(navController: NavController) {
                                     SessionManager.progressRefreshTrigger++
 
                                     navController.navigate("actividad_completada")
-                                } else {
-                                    showUnansweredError = true
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth(),
                             icon = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.check),
+                                    painter = painterResource(
+                                        id = if (isLastQuestion) R.drawable.check else R.drawable.right_arrow
+                                    ),
                                     contentDescription = null,
                                     tint = Color.White,
-                                    modifier = Modifier.size(28.dp)
+                                    modifier = Modifier.size(if (isLastQuestion) 28.dp else 18.dp)
                                 )
                             }
                         )

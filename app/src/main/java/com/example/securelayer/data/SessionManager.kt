@@ -18,6 +18,11 @@ object SessionManager {
     // Indica si la actividad abierta ya había sido completada antes (para no dar puntos de nuevo)
     var currentActivityCompleted: Boolean by mutableStateOf(false)
 
+    // Actividades de la lección actual (ordenadas) y cuáles ya completó el usuario.
+    // Se usan para navegar a la "siguiente actividad" desde la pantalla de resultados.
+    var currentLessonActivities: List<Activity> by mutableStateOf(emptyList())
+    var currentLessonCompletedIds: Set<Int> by mutableStateOf(emptySet())
+
     // Se incrementa al completar una actividad para forzar que la ruta recargue el progreso
     var progressRefreshTrigger: Int by mutableStateOf(0)
 
@@ -33,6 +38,8 @@ object SessionManager {
         currentLesson = null
         currentActivity = null
         currentActivityCompleted = false
+        currentLessonActivities = emptyList()
+        currentLessonCompletedIds = emptySet()
         lastQuizScore = 0
         lastQuizTotal = 0
         lastQuizEarnedXp = 0

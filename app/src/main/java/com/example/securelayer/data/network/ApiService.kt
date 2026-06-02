@@ -2,8 +2,12 @@ package com.example.securelayer.data.network
 
 import com.example.securelayer.data.model.Activity
 import com.example.securelayer.data.model.ActivityProgress
+import com.example.securelayer.data.model.Attempt
+import com.example.securelayer.data.model.AttemptRequest
 import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.CompleteActivityResult
+import com.example.securelayer.data.model.CompleteRouteRequest
+import com.example.securelayer.data.model.CompleteRouteResult
 import com.example.securelayer.data.model.Lesson
 import com.example.securelayer.data.model.Option
 import com.example.securelayer.data.model.Question
@@ -29,6 +33,9 @@ interface ApiService {
 
     @GET("/enrolls/user/{userId}")
     suspend fun getEnrollsByUser(@Path("userId") userId: Int?): List<Route>
+
+    @POST("/enrolls/complete-and-advance")
+    suspend fun completeRouteAndAdvance(@Body body: CompleteRouteRequest): CompleteRouteResult
 
     @GET("/routes-advices")
     suspend fun getAdvices(): List<Advice>
@@ -59,4 +66,7 @@ interface ApiService {
 
     @POST("/activities-progress/complete")
     suspend fun completeActivity(@Body body: CompleteActivityRequest): CompleteActivityResult
+
+    @POST("/attempts")
+    suspend fun createAttempt(@Body body: AttemptRequest): Attempt
 }

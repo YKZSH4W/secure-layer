@@ -83,6 +83,31 @@ fun Profile(navController: NavController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 //Nivel de Seguridad
+                val knowledgeLevel = SessionManager.currentUser?.knowledgeLevel ?: "Sin clasificar"
+
+                // Colores base de cada raya
+                val grayBar = Color(0xFFE0E0E0)
+                val redBar = Color(0xFFE53935)
+                val yellowBar = Color(0xFFF9A825)
+                val greenBar = Color(0xFF2E7D32)
+
+                // Las rayas activas toman el color del nivel actual:
+                // principiante = 1 raya roja, avanzado = 2 amarillas, experto = 3 verdes.
+                val (bar1, bar2, bar3) = when (knowledgeLevel.lowercase()) {
+                    "principiante" -> Triple(redBar, grayBar, grayBar)
+                    "avanzado" -> Triple(yellowBar, yellowBar, grayBar)
+                    "experto" -> Triple(greenBar, greenBar, greenBar)
+                    else -> Triple(grayBar, grayBar, grayBar) // Sin clasificar
+                }
+
+                // Color del texto del nivel (el de la raya más alta alcanzada)
+                val levelTextColor = when (knowledgeLevel.lowercase()) {
+                    "principiante" -> redBar
+                    "avanzado" -> yellowBar
+                    "experto" -> greenBar
+                    else -> Color.Gray
+                }
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -91,20 +116,26 @@ fun Profile(navController: NavController) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text("Tu Nivel de Seguridad", fontWeight = FontWeight.Bold)
-                            Text("Nivel 4", color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold)
+                            Text(knowledgeLevel, color = levelTextColor, fontWeight = FontWeight.Bold)
                         }
-                        LinearProgressIndicator(
-                            progress = { 0.7f },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                            color = Color(0xFF2E7D32),
-                            trackColor = Color(0xFFE0E0E0),
-                            strokeCap = StrokeCap.Butt
-                        )
+
                         Spacer(modifier = Modifier.height(12.dp))
-                        Text("Casi un experto en detectar trampas digitales.", fontSize = 13.sp, color = Color.Gray)
+
+                        // Barra dividida en 3 niveles (3 rayas)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            listOf(bar1, bar2, bar3).forEach { barColor ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(8.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(barColor)
+                                )
+                            }
+                        }
                     }
                 }
 

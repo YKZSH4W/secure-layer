@@ -1,18 +1,12 @@
 package com.example.securelayer.views.screens
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,27 +25,17 @@ import com.example.securelayer.R
 import com.example.securelayer.views.components.secureLayerLogo
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.UsersViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController) {
     val viewModel: UsersViewModel = viewModel()
 
     // Variables para el form
-    var username by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var registerUser by remember { mutableStateOf(false) }
-
-    // Estados para la fecha
-    var birthDate by remember { mutableStateOf("Fecha de nacimiento") }
-    var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
 
     // Variables para dialogs
     var showEmptyError by remember { mutableStateOf(false) }
@@ -75,12 +59,13 @@ fun RegisterScreen(navController: NavController) {
 
             viewModel.createUser(
                 email,
-                username,
                 password,
                 parts.dropLast(part).joinToString(" "),
-                parts.takeLast(2).joinToString(" "),
-                birthDate
+                parts.takeLast(2).joinToString(" ")
             )
+
+            // Permite reintentar el registro tras un error
+            registerUser = false
         }
     }
 
@@ -100,9 +85,7 @@ fun RegisterScreen(navController: NavController) {
             // Campos del formulario
             CustomTextField(name, { name = it }, "Nombre Completo", showEmptyError && name.isEmpty())
             Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(username, { username = it }, "Nombre de Usuario", showEmptyError && username.isEmpty())
-            Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(email, { email = it }, "Correo Electrónico", showEmptyError && email.isEmpty(), KeyboardType.Email)
+            CustomTextField(email, { email = it }, "Correo Electrónico", (showEmptyError && email.isEmpty()) || viewModel.registerErrorMessage != null, KeyboardType.Email)
             Spacer(modifier = Modifier.height(12.dp))
             CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
             Spacer(modifier = Modifier.height(12.dp))
@@ -110,54 +93,17 @@ fun RegisterScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Selector de fecha
-            OutlinedButton(
-                onClick = { showDatePicker = true },
-                modifier = Modifier.fillMaxWidth().height(55.dp),
-                shape = RoundedCornerShape(12.dp),
-                border = BorderStroke(
-                    1.dp,
-                    if (showEmptyError && birthDate == "Fecha de nacimiento") Color(0xFFB3261E) else SecureBlue
-                ),
-                contentPadding = PaddingValues(horizontal = 16.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = birthDate,
-                        color = when {
-                            showEmptyError && birthDate == "Fecha de nacimiento" -> Color(0xFFB3261E)
-                            birthDate == "Fecha de nacimiento" -> Color.Gray
-                            else -> Color.Black
-                        },
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                    Icon(imageVector = Icons.Default.DateRange, contentDescription = null, tint = SecureBlue)
-                }
-            }
-
-            if (showDatePicker) {
-                DatePickerDialog(
-                    onDismissRequest = { showDatePicker = false },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            datePickerState.selectedDateMillis?.let { birthDate = convertMillisToDate(it) }
-                            showDatePicker = false
-                        }) { Text("Aceptar") }
-                    }
-                ) { DatePicker(state = datePickerState) }
-            }
-
             if (showEmptyError) {
                 Text("Por favor, completa todos los campos", color = Color(0xFFB3261E))
             }
 
             if (showPasswordError) {
                 Text("Las contraseñas no coinciden", color = Color(0xFFB3261E))
+            }
+
+            // Error devuelto por el servidor (p. ej. correo ya registrado)
+            viewModel.registerErrorMessage?.let { msg ->
+                Text(msg, color = Color(0xFFB3261E))
             }
 
             if (showSuccessDialog) {
@@ -200,7 +146,7 @@ fun RegisterScreen(navController: NavController) {
                 text = "Registrarse",
                 onClick = {
                     if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank() &&
-                        confirmPassword.isNotBlank() && username.isNotBlank() && birthDate != "Fecha de nacimiento"
+                        confirmPassword.isNotBlank()
                     ) {
                         if (password != confirmPassword) {
                             showPasswordError = true
@@ -208,6 +154,7 @@ fun RegisterScreen(navController: NavController) {
                         } else {
                             showPasswordError = false
                             showEmptyError = false
+                            viewModel.resetRegisterError()   // limpia error previo antes de reintentar
                             registerUser = true
                         }
                     } else {
@@ -242,11 +189,6 @@ fun RegisterScreen(navController: NavController) {
             )
         }
     }
-}
-
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
 }
 
 @Preview(showBackground = true)

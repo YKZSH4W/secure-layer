@@ -47,17 +47,17 @@ fun FormScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         viewModel.loadQuestions(listOf(
             QuizQuestion(
-                question = "1. ¿Qué es el phishing?",
+                question = "¿Qué es el phishing?",
                 answers = listOf("Un deporte", "Un fraude digital", "Una app"),
                 rightAnswer = "Un fraude digital"
             ),
             QuizQuestion(
-                question = "2. ¿Qué haces con enlaces desconocidos?",
+                question = "¿Qué haces con enlaces desconocidos?",
                 answers = listOf("Abrirlos", "Ignorarlos", "Borrarlos"),
                 rightAnswer = "Borrarlos"
             ),
             QuizQuestion(
-                question = "3. ¿Qué haces si recibes un sms del banco solicitando datos personales?",
+                question = "¿Qué haces si recibes un sms del banco solicitando datos personales?",
                 answers = listOf("Abrirlos", "Ignorarlos", "Borrarlos"),
                 rightAnswer = "Borrarlos"
             )

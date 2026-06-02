@@ -8,6 +8,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,8 +55,53 @@ fun RouteScreen(navController: NavController) {
         }
     }
 
+    // Selecciona automáticamente la lección actual (primera no completada) si no hay
+    // ninguna seleccionada — por ejemplo, al entrar o al avanzar de ruta.
+    LaunchedEffect(lessonsViewModel.lessons) {
+        if (SessionManager.currentLesson == null && lessonsViewModel.lessons.isNotEmpty()) {
+            SessionManager.currentLesson =
+                lessonsViewModel.lessons.firstOrNull { !it.isCompleted }
+                    ?: lessonsViewModel.lessons.first()
+        }
+    }
+
     // Índice de la primera lección no completada (es la lección actual)
     val firstUncompletedIndex = lessonsViewModel.lessons.indexOfFirst { !it.isCompleted }
+
+    // 3. Detecta cuando TODAS las lecciones de la ruta están completas
+    val allLessonsCompleted = lessonsViewModel.lessons.isNotEmpty() &&
+            lessonsViewModel.lessons.all { it.isCompleted }
+
+    // Recuerda la última ruta para la que ya se pulsó "Continuar",
+    // para no volver a mostrar el diálogo de esa misma ruta.
+    var advancedRouteId by remember { mutableStateOf<Int?>(null) }
+
+    // Se muestra siempre que la ruta esté completa y aún no se haya avanzado de ella
+    // (no depende de detectar una transición, así es robusto a recomposiciones).
+    val showRouteCompletedDialog = allLessonsCompleted &&
+            currentRoute != null &&
+            advancedRouteId != currentRoute.id
+
+    if (showRouteCompletedDialog) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text("¡Ruta completada!") },
+            text = {
+                Text("Has terminado todas las lecciones de \"${currentRoute?.name}\". ¡Pasarás a la siguiente ruta!")
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    advancedRouteId = currentRoute?.id
+                    enrollsViewModel.completeRouteAndAdvance(
+                        SessionManager.currentUser?.id,
+                        currentRoute?.id
+                    )
+                }) {
+                    Text("Continuar")
+                }
+            }
+        )
+    }
 
     Scaffold(
         containerColor = Background,

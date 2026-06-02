@@ -265,9 +265,36 @@ fun FinishedActivityScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.height(10.dp))
 
+                // Calcula la siguiente actividad de la lección (si la hay)
+                val lessonActivities = SessionManager.currentLessonActivities
+                val currentIndex = lessonActivities.indexOfFirst {
+                    it.id == SessionManager.currentActivity?.id
+                }
+                val nextActivity = lessonActivities.getOrNull(currentIndex + 1)
+
                 CustomPrimaryButton(
-                    text = "Siguiente lección",
-                    onClick = { navController.navigate("ejercicios") },
+                    text = if (nextActivity != null) "Siguiente actividad" else "Terminar lección",
+                    onClick = {
+                        if (nextActivity != null) {
+                            // Pasa a la siguiente actividad de la lección
+                            SessionManager.currentActivity = nextActivity
+                            SessionManager.currentActivityCompleted =
+                                nextActivity.id in SessionManager.currentLessonCompletedIds
+                            navController.navigate("quiz") {
+                                popUpTo("ejercicios")
+                            }
+                        } else {
+                            // No hay más actividades en la lección:
+                            // limpia la lección actual para que Route autoseleccione la siguiente
+                            // (y, por tanto, Exercises muestre las actividades de esa lección).
+                            SessionManager.currentLesson = null
+                            SessionManager.currentActivity = null
+                            SessionManager.progressRefreshTrigger++
+                            navController.navigate("route") {
+                                popUpTo("route") { inclusive = true }
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
