@@ -33,7 +33,7 @@ class PhishingViewModel : ViewModel() {
     }
 
     // Persiste en el backend que la actividad fue completada (la XP en sesión
-    // ya se sumó localmente en el momento del envío).
+    // ya se sumó localmente).
     fun markActivityCompleted(userId: Int?, activityId: Int?) {
         viewModelScope.launch {
             try {

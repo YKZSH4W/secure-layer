@@ -26,6 +26,10 @@ class ProfileStatsViewModel : ViewModel() {
     var medalsCount by mutableIntStateOf(0)
         private set
 
+    // Cantidad de lecciones completadas (todas sus actividades completas)
+    var completedLessons by mutableIntStateOf(0)
+        private set
+
     fun loadStats(userId: Int?) {
         viewModelScope.launch {
             try {
@@ -35,7 +39,8 @@ class ProfileStatsViewModel : ViewModel() {
                 val achievements = RetrofitInstance.api.getUserAchievements(userId)
 
                 val total = allActivities.size
-                val completed = progress.count { it.isCompleted }
+                val completedIds = progress.filter { it.isCompleted }.map { it.activityId }.toSet()
+                val completed = completedIds.size
 
                 courseProgress = if (total > 0) completed * 100 / total else 0
                 attemptsCount = attempts.size
@@ -43,6 +48,11 @@ class ProfileStatsViewModel : ViewModel() {
                     attempts.map { it.score }.average().toInt()
                 } else 0
                 medalsCount = achievements.size
+
+                // Una lección está completa si TODAS sus actividades están completadas
+                completedLessons = allActivities
+                    .groupBy { it.lessonId }
+                    .count { (_, acts) -> acts.isNotEmpty() && acts.all { it.id in completedIds } }
             } catch (e: Exception) {
                 Log.e("ProfileStats", "Error al cargar estadísticas: ${e.message}")
             }

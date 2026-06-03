@@ -31,6 +31,7 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.ImageUtils
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.StatCard
 import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.theme.SecureBlue
@@ -125,7 +126,7 @@ fun Profile(navController: NavController) {
                 val yellowBar = Color(0xFFF9A825)
                 val greenBar = Color(0xFF2E7D32)
 
-                // Las rayas activas toman el color del nivel actual:
+                // Las rayas activas toman el color del nivel actual
                 // principiante = 1 raya roja, avanzado = 2 amarillas, experto = 3 verdes.
                 val (bar1, bar2, bar3) = when (knowledgeLevel.lowercase()) {
                     "principiante" -> Triple(redBar, grayBar, grayBar)
@@ -284,7 +285,35 @@ fun Profile(navController: NavController) {
                     )
                 }
 
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        value = "${statsViewModel.completedLessons}",
+                        label = "Lecciones",
+                        sublabel = "completadas"
+                    )
+                    // Rellena la segunda columna para mantener el grid alineado
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+
                 Spacer(modifier = Modifier.height(24.dp))
+
+                CustomPrimaryButton(
+                    text = "Historial de Actividades",
+                    onClick = {
+                        SessionManager.logout()
+                        navController.navigate("historial") {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 CustomOutlinedButton(
                     text = "Cerrar Sesion",
@@ -294,8 +323,6 @@ fun Profile(navController: NavController) {
                             popUpTo(0) { inclusive = true }
                         }
                     },
-                    modifier = Modifier
-                        .padding(16.dp)
                 )
             }
         }

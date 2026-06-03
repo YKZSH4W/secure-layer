@@ -12,6 +12,7 @@ import com.example.securelayer.views.screens.AdvicesScreen
 import com.example.securelayer.views.screens.BasicConceptsScreen
 import com.example.securelayer.views.screens.EditProfileScreen
 import com.example.securelayer.views.screens.FinishedActivityScreen
+import com.example.securelayer.views.screens.HistoryScreen
 import com.example.securelayer.views.screens.LoginScreen
 import com.example.securelayer.views.screens.Profile
 import com.example.securelayer.views.screens.QuizScreen
@@ -47,6 +48,9 @@ fun AppNavigation() {
         }
         composable("editar_perfil") {
             EditProfileScreen(navController)
+        }
+        composable("historial") {
+            HistoryScreen(navController)
         }
         composable("welcome") {
             WelcomeScreen(navController)
