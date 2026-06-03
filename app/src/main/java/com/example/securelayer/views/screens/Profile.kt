@@ -23,11 +23,20 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
-import com.example.securelayer.views.components.MedalCard
+import com.example.securelayer.views.components.MedalBienvenido
+import com.example.securelayer.views.components.MedalPrimerPaso
 import com.example.securelayer.views.components.StatCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.Background
 import com.example.securelayer.R
+import com.example.securelayer.views.components.MedalChispaDigital
+import com.example.securelayer.views.components.MedalCyberAgente
+import com.example.securelayer.views.components.MedalEscudoDeElite
+import com.example.securelayer.views.components.MedalGuardianNovato
+import com.example.securelayer.views.components.MedalMenteAlerta
+import com.example.securelayer.views.components.MedalPlatino
+import com.example.securelayer.views.components.MedalRachaDeSiete
+import com.example.securelayer.views.components.MedalTropiezoValiente
 
 @Composable
 fun Profile(navController: NavController) {
@@ -122,49 +131,13 @@ fun Profile(navController: NavController) {
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                MedalCard(
-                    modifier = Modifier.weight(1f),
-                    title = "Escudo de\nOro",
-                    subtitle = "Por 7 días sin\nriesgos",
-                    iconContent = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color(0xFFFFE0B2)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.shield_medal),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
-                    }
-                )
-                MedalCard(
-                    modifier = Modifier.weight(1f),
-                    title = "Detective de\nFraudes",
-                    subtitle = "Detectaste un SMS\nfalso",
-                    iconContent = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color(0xFFA5F3C2)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.lupa_medal),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
-                    }
-                )
+                MedalMenteAlerta(modifier = Modifier.weight(1f).fillMaxHeight())
+                MedalChispaDigital(modifier = Modifier.weight(1f).fillMaxHeight())
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -226,7 +199,6 @@ fun Profile(navController: NavController) {
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
             )
-
         }
     }
 }
