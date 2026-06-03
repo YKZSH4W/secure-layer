@@ -26,13 +26,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
-import com.example.securelayer.views.components.MedalCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.ImageUtils
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.StatCard
+import com.example.securelayer.views.components.unlockedMedals
 import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.ProfileStatsViewModel
@@ -188,31 +188,30 @@ fun Profile(navController: NavController) {
                     }
                 }
 
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    MedalCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Escudo de\nOro",
-                        subtitle = "Por 7 días sin\nriesgos",
-                        iconContent = {
-                            Box(modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color(0xFFFFE0B2)), contentAlignment = Alignment.Center) {
-                                Icon(painter = painterResource(id = R.drawable.shield_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
-                            }
-                        }
+                // Medallas desbloqueadas según la XP del usuario
+                val totalXp = SessionManager.currentUser?.totalXp ?: 0
+                val medals = unlockedMedals(totalXp)
+
+                if (medals.isEmpty()) {
+                    Text(
+                        "Aún no has desbloqueado medallas. ¡Gana XP completando actividades!",
+                        fontSize = 14.sp,
+                        color = Color.Gray
                     )
-                    MedalCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Detective de\nFraudes",
-                        subtitle = "Detectaste un SMS\nfalso",
-                        iconContent = {
-                            Box(modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color(0xFFA5F3C2)), contentAlignment = Alignment.Center) {
-                                Icon(painter = painterResource(id = R.drawable.lupa_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
+                } else {
+                    medals.chunked(2).forEach { rowMedals ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            rowMedals.forEach { medal ->
+                                medal.content(Modifier.weight(1f).fillMaxHeight())
                             }
+                            // Rellena la columna faltante si la fila tiene una sola medalla
+                            if (rowMedals.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
-                    )
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -259,7 +258,7 @@ fun Profile(navController: NavController) {
                     )
                     StatCard(
                         modifier = Modifier.weight(1f),
-                        value = "${statsViewModel.medalsCount}",
+                        value = "${medals.size}",
                         label = "Medallas",
                         sublabel = "obtenidas"
                     )

@@ -26,6 +26,9 @@ object SessionManager {
     // Se incrementa al completar una actividad para forzar que la ruta recargue el progreso
     var progressRefreshTrigger: Int by mutableStateOf(0)
 
+    // Título de la medalla recién desbloqueada (para mostrar el diálogo en resultados)
+    var newlyUnlockedMedalTitle: String? by mutableStateOf(null)
+
     // Resultado del último quiz enviado (usado en la pantalla de retroalimentación)
     var lastQuizScore: Int by mutableStateOf(0)
     var lastQuizTotal: Int by mutableStateOf(0)
@@ -44,5 +47,6 @@ object SessionManager {
         lastQuizTotal = 0
         lastQuizEarnedXp = 0
         lastQuizFeedback = emptyList()
+        newlyUnlockedMedalTitle = null
     }
 }

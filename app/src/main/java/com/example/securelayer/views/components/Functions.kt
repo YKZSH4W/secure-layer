@@ -576,18 +576,23 @@ fun CustomOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: @Composable (() -> Unit)? = null
+    icon: @Composable (() -> Unit)? = null,
+    color: Color = SecureBlue
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier.fillMaxWidth().height(55.dp),
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(2.dp, SecureBlue)
+        border = BorderStroke(2.dp, color),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = color
+        )
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             icon?.invoke()
             if (icon != null) Spacer(modifier = Modifier.width(8.dp))
-            Text(text, color = SecureBlue, fontSize = 16.sp)
+            Text(text = text, color = color, fontSize = 16.sp)
         }
     }
 }

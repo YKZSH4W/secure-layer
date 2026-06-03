@@ -37,6 +37,7 @@ import com.example.securelayer.data.model.QuizFeedbackItem
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
+import com.example.securelayer.views.components.medalsUnlockedBetween
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.PhishingViewModel
@@ -134,7 +135,7 @@ fun PhishingDetected(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         CustomOutlinedButton(
-                            text = "Es seguro",
+                            text = "Parece seguro",
                             onClick = {
                                 userAnswers[index] = false
                                 lastCorrect = !simulation.isScam
@@ -146,7 +147,8 @@ fun PhishingDetected(navController: NavController) {
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp)
                                 )
-                            }
+                            },
+                            color = Color(0xFF424750)
                         )
                     } else {
                         // Retroalimentación de la respuesta
@@ -214,9 +216,14 @@ private fun finishPhishingActivity(
     // Marca completada (y suma XP) SOLO si aprobó por primera vez
     if (passed && !alreadyCompleted) {
         // Suma la XP al usuario en sesión de inmediato (perfil actualizado sin pedir a la BD)
-        SessionManager.currentUser = SessionManager.currentUser?.let {
-            it.copy(totalXp = it.totalXp + activityXp)
-        }
+        val oldXp = SessionManager.currentUser?.totalXp ?: 0
+        val newXp = oldXp + activityXp
+        SessionManager.currentUser = SessionManager.currentUser?.copy(totalXp = newXp)
+
+        // ¿Desbloqueó una medalla de XP con este avance?
+        SessionManager.newlyUnlockedMedalTitle =
+            medalsUnlockedBetween(oldXp, newXp).lastOrNull()?.title
+
         viewModel.markActivityCompleted(SessionManager.currentUser?.id, SessionManager.currentActivity?.id)
     }
     viewModel.registerAttempt(
