@@ -203,7 +203,7 @@ fun ExercisesScreen(navController: NavController) {
                                     SessionManager.currentActivityCompleted = completed
                                     // Las actividades de tipo "phishing" abren la simulación;
                                     // el resto, el quiz normal.
-                                    if (activity.type.equals("phishing", ignoreCase = true)) {
+                                    if (activity.type?.equals("phishing", ignoreCase = true) == true) {
                                         navController.navigate("activity1")
                                     } else {
                                         navController.navigate("quiz")

@@ -8,8 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,11 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.securelayer.R
 import com.example.securelayer.views.theme.SecureBlue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.font.Font
 import com.example.securelayer.data.model.QuizQuestion
 import com.example.securelayer.views.viewmodel.QuizViewModel
 
@@ -591,6 +588,48 @@ fun CustomOutlinedButton(
             icon?.invoke()
             if (icon != null) Spacer(modifier = Modifier.width(8.dp))
             Text(text, color = SecureBlue, fontSize = 16.sp)
+        }
+    }
+}
+
+@Composable
+fun StatCard(
+    modifier: Modifier = Modifier,
+    value: String,
+    label: String,
+    sublabel: String
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            ) {
+                Text(text = label, fontSize = 12.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = value, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1A1A1A))
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(text = sublabel, fontSize = 11.sp, color = Color.Gray)
+            }
+            Box(
+                modifier = Modifier
+                    .width(4.dp)
+                    .fillMaxHeight()
+                    .background(
+                        Color(0xFF4CAF50),
+                        RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp)
+                    )
+            )
         }
     }
 }

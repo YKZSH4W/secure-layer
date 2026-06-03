@@ -194,10 +194,12 @@ private fun finishPhishingActivity(
 
     val activityXp = SessionManager.currentActivity?.xp ?: 0
     val alreadyCompleted = SessionManager.currentActivityCompleted
+    // Solo se aprueba (y se obtienen puntos) si TODAS están correctas
+    val passed = total > 0 && correct == total
 
     SessionManager.lastQuizScore = correct
     SessionManager.lastQuizTotal = total
-    SessionManager.lastQuizEarnedXp = if (alreadyCompleted) 0 else activityXp
+    SessionManager.lastQuizEarnedXp = if (passed && !alreadyCompleted) activityXp else 0
     SessionManager.lastQuizFeedback = simulations.mapIndexed { i, sim ->
         val saidPhishing = userAnswers[i] ?: false
         QuizFeedbackItem(
@@ -209,11 +211,18 @@ private fun finishPhishingActivity(
         )
     }
 
-    viewModel.markActivityCompleted(SessionManager.currentUser?.id, SessionManager.currentActivity?.id)
+    // Marca completada (y suma XP) SOLO si aprobó por primera vez
+    if (passed && !alreadyCompleted) {
+        // Suma la XP al usuario en sesión de inmediato (perfil actualizado sin pedir a la BD)
+        SessionManager.currentUser = SessionManager.currentUser?.let {
+            it.copy(totalXp = it.totalXp + activityXp)
+        }
+        viewModel.markActivityCompleted(SessionManager.currentUser?.id, SessionManager.currentActivity?.id)
+    }
     viewModel.registerAttempt(
         SessionManager.currentUser?.id,
         SessionManager.currentActivity?.id,
-        isCorrect = correct == total,
+        isCorrect = passed,
         score = if (total > 0) correct * 100 / total else 0
     )
     SessionManager.progressRefreshTrigger++

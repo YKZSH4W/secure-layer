@@ -265,49 +265,85 @@ fun FinishedActivityScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Calcula la siguiente actividad de la lección (si la hay)
-                val lessonActivities = SessionManager.currentLessonActivities
-                val currentIndex = lessonActivities.indexOfFirst {
-                    it.id == SessionManager.currentActivity?.id
-                }
-                val nextActivity = lessonActivities.getOrNull(currentIndex + 1)
+                // Se aprueba solo si todas fueron correctas
+                val passed = hasResults && score == total
+                // Debe reintentar si no aprobó Y la actividad aún no estaba completada
+                val needsRetry = !passed && !SessionManager.currentActivityCompleted
 
-                CustomPrimaryButton(
-                    text = if (nextActivity != null) "Siguiente actividad" else "Terminar lección",
-                    onClick = {
-                        if (nextActivity != null) {
-                            // Pasa a la siguiente actividad de la lección
-                            SessionManager.currentActivity = nextActivity
-                            SessionManager.currentActivityCompleted =
-                                nextActivity.id in SessionManager.currentLessonCompletedIds
-                            navController.navigate("quiz") {
+                if (needsRetry) {
+                    // No aprobó: aviso y opción de reintentar la misma actividad
+                    Text(
+                        "Necesitas responder todo correctamente para obtener los puntos. ¡Inténtalo de nuevo!",
+                        fontSize = 14.sp,
+                        color = Color(0xFFAF6C00),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(bottom = 10.dp)
+                    )
+
+                    // Ruta de la actividad según su tipo (phishing o quiz)
+                    val activityRoute =
+                        if (SessionManager.currentActivity?.type?.equals("phishing", ignoreCase = true) == true)
+                            "activity1" else "quiz"
+
+                    CustomPrimaryButton(
+                        text = "Reintentar actividad",
+                        onClick = {
+                            navController.navigate(activityRoute) {
                                 popUpTo("ejercicios")
                             }
-                        } else {
-                            // No hay más actividades en la lección:
-                            // limpia la lección actual para que Route autoseleccione la siguiente
-                            // (y, por tanto, Exercises muestre las actividades de esa lección).
-                            SessionManager.currentLesson = null
-                            SessionManager.currentActivity = null
-                            SessionManager.progressRefreshTrigger++
-                            navController.navigate("route") {
-                                popUpTo("route") { inclusive = true }
-                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.right_arrow),
+                                contentDescription = "Icono",
+                                tint = Color.White,
+                                modifier = Modifier.size(15.dp)
+                            )
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-
-                    icon = {
-                        Icon(
-                            painter = painterResource(id =  R.drawable.right_arrow),
-                            contentDescription = "Icono",
-                            tint = Color.White,
-                            modifier = Modifier.size(15.dp)
-                        )
+                    )
+                } else {
+                    // Aprobó: avanza a la siguiente actividad o termina la lección
+                    val lessonActivities = SessionManager.currentLessonActivities
+                    val currentIndex = lessonActivities.indexOfFirst {
+                        it.id == SessionManager.currentActivity?.id
                     }
-                )
+                    val nextActivity = lessonActivities.getOrNull(currentIndex + 1)
+
+                    CustomPrimaryButton(
+                        text = if (nextActivity != null) "Siguiente actividad" else "Terminar lección",
+                        onClick = {
+                            if (nextActivity != null) {
+                                SessionManager.currentActivity = nextActivity
+                                SessionManager.currentActivityCompleted =
+                                    nextActivity.id in SessionManager.currentLessonCompletedIds
+                                navController.navigate("quiz") {
+                                    popUpTo("ejercicios")
+                                }
+                            } else {
+                                SessionManager.currentLesson = null
+                                SessionManager.currentActivity = null
+                                SessionManager.progressRefreshTrigger++
+                                navController.navigate("route") {
+                                    popUpTo("route") { inclusive = true }
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.right_arrow),
+                                contentDescription = "Icono",
+                                tint = Color.White,
+                                modifier = Modifier.size(15.dp)
+                            )
+                        }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 

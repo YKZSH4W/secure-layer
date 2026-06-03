@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.data.model.ErrorResponse
+import com.example.securelayer.data.model.KnowledgeLevelRequest
 import com.example.securelayer.data.model.UserRegister
 import com.example.securelayer.data.model.UserLogin
 import com.example.securelayer.data.network.RetrofitInstance
@@ -39,7 +40,8 @@ class UsersViewModel : ViewModel() {
             try {
                 val newUser = UserRegister(email, password, name, lastName)
 
-                RetrofitInstance.api.createUser(newUser)
+                // Guarda el usuario creado en sesión para poder asociar el test inicial (nivel)
+                SessionManager.currentUser = RetrofitInstance.api.createUser(newUser)
 
                 registerSuccess = true
             } catch (e: HttpException) {
@@ -72,6 +74,20 @@ class UsersViewModel : ViewModel() {
                 loginSuccess = true
             } catch (e: Exception) {
                 loginError = true
+            }
+        }
+    }
+
+    // Actualiza el nivel de conocimiento (resultado del test inicial) en BD y en sesión
+    fun updateKnowledgeLevel(userId: Int?, level: String) {
+        viewModelScope.launch {
+            try {
+                val updated = RetrofitInstance.api.updateKnowledgeLevel(
+                    userId, KnowledgeLevelRequest(level)
+                )
+                SessionManager.currentUser = updated
+            } catch (e: Exception) {
+                Log.e("API", "Error al actualizar nivel: ${e.message}")
             }
         }
     }

@@ -150,33 +150,43 @@ fun QuizScreen(navController: NavController) {
                                 if (!isLastQuestion) {
                                     currentQuestionIndex = index + 1
                                 } else {
-                                    // === Flujo de envío (idéntico al anterior) ===
+                                    // === Flujo de envío ===
                                     val score = viewModel.validateAnswers()
                                     val activityXp = currentActivity?.xp ?: 0
-                                    // Si la actividad ya estaba completada, no se otorgan puntos de nuevo
                                     val alreadyCompleted = SessionManager.currentActivityCompleted
+                                    // Solo se aprueba (y se obtienen puntos) si TODAS están correctas
+                                    val passed = total > 0 && score == total
 
                                     SessionManager.lastQuizScore = score
                                     SessionManager.lastQuizTotal = total
+                                    // Da XP solo si aprobó y no estaba ya completada
                                     SessionManager.lastQuizEarnedXp =
-                                        if (alreadyCompleted) 0 else activityXp
+                                        if (passed && !alreadyCompleted) activityXp else 0
                                     SessionManager.lastQuizFeedback = viewModel.buildFeedback()
 
-                                    // Registra este intento en el historial (siempre, también en repeticiones)
+                                    // Registra este intento en el historial (siempre)
                                     viewModel.registerAttempt(
                                         userId = SessionManager.currentUser?.id,
                                         activityId = currentActivity?.id,
-                                        isCorrect = score == total,
+                                        isCorrect = passed,
                                         score = if (total > 0) score * 100 / total else 0
                                     )
 
-                                    // Marca la actividad como completada en el backend (suma XP)
-                                    viewModel.markActivityCompleted(
-                                        SessionManager.currentUser?.id,
-                                        currentActivity?.id
-                                    )
+                                    // Marca la actividad completada (y suma XP) SOLO si aprobó
+                                    // por primera vez. Si falla, queda disponible para reintentar.
+                                    if (passed && !alreadyCompleted) {
+                                        // Suma la XP al usuario en sesión de inmediato,
+                                        // así el perfil se muestra actualizado sin pedir a la BD.
+                                        SessionManager.currentUser = SessionManager.currentUser?.let {
+                                            it.copy(totalXp = it.totalXp + activityXp)
+                                        }
+                                        viewModel.markActivityCompleted(
+                                            SessionManager.currentUser?.id,
+                                            currentActivity?.id
+                                        )
+                                    }
 
-                                    // Fuerza que la ruta recargue el progreso de las lecciones
+                                    // Fuerza que la ruta/perfil recarguen el progreso
                                     SessionManager.progressRefreshTrigger++
 
                                     navController.navigate("actividad_completada")

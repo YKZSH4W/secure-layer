@@ -8,11 +8,13 @@ import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.CompleteActivityResult
 import com.example.securelayer.data.model.CompleteRouteRequest
 import com.example.securelayer.data.model.CompleteRouteResult
+import com.example.securelayer.data.model.KnowledgeLevelRequest
 import com.example.securelayer.data.model.Lesson
 import com.example.securelayer.data.model.Option
 import com.example.securelayer.data.model.PhishingSimulation
 import com.example.securelayer.data.model.Question
 import com.example.securelayer.data.model.Route
+import com.example.securelayer.data.model.UserAchievement
 import com.example.securelayer.data.model.UserRegister
 import com.example.securelayer.data.model.User
 import com.example.securelayer.data.model.UserLogin
@@ -33,6 +35,9 @@ interface ApiService {
 
     @PUT("/users/{id}")
     suspend fun updateUser(@Path("id") id: Int?, @Body body: UserUpdateRequest): User
+
+    @PUT("/users/{id}/knowledge-level")
+    suspend fun updateKnowledgeLevel(@Path("id") id: Int?, @Body body: KnowledgeLevelRequest): User
 
     @GET("/routes")
     suspend fun getRoutes(): List<Route>
@@ -78,4 +83,14 @@ interface ApiService {
 
     @GET("/phishing-simulations/activity/{activityId}")
     suspend fun getPhishingSimulationsByActivity(@Path("activityId") activityId: Int?): List<PhishingSimulation>
+
+    // --- Estadísticas del perfil ---
+    @GET("/activities")
+    suspend fun getAllActivities(): List<Activity>
+
+    @GET("/attempts/user/{userId}")
+    suspend fun getAttemptsByUser(@Path("userId") userId: Int?): List<Attempt>
+
+    @GET("/users-achievements/user/{userId}")
+    suspend fun getUserAchievements(@Path("userId") userId: Int?): List<UserAchievement>
 }

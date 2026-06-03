@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.securelayer.data.SessionManager
 import com.example.securelayer.data.model.AttemptRequest
 import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.PhishingSimulation
@@ -33,17 +32,14 @@ class PhishingViewModel : ViewModel() {
         }
     }
 
-    // Marca la actividad como completada (y suma XP la primera vez)
+    // Persiste en el backend que la actividad fue completada (la XP en sesión
+    // ya se sumó localmente en el momento del envío).
     fun markActivityCompleted(userId: Int?, activityId: Int?) {
         viewModelScope.launch {
             try {
-                val result = RetrofitInstance.api.completeActivity(
+                RetrofitInstance.api.completeActivity(
                     CompleteActivityRequest(userId, activityId)
                 )
-                result.totalXp?.let { newTotalXp ->
-                    SessionManager.currentUser =
-                        SessionManager.currentUser?.copy(totalXp = newTotalXp)
-                }
             } catch (e: Exception) {
                 Log.e("Phishing", "Error al marcar actividad: ${e.message}")
             }
