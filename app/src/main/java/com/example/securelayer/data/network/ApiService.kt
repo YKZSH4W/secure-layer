@@ -10,6 +10,7 @@ import com.example.securelayer.data.model.CompleteRouteRequest
 import com.example.securelayer.data.model.CompleteRouteResult
 import com.example.securelayer.data.model.Lesson
 import com.example.securelayer.data.model.Option
+import com.example.securelayer.data.model.PhishingSimulation
 import com.example.securelayer.data.model.Question
 import com.example.securelayer.data.model.Route
 import com.example.securelayer.data.model.UserRegister
@@ -74,4 +75,7 @@ interface ApiService {
 
     @POST("/attempts")
     suspend fun createAttempt(@Body body: AttemptRequest): Attempt
+
+    @GET("/phishing-simulations/activity/{activityId}")
+    suspend fun getPhishingSimulationsByActivity(@Path("activityId") activityId: Int?): List<PhishingSimulation>
 }

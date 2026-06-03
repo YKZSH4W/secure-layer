@@ -1,12 +1,17 @@
 package com.example.securelayer.views.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +36,10 @@ fun ExercisesScreen(navController: NavController) {
     val activitiesViewModel: ActivitiesViewModel = viewModel()
 
     val currentLesson = SessionManager.currentLesson
+
+    // Categoría seleccionada en el filtro (null = todas)
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
+    val filterScrollState = rememberScrollState()
 
     // Carga las actividades de la lección y el progreso del usuario.
     // Se recarga también al completar una actividad (progressRefreshTrigger).
@@ -66,6 +75,37 @@ fun ExercisesScreen(navController: NavController) {
                 text = currentLesson?.description ?: "Completa las actividades de esta lección.",
                 color = Color.Gray
             )
+
+            // Categorías disponibles para filtrar
+            val categories = activitiesViewModel.activities
+                .map { it.category ?: "General" }
+                .distinct()
+            // Si la categoría seleccionada ya no existe, equivale a "Todas"
+            val effectiveCategory = selectedCategory?.takeIf { it in categories }
+
+            // Botones de filtro por categoría (solo si hay más de una)
+            if (categories.size > 1) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(filterScrollState),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilterChip(
+                        selected = effectiveCategory == null,
+                        onClick = { selectedCategory = null },
+                        label = { Text("Todas") }
+                    )
+                    categories.forEach { cat ->
+                        FilterChip(
+                            selected = effectiveCategory == cat,
+                            onClick = { selectedCategory = cat },
+                            label = { Text(cat) }
+                        )
+                    }
+                }
+            }
 
             // Barra de progreso de la lección: actividades completadas / total
             val totalActivities = activitiesViewModel.activities.size
@@ -127,8 +167,9 @@ fun ExercisesScreen(navController: NavController) {
                 }
 
                 else -> {
-                    // Agrupa las actividades por categoría (las sin categoría → "General")
+                    // Filtra por la categoría seleccionada y agrupa (sin categoría → "General")
                     val groupedActivities = activitiesViewModel.activities
+                        .filter { effectiveCategory == null || (it.category ?: "General") == effectiveCategory }
                         .groupBy { it.category ?: "General" }
 
                     groupedActivities.forEach { (category, activities) ->
@@ -160,7 +201,13 @@ fun ExercisesScreen(navController: NavController) {
                                 onClick = {
                                     SessionManager.currentActivity = activity
                                     SessionManager.currentActivityCompleted = completed
-                                    navController.navigate("quiz")
+                                    // Las actividades de tipo "phishing" abren la simulación;
+                                    // el resto, el quiz normal.
+                                    if (activity.type.equals("phishing", ignoreCase = true)) {
+                                        navController.navigate("activity1")
+                                    } else {
+                                        navController.navigate("quiz")
+                                    }
                                 },
                                 iconTint = statusTextColor
                             )
