@@ -24,9 +24,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.MedalCard
+import com.example.securelayer.views.components.StatCard
 import com.example.securelayer.views.components.TopNavBar
-import com.example.securelayer.R
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.R
 
 @Composable
 fun Profile(navController: NavController) {
@@ -80,19 +81,29 @@ fun Profile(navController: NavController) {
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Text("Tu Nivel de Seguridad", fontWeight = FontWeight.Bold)
                         Text("Nivel 4", color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold)
                     }
                     LinearProgressIndicator(
                         progress = { 0.7f },
-                        modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
                         color = Color(0xFF2E7D32),
                         trackColor = Color(0xFFE0E0E0),
                         strokeCap = StrokeCap.Butt
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text("Casi un experto en detectar trampas digitales.", fontSize = 13.sp, color = Color.Gray)
+                    Text(
+                        "Casi un experto en detectar trampas digitales.",
+                        fontSize = 13.sp,
+                        color = Color.Gray
+                    )
                 }
             }
 
@@ -110,14 +121,27 @@ fun Profile(navController: NavController) {
                 }
             }
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 MedalCard(
                     modifier = Modifier.weight(1f),
                     title = "Escudo de\nOro",
                     subtitle = "Por 7 días sin\nriesgos",
                     iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color(0xFFFFE0B2)), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.shield_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFFFFE0B2)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.shield_medal),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(40.dp)
+                            )
                         }
                     }
                 )
@@ -126,8 +150,18 @@ fun Profile(navController: NavController) {
                     title = "Detective de\nFraudes",
                     subtitle = "Detectaste un SMS\nfalso",
                     iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color(0xFFA5F3C2)), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.lupa_medal), contentDescription = null, tint = Color.Unspecified, modifier = Modifier.size(40.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFFA5F3C2)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.lupa_medal),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(40.dp)
+                            )
                         }
                     }
                 )
@@ -135,75 +169,55 @@ fun Profile(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Estadísticas
+            Text(
+                "Mis Estadísticas",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Estadísticas", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                MedalCard(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    title = "Progreso",
-                    subtitle = "",
-                    iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Unspecified), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.stat_ic), contentDescription = null, tint = Color(0xFF003366), modifier = Modifier.size(40.dp))
-                        }
-                    }
+                StatCard(
+                    modifier = Modifier.weight(1f),
+                    value = "5",
+                    label = "Días activos",
+                    sublabel = "últimos 7 días"
                 )
-                MedalCard(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    title = "Días activo",
-                    subtitle = "",
-                    iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Unspecified), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.coffee_ic), contentDescription = null, tint = Color(0xFF003366), modifier = Modifier.size(40.dp))
-                        }
-                    }
+                StatCard(
+                    modifier = Modifier.weight(1f),
+                    value = "68%",
+                    label = "Progreso promedio",
+                    sublabel = "ruta general"
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Max),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                MedalCard(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    title = "Porcentaje de \n aciertos",
-                    subtitle = "",
-                    iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Unspecified), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.check_ic), contentDescription = null, tint = Color(0xFF003366), modifier = Modifier.size(40.dp))
-                        }
-                    }
+                StatCard(
+                    modifier = Modifier.weight(1f),
+                    value = "78%",
+                    label = "Acierto global",
+                    sublabel = "actividades"
                 )
-                MedalCard(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    title = "Medallas Obtenidas",
-                    subtitle = "",
-                    iconContent = {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Unspecified), contentAlignment = Alignment.Center) {
-                            Icon(painter = painterResource(id = R.drawable.medal_stat_ic), contentDescription = null, tint = Color(0xFF003366), modifier = Modifier.size(40.dp))
-                        }
-                    }
+                StatCard(
+                    modifier = Modifier.weight(1f),
+                    value = "25",
+                    label = "Medallas obtenidas",
+                    sublabel = "de 60"
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedButton(
                 text = "Cerrar Sesión",
@@ -212,6 +226,7 @@ fun Profile(navController: NavController) {
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
             )
+
         }
     }
 }
