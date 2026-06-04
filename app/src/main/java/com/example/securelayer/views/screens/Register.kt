@@ -1,5 +1,6 @@
 package com.example.securelayer.views.screens
 
+import android.util.Patterns
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -40,6 +41,8 @@ fun RegisterScreen(navController: NavController) {
     // Variables para dialogs
     var showEmptyError by remember { mutableStateOf(false) }
     var showPasswordError by remember { mutableStateOf(false) }
+    var showEmailFormatError by remember { mutableStateOf(false) }
+    var showPasswordFormatError by remember { mutableStateOf(false) }
     var showSuccessDialog by remember { mutableStateOf(false) }
 
     // Variables para cuestiones visuales
@@ -85,9 +88,9 @@ fun RegisterScreen(navController: NavController) {
             // Campos del formulario
             CustomTextField(name, { name = it }, "Nombre Completo", showEmptyError && name.isEmpty())
             Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(email, { email = it }, "Correo Electrónico", (showEmptyError && email.isEmpty()) || viewModel.registerErrorMessage != null, KeyboardType.Email)
+            CustomTextField(email, { email = it }, "Correo Electrónico", (showEmptyError && email.isEmpty()) || showEmailFormatError || viewModel.registerErrorMessage != null, KeyboardType.Email)
             Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(password, { password = it }, "Contraseña", showEmptyError && password.isEmpty(), isPassword = true)
+            CustomTextField(password, { password = it }, "Contraseña", (showEmptyError && password.isEmpty()) || showPasswordFormatError, isPassword = true)
             Spacer(modifier = Modifier.height(12.dp))
             CustomTextField(confirmPassword, { confirmPassword = it }, "Confirmar Contraseña", (showEmptyError && confirmPassword.isEmpty()) || showPasswordError, isPassword = true)
 
@@ -95,6 +98,17 @@ fun RegisterScreen(navController: NavController) {
 
             if (showEmptyError) {
                 Text("Por favor, completa todos los campos", color = Color(0xFFB3261E))
+            }
+
+            if (showEmailFormatError) {
+                Text("Ingresa un correo electrónico válido", color = Color(0xFFB3261E))
+            }
+
+            if (showPasswordFormatError) {
+                Text(
+                    "La contraseña debe tener al menos 6 caracteres y un símbolo especial",
+                    color = Color(0xFFB3261E)
+                )
             }
 
             if (showPasswordError) {
@@ -145,21 +159,46 @@ fun RegisterScreen(navController: NavController) {
             CustomPrimaryButton(
                 text = "Registrarse",
                 onClick = {
-                    if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank() &&
-                        confirmPassword.isNotBlank()
-                    ) {
-                        if (password != confirmPassword) {
+                    // Correo válido (formato estándar)
+                    val isEmailValid = Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
+                    // Contraseña: mínimo 6 caracteres y al menos un símbolo especial
+                    val hasSpecialChar = password.any { !it.isLetterOrDigit() }
+                    val isPasswordValid = password.length >= 6 && hasSpecialChar
+
+                    when {
+                        name.isBlank() || email.isBlank() || password.isBlank() ||
+                                confirmPassword.isBlank() -> {
+                            showEmptyError = true
+                            showEmailFormatError = false
+                            showPasswordFormatError = false
+                            showPasswordError = false
+                        }
+                        !isEmailValid -> {
+                            showEmailFormatError = true
+                            showEmptyError = false
+                            showPasswordFormatError = false
+                            showPasswordError = false
+                        }
+                        !isPasswordValid -> {
+                            showPasswordFormatError = true
+                            showEmptyError = false
+                            showEmailFormatError = false
+                            showPasswordError = false
+                        }
+                        password != confirmPassword -> {
                             showPasswordError = true
                             showEmptyError = false
-                        } else {
-                            showPasswordError = false
+                            showEmailFormatError = false
+                            showPasswordFormatError = false
+                        }
+                        else -> {
                             showEmptyError = false
+                            showEmailFormatError = false
+                            showPasswordFormatError = false
+                            showPasswordError = false
                             viewModel.resetRegisterError()   // limpia error previo antes de reintentar
                             registerUser = true
                         }
-                    } else {
-                        showEmptyError = true
-                        showPasswordError = false
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
