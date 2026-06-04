@@ -30,9 +30,9 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.ImageUtils
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.views.components.AchievementCardVertical
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.StatCard
-import com.example.securelayer.views.components.unlockedMedals
 import com.example.securelayer.views.theme.Background
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.ProfileStatsViewModel
@@ -183,14 +183,13 @@ fun Profile(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Mis Medallas", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    TextButton(onClick = { navController.navigate("") }) {
+                    TextButton(onClick = { navController.navigate("medallas") }) {
                         Text("Ver todas", color = Color.Blue)
                     }
                 }
 
-                // Medallas desbloqueadas según la XP del usuario
-                val totalXp = SessionManager.currentUser?.totalXp ?: 0
-                val medals = unlockedMedals(totalXp)
+                // Medallas obtenidas por el usuario (de la BD)
+                val medals = statsViewModel.userAchievements
 
                 if (medals.isEmpty()) {
                     Text(
@@ -204,8 +203,11 @@ fun Profile(navController: NavController) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            rowMedals.forEach { medal ->
-                                medal.content(Modifier.weight(1f).fillMaxHeight())
+                            rowMedals.forEach { ua ->
+                                AchievementCardVertical(
+                                    ua.achievement,
+                                    Modifier.weight(1f).fillMaxHeight()
+                                )
                             }
                             // Rellena la columna faltante si la fila tiene una sola medalla
                             if (rowMedals.size == 1) Spacer(modifier = Modifier.weight(1f))

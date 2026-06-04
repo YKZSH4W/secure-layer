@@ -2,22 +2,14 @@ package com.example.securelayer.views.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.securelayer.R
 
 @Composable
@@ -239,30 +231,6 @@ fun MedalPlatino(modifier: Modifier = Modifier) {
         }
     )
 }
-
-// Medalla que se desbloquea al alcanzar cierta XP
-data class XpMedal(
-    val requiredXp: Int,
-    val title: String,
-    val content: @Composable (Modifier) -> Unit
-)
-
-// Catálogo de medallas por XP (ordenadas de menor a mayor requisito)
-val xpMedals = listOf(
-    XpMedal(150, "Chispa Digital") { MedalChispaDigital(it) },
-    XpMedal(500, "Guardián Novato") { MedalGuardianNovato(it) },
-    XpMedal(1000, "Mente Alerta") { MedalMenteAlerta(it) },
-    XpMedal(2000, "Cyber Agente") { MedalCyberAgente(it) },
-    XpMedal(3000, "Escudo de Élite") { MedalEscudoDeElite(it) }
-)
-
-// Medallas ya desbloqueadas con cierta XP
-fun unlockedMedals(totalXp: Int): List<XpMedal> =
-    xpMedals.filter { it.requiredXp <= totalXp }
-
-// Medallas que se desbloquean al pasar de oldXp a newXp (recién ganadas)
-fun medalsUnlockedBetween(oldXp: Int, newXp: Int): List<XpMedal> =
-    xpMedals.filter { it.requiredXp in (oldXp + 1)..newXp }
 
 @Preview(showBackground = true)
 @Composable

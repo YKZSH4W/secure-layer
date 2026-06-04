@@ -34,9 +34,15 @@ class EnrollsViewModel: ViewModel() {
     fun completeRouteAndAdvance(userId: Int?, routeId: Int?) {
         viewModelScope.launch {
             try {
-                RetrofitInstance.api.completeRouteAndAdvance(
+                val result = RetrofitInstance.api.completeRouteAndAdvance(
                     CompleteRouteRequest(userId, routeId)
                 )
+
+                // Si subió de nivel de conocimiento, lo refleja en el usuario en sesión
+                result.newKnowledgeLevel?.let { level ->
+                    SessionManager.currentUser =
+                        SessionManager.currentUser?.copy(knowledgeLevel = level)
+                }
 
                 val response = RetrofitInstance.api.getEnrollsByUser(userId)
                 currentRoutes = response

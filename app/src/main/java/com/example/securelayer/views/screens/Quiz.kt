@@ -27,7 +27,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.components.CustomPrimaryButton
-import com.example.securelayer.views.components.medalsUnlockedBetween
 import com.example.securelayer.views.components.QuizActivityCard
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.Background
@@ -178,15 +177,12 @@ fun QuizScreen(navController: NavController) {
                                     if (passed && !alreadyCompleted) {
                                         // Suma la XP al usuario en sesión de inmediato,
                                         // así el perfil se muestra actualizado sin pedir a la BD.
-                                        val oldXp = SessionManager.currentUser?.totalXp ?: 0
-                                        val newXp = oldXp + activityXp
+                                        val newXp = (SessionManager.currentUser?.totalXp ?: 0) + activityXp
                                         SessionManager.currentUser =
                                             SessionManager.currentUser?.copy(totalXp = newXp)
 
-                                        // ¿Desbloqueó una medalla de XP con este avance?
-                                        SessionManager.newlyUnlockedMedalTitle =
-                                            medalsUnlockedBetween(oldXp, newXp).lastOrNull()?.title
-
+                                        // El backend otorga las medallas; markActivityCompleted
+                                        // las recibe y prepara el diálogo si hay alguna nueva.
                                         viewModel.markActivityCompleted(
                                             SessionManager.currentUser?.id,
                                             currentActivity?.id

@@ -3,6 +3,7 @@ package com.example.securelayer.data
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.securelayer.data.model.Achievement
 import com.example.securelayer.data.model.Activity
 import com.example.securelayer.data.model.Lesson
 import com.example.securelayer.data.model.QuizFeedbackItem
@@ -26,8 +27,8 @@ object SessionManager {
     // Se incrementa al completar una actividad para forzar que la ruta recargue el progreso
     var progressRefreshTrigger: Int by mutableStateOf(0)
 
-    // Título de la medalla recién desbloqueada (para mostrar el diálogo en resultados)
-    var newlyUnlockedMedalTitle: String? by mutableStateOf(null)
+    // Medalla recién desbloqueada (la otorga el backend, para mostrar el diálogo en resultados)
+    var newlyUnlockedAchievement: Achievement? by mutableStateOf(null)
 
     // Resultado del último quiz enviado (usado en la pantalla de retroalimentación)
     var lastQuizScore: Int by mutableStateOf(0)
@@ -47,6 +48,6 @@ object SessionManager {
         lastQuizTotal = 0
         lastQuizEarnedXp = 0
         lastQuizFeedback = emptyList()
-        newlyUnlockedMedalTitle = null
+        newlyUnlockedAchievement = null
     }
 }

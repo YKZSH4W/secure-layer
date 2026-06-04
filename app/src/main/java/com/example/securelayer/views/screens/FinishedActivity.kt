@@ -45,7 +45,7 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.data.model.QuizFeedbackItem
-import com.example.securelayer.views.components.xpMedals
+import com.example.securelayer.views.components.AchievementCardVertical
 import com.example.securelayer.views.theme.Background
 
 
@@ -68,12 +68,11 @@ fun FinishedActivityScreen(navController: NavController){
         else -> "¡Sigue practicando!"
     }
 
-    // Diálogo de medalla recién desbloqueada
-    val unlockedMedalTitle = SessionManager.newlyUnlockedMedalTitle
-    if (unlockedMedalTitle != null) {
-        val medal = xpMedals.find { it.title == unlockedMedalTitle }
+    // Diálogo de medalla recién desbloqueada (otorgada por el backend)
+    val unlockedAchievement = SessionManager.newlyUnlockedAchievement
+    if (unlockedAchievement != null) {
         AlertDialog(
-            onDismissRequest = { SessionManager.newlyUnlockedMedalTitle = null },
+            onDismissRequest = { SessionManager.newlyUnlockedAchievement = null },
             title = { Text("¡Nueva medalla!") },
             text = {
                 Column(
@@ -82,11 +81,11 @@ fun FinishedActivityScreen(navController: NavController){
                 ) {
                     Text("¡Felicidades! Desbloqueaste una medalla:", textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(12.dp))
-                    medal?.content?.invoke(Modifier.fillMaxWidth())
+                    AchievementCardVertical(unlockedAchievement, Modifier.fillMaxWidth())
                 }
             },
             confirmButton = {
-                TextButton(onClick = { SessionManager.newlyUnlockedMedalTitle = null }) {
+                TextButton(onClick = { SessionManager.newlyUnlockedAchievement = null }) {
                     Text("¡Genial!")
                 }
             }

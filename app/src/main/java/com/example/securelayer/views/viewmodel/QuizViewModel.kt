@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.securelayer.data.SessionManager
 import com.example.securelayer.data.model.AttemptRequest
 import com.example.securelayer.data.model.CompleteActivityRequest
 import com.example.securelayer.data.model.Question
@@ -76,9 +77,11 @@ class QuizViewModel : ViewModel() {
     fun markActivityCompleted(userId: Int?, activityId: Int?) {
         viewModelScope.launch {
             try {
-                RetrofitInstance.api.completeActivity(
+                val result = RetrofitInstance.api.completeActivity(
                     CompleteActivityRequest(userId, activityId)
                 )
+                // El backend otorga las medallas; mostramos la primera nueva (si la hay)
+                SessionManager.newlyUnlockedAchievement = result.newAchievements.firstOrNull()
             } catch (e: Exception) {
                 Log.e("Quiz", "Error al marcar actividad completada: ${e.message}")
             }

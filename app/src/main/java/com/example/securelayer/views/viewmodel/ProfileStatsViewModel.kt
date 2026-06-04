@@ -3,9 +3,11 @@ package com.example.securelayer.views.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.securelayer.data.model.UserAchievement
 import com.example.securelayer.data.network.RetrofitInstance
 import kotlinx.coroutines.launch
 
@@ -22,8 +24,8 @@ class ProfileStatsViewModel : ViewModel() {
     var attemptsCount by mutableIntStateOf(0)
         private set
 
-    // Cantidad de medallas obtenidas
-    var medalsCount by mutableIntStateOf(0)
+    // Medallas obtenidas por el usuario (de la BD, con sus datos)
+    var userAchievements by mutableStateOf<List<UserAchievement>>(emptyList())
         private set
 
     // Cantidad de lecciones completadas (todas sus actividades completas)
@@ -36,7 +38,6 @@ class ProfileStatsViewModel : ViewModel() {
                 val allActivities = RetrofitInstance.api.getAllActivities()
                 val progress = RetrofitInstance.api.getActivitiesProgressByUser(userId)
                 val attempts = RetrofitInstance.api.getAttemptsByUser(userId)
-                val achievements = RetrofitInstance.api.getUserAchievements(userId)
 
                 val total = allActivities.size
                 val completedIds = progress.filter { it.isCompleted }.map { it.activityId }.toSet()
@@ -47,7 +48,7 @@ class ProfileStatsViewModel : ViewModel() {
                 accuracy = if (attempts.isNotEmpty()) {
                     attempts.map { it.score }.average().toInt()
                 } else 0
-                medalsCount = achievements.size
+                userAchievements = RetrofitInstance.api.getUserAchievements(userId)
 
                 // Una lección está completa si TODAS sus actividades están completadas
                 completedLessons = allActivities

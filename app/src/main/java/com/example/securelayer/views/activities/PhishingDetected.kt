@@ -37,7 +37,6 @@ import com.example.securelayer.data.model.QuizFeedbackItem
 import com.example.securelayer.views.components.BottomNavBar
 import com.example.securelayer.views.components.CustomOutlinedButton
 import com.example.securelayer.views.components.CustomPrimaryButton
-import com.example.securelayer.views.components.medalsUnlockedBetween
 import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.PhishingViewModel
@@ -216,14 +215,10 @@ private fun finishPhishingActivity(
     // Marca completada (y suma XP) SOLO si aprobó por primera vez
     if (passed && !alreadyCompleted) {
         // Suma la XP al usuario en sesión de inmediato (perfil actualizado sin pedir a la BD)
-        val oldXp = SessionManager.currentUser?.totalXp ?: 0
-        val newXp = oldXp + activityXp
+        val newXp = (SessionManager.currentUser?.totalXp ?: 0) + activityXp
         SessionManager.currentUser = SessionManager.currentUser?.copy(totalXp = newXp)
 
-        // ¿Desbloqueó una medalla de XP con este avance?
-        SessionManager.newlyUnlockedMedalTitle =
-            medalsUnlockedBetween(oldXp, newXp).lastOrNull()?.title
-
+        // El backend otorga las medallas; markActivityCompleted prepara el diálogo si hay nueva
         viewModel.markActivityCompleted(SessionManager.currentUser?.id, SessionManager.currentActivity?.id)
     }
     viewModel.registerAttempt(

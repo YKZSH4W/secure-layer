@@ -4,5 +4,6 @@ data class CompleteActivityResult(
     val progress: ActivityProgress,
     val alreadyCompleted: Boolean,
     val xpAwarded: Int = 0,
-    val totalXp: Int? = null
+    val totalXp: Int? = null,
+    val newAchievements: List<Achievement> = emptyList()
 )
