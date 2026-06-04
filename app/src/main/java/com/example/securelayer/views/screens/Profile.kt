@@ -184,7 +184,7 @@ fun Profile(navController: NavController) {
                 ) {
                     Text("Mis Medallas", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     TextButton(onClick = { navController.navigate("medallas") }) {
-                        Text("Ver todas", color = Color.Blue)
+                        Text("Ver todas", color = SecureBlue)
                     }
                 }
 
@@ -307,10 +307,7 @@ fun Profile(navController: NavController) {
                 CustomPrimaryButton(
                     text = "Historial de Actividades",
                     onClick = {
-                        SessionManager.logout()
-                        navController.navigate("historial") {
-                            popUpTo(0) { inclusive = true }
-                        }
+                        navController.navigate("historial")
                     },
                 )
 

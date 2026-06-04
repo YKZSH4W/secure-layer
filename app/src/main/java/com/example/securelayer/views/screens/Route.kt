@@ -124,6 +124,7 @@ fun RouteScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 color = SecureBlue
             )
+
             Text(
                 text = currentRoute?.description ?: "",
                 textAlign = TextAlign.Center,

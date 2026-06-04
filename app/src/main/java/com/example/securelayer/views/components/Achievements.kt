@@ -36,7 +36,7 @@ fun mapMedalIcon(icon: String): Int = when (icon.lowercase().trim()) {
     "brain" -> R.drawable.brain
     "spy" -> R.drawable.spy
     "crown" -> R.drawable.crown
-    "shield", "shield_medal" -> R.drawable.shield_medal
+    "shield", "shield_medal" -> R.drawable.shield_route_ic
     "star", "star_ic" -> R.drawable.star_ic
     "trophy" -> R.drawable.trophy
     "first_step", "first_step_ic" -> R.drawable.first_step_ic

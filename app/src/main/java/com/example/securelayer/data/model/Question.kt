@@ -6,6 +6,6 @@ data class Question (
     val questionText: String,
     val explanation: String,
     val type: String,
-    val order: Int,
+    val questionOrder: Int,
     val options: List<Option>
 )
