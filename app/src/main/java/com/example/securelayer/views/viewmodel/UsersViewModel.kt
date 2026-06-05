@@ -35,10 +35,10 @@ class UsersViewModel : ViewModel() {
         private set
 
     // Create a user
-    fun createUser(email: String, password: String, name: String, lastName: String) {
+    fun createUser(email: String, password: String, name: String) {
         viewModelScope.launch {
             try {
-                val newUser = UserRegister(email, password, name, lastName)
+                val newUser = UserRegister(email, password, name)
 
                 // Guarda el usuario creado en sesión para poder asociar el test inicial (nivel)
                 SessionManager.currentUser = RetrofitInstance.api.createUser(newUser)

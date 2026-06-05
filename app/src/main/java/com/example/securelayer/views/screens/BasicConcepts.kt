@@ -35,11 +35,10 @@ import com.example.securelayer.views.theme.Background
 
 
 @Composable
-fun BasicConceptsScreen(navController: NavController){
+fun BasicConceptsScreen(navController: NavController, fromConsejos: Boolean = false){
 
     Scaffold(
         containerColor = Color(0xFFF7FAFD),
-        topBar = { TopNavBar(navController, title = "SecureLayer") }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -65,7 +64,7 @@ fun BasicConceptsScreen(navController: NavController){
                 BasicConceptCard(
                     title = "¿Qué es el Phishing?",
                     concept = "Es cuando alguien intenta engañarte haciéndose pasar por una empresa, banco o persona conocida",
-                    advice = "Cuando te pidan actuar rapido es muy probable que sea una estafa",
+                    advice = "Cuando te pidan actuar rápido es muy probable que sea una estafa",
                     rule = "El banco nunca te pedirá datos personales"
                 )
 
@@ -99,19 +98,37 @@ fun BasicConceptsScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                CustomPrimaryButton(
-                    text = "Probar mi Nivel",
-                    onClick = { navController.navigate("form") },
-                    modifier = Modifier.fillMaxWidth(),
-                    icon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.pencil),
-                            contentDescription = "Icono de lapiz",
-                            tint = Color.White,
-                            modifier = Modifier.size(28.dp)
-                        )
-                    }
-                )
+                if (fromConsejos) {
+                    // Acceso desde la pantalla de Consejos: solo permite regresar
+                    CustomPrimaryButton(
+                        text = "Regresar",
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier.fillMaxWidth(),
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrow_back),
+                                contentDescription = "Icono de regresar",
+                                tint = Color.White,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                    )
+                } else {
+                    // Flujo de registro: continúa a la encuesta para medir el nivel
+                    CustomPrimaryButton(
+                        text = "Probar mi Nivel",
+                        onClick = { navController.navigate("form") },
+                        modifier = Modifier.fillMaxWidth(),
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.pencil),
+                                contentDescription = "Icono de lapiz",
+                                tint = Color.White,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                    )
+                }
             }
         }
 

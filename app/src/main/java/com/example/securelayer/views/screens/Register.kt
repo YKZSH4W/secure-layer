@@ -57,15 +57,8 @@ fun RegisterScreen(navController: NavController) {
 
     LaunchedEffect(registerUser) {
         if (registerUser) {
-            val parts = name.trim().split(" ")
-            val part = if (parts.size == 3) 1 else 2
-
-            viewModel.createUser(
-                email,
-                password,
-                parts.dropLast(part).joinToString(" "),
-                parts.takeLast(2).joinToString(" ")
-            )
+            // Se envía el nombre completo tal cual lo escribió el usuario
+            viewModel.createUser(email, password, name.trim())
 
             // Permite reintentar el registro tras un error
             registerUser = false
@@ -122,20 +115,31 @@ fun RegisterScreen(navController: NavController) {
 
             if (showSuccessDialog) {
                 AlertDialog(
-                    onDismissRequest = {
-                        showSuccessDialog = false
-                        registerUser = false
-                        navController.navigate("BasicConcepts")
+                    onDismissRequest = { },
+                    title = { Text("¡Cuenta creada!") },
+                    text = {
+                        Text(
+                            "Tu cuenta se creó correctamente.\n\n" +
+                                    "¿Quieres aprender los conceptos básicos de seguridad y " +
+                                    "responder una breve encuesta para conocer tu nivel?"
+                        )
                     },
-                    title = { Text("Registro exitoso") },
-                    text = { Text("La cuenta se creo correctamente.") },
                     confirmButton = {
                         TextButton(onClick = {
                             showSuccessDialog = false
                             registerUser = false
                             navController.navigate("BasicConcepts")
                         }) {
-                            Text("Aceptar")
+                            Text("Sí, aprender")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showSuccessDialog = false
+                            registerUser = false
+                            navController.navigate("route")
+                        }) {
+                            Text("Omitir")
                         }
                     }
                 )

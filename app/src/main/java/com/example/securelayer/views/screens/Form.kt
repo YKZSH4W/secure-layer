@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +32,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
+import com.example.securelayer.data.model.QuizFeedbackItem
 import com.example.securelayer.data.model.QuizQuestion
 import com.example.securelayer.views.components.CustomPrimaryButton
 import com.example.securelayer.views.components.QuizActivityCard
@@ -49,11 +48,13 @@ fun FormScreen(navController: NavController) {
     val usersViewModel: UsersViewModel = viewModel()
     var showUnansweredError by remember { mutableStateOf(false) }
 
-    // Resultado del test para la retroalimentación
-    var showResultDialog by remember { mutableStateOf(false) }
-    var resultScore by remember { mutableStateOf(0) }
-    var resultTotal by remember { mutableStateOf(0) }
-    var resultLevel by remember { mutableStateOf("") }
+    // Explicaciones hardcodeadas (iguales para todos), alineadas con el orden de las preguntas
+    val explanations = listOf(
+        "Los premios inesperados que piden tus datos son una estafa (phishing). Nunca compartas tu información para reclamar algo que no solicitaste.",
+        "Ninguna institución legítima te pedirá tu contraseña o NIP por teléfono. Si te los piden, es un fraude.",
+        "Una frase larga que combina letras, números y símbolos es mucho más difícil de adivinar que una fecha o '1234'.",
+        "Los archivos adjuntos de remitentes desconocidos pueden contener virus. Si no esperabas el correo, bórralo sin abrirlo."
+    )
 
     LaunchedEffect(Unit) {
         viewModel.loadQuestions(listOf(
@@ -97,7 +98,6 @@ fun FormScreen(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { TopNavBar(navController, title = "SecureLayer") },
         containerColor = Background
     ) { padding ->
         Column(
@@ -123,6 +123,7 @@ fun FormScreen(navController: NavController) {
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
 
+                // === Preguntas de la encuesta ===
                 viewModel.questions.forEachIndexed { index, question ->
                     QuizActivityCard(
                         index = index,
@@ -158,11 +159,24 @@ fun FormScreen(navController: NavController) {
                                 level
                             )
 
-                            // Muestra la retroalimentación del test
-                            resultScore = score
-                            resultTotal = total
-                            resultLevel = level
-                            showResultDialog = true
+                            // Construye la retroalimentación por pregunta:
+                            // respuesta del usuario vs. respuesta correcta + explicación
+                            SessionManager.surveyFeedback = viewModel.questions.mapIndexed { i, q ->
+                                val userAnswer = viewModel.selectedAnswers[i] ?: ""
+                                QuizFeedbackItem(
+                                    question = q.question,
+                                    userAnswer = userAnswer,
+                                    correctAnswer = q.rightAnswer,
+                                    isCorrect = userAnswer == q.rightAnswer,
+                                    explanation = explanations.getOrElse(i) { "" }
+                                )
+                            }
+                            SessionManager.surveyScore = score
+                            SessionManager.surveyTotal = total
+                            SessionManager.surveyLevel = level
+
+                            // La retroalimentación se muestra en su propia pantalla (inicia desde arriba)
+                            navController.navigate("encuesta_resultado")
                         } else {
                             showUnansweredError = true
                         }
@@ -171,40 +185,10 @@ fun FormScreen(navController: NavController) {
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.check),
-                            contentDescription = "Icono de perfil",
+                            contentDescription = "Icono de enviar",
                             tint = Color.White,
                             modifier = Modifier.size(28.dp)
                         )
-                    }
-                )
-            }
-
-            // Retroalimentación del test
-            if (showResultDialog) {
-                AlertDialog(
-                    onDismissRequest = { },
-                    title = { Text("¡Test completado!") },
-                    text = {
-                        Column {
-                            Text("Acertaste $resultScore de $resultTotal preguntas.")
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("Tu nivel: $resultLevel", fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                if (resultLevel == "Principiante")
-                                    "¡Bien hecho! Ya conoces lo básico de seguridad digital. Vamos a reforzarlo."
-                                else
-                                    "No te preocupes. Empezaremos desde lo más básico para que aprendas a protegerte."
-                            )
-                        }
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            showResultDialog = false
-                            navController.navigate("route")
-                        }) {
-                            Text("Continuar")
-                        }
                     }
                 )
             }

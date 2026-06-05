@@ -55,7 +55,6 @@ fun EditProfileScreen(navController: NavController) {
     val currentUser = SessionManager.currentUser
 
     var name by remember { mutableStateOf(currentUser?.name ?: "") }
-    var lastName by remember { mutableStateOf(currentUser?.lastName ?: "") }
     var email by remember { mutableStateOf(currentUser?.email ?: "") }
     var profilePicture by remember { mutableStateOf(currentUser?.profilePicture) }
     var showEmptyError by remember { mutableStateOf(false) }
@@ -139,8 +138,6 @@ fun EditProfileScreen(navController: NavController) {
 
             CustomTextField(name, { name = it }, "Nombre", showEmptyError && name.isBlank())
             Spacer(modifier = Modifier.height(12.dp))
-            CustomTextField(lastName, { lastName = it }, "Apellido", showEmptyError && lastName.isBlank())
-            Spacer(modifier = Modifier.height(12.dp))
             CustomTextField(
                 email,
                 {
@@ -168,12 +165,11 @@ fun EditProfileScreen(navController: NavController) {
                 text = if (viewModel.isSaving) "Guardando..." else "Guardar cambios",
                 enabled = !viewModel.isSaving,
                 onClick = {
-                    if (name.isNotBlank() && lastName.isNotBlank() && email.isNotBlank()) {
+                    if (name.isNotBlank() && email.isNotBlank()) {
                         showEmptyError = false
                         viewModel.updateProfile(
                             userId = currentUser?.id,
                             name = name.trim(),
-                            lastName = lastName.trim(),
                             email = email.trim(),
                             profilePicture = profilePicture
                         )

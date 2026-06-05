@@ -64,7 +64,7 @@ fun AllMedalsScreen(navController: NavController) {
 
                 viewModel.userAchievements.isEmpty() -> {
                     Text(
-                        "Aún no has desbloqueado medallas. ¡Gana XP completando actividades!",
+                        "Aún no has desbloqueado medallas. ¡Gana puntos completando actividades!",
                         fontSize = 14.sp,
                         color = Color.Gray
                     )

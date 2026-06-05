@@ -54,7 +54,7 @@ fun WelcomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "La forma mas segura de\nnavegar en internet",
+                text = "La forma más segura de\nnavegar en internet",
                 textAlign = TextAlign.Center,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Black,
@@ -65,7 +65,7 @@ fun WelcomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = "Aprende a reconocer facilmente estafas en Internet con metodos de enseñanza interactivos y simulaciones reales.",
+                text = "Aprende a reconocer fácilmente estafas en Internet con métodos de enseñanza interactivos y simulaciones reales.",
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 color = Color.Gray,

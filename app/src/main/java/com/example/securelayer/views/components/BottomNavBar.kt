@@ -50,7 +50,7 @@ fun BottomNavBar(navController: NavController) {
         NavigationBarItem(
             selected = rutaActual == "consejos",
             onClick = { navController.navigate("consejos") },
-            label = { Text("Consejos") },
+            label = { Text("Conceptos") },
             icon = { Icon(
                 painter = painterResource(id = R.drawable.tips),
                 contentDescription = "Icono de Consejos"

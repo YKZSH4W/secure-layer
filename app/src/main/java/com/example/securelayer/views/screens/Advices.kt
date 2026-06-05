@@ -24,6 +24,7 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.theme.Background
+import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.AdvicesViewModel
 import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
@@ -55,7 +56,7 @@ fun AdvicesScreen(navController: NavController) {
                 .background(Color(0xFFF7FAFD))
         ) {
             Text(
-                text = "Consejos de Seguridad",
+                text = "Conceptos de Seguridad",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.Black
@@ -69,6 +70,27 @@ fun AdvicesScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            // Acceso a los conceptos básicos (solo lectura, con botón de regresar)
+            ConsejoCard(
+                title = "Conceptos Básicos",
+                subtitle = "Aprende lo esencial para protegerte",
+                titleColor = SecureBlue,
+                iconContainerColor = SecureBlue,
+                onClick = {
+                    navController.navigate("BasicConcepts?fromConsejos=true")
+                },
+                iconContent = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.shield_route_ic),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             enrollViewModel.currentRoutes.forEach { item ->
                 LaunchedEffect(item.id) {

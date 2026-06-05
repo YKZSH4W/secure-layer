@@ -36,6 +36,12 @@ object SessionManager {
     var lastQuizEarnedXp: Int by mutableStateOf(0)
     var lastQuizFeedback: List<QuizFeedbackItem> by mutableStateOf(emptyList())
 
+    // Resultado de la encuesta inicial (usado en su pantalla de retroalimentación)
+    var surveyScore: Int by mutableStateOf(0)
+    var surveyTotal: Int by mutableStateOf(0)
+    var surveyLevel: String by mutableStateOf("")
+    var surveyFeedback: List<QuizFeedbackItem> by mutableStateOf(emptyList())
+
     fun logout() {
         currentUser = null
         currentRoute = null

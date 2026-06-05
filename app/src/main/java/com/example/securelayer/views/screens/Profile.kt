@@ -108,7 +108,11 @@ fun Profile(navController: NavController) {
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("Hola, ${SessionManager.currentUser?.name}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    "Hola, ${SessionManager.currentUser?.name?.trim()?.substringBefore(" ")}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
                 Text("¡Estás haciendo un gran trabajo!", color = Color.Gray)
 
                 TextButton(onClick = { navController.navigate("editar_perfil") }) {
@@ -193,7 +197,7 @@ fun Profile(navController: NavController) {
 
                 if (medals.isEmpty()) {
                     Text(
-                        "Aún no has desbloqueado medallas. ¡Gana XP completando actividades!",
+                        "Aún no has desbloqueado medallas. ¡Gana puntos completando actividades!",
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
@@ -281,8 +285,8 @@ fun Profile(navController: NavController) {
                     StatCard(
                         modifier = Modifier.weight(1f),
                         value = "${SessionManager.currentUser?.totalXp ?: 0}",
-                        label = "XP total",
-                        sublabel = "acumulada"
+                        label = "Puntos totales",
+                        sublabel = "acumulados"
                     )
                 }
 

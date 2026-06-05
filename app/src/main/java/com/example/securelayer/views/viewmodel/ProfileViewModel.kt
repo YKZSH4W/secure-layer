@@ -28,7 +28,6 @@ class ProfileViewModel : ViewModel() {
     fun updateProfile(
         userId: Int?,
         name: String,
-        lastName: String,
         email: String,
         profilePicture: String?
     ) {
@@ -38,7 +37,7 @@ class ProfileViewModel : ViewModel() {
             try {
                 val updated = RetrofitInstance.api.updateUser(
                     userId,
-                    UserUpdateRequest(name, lastName, email, profilePicture)
+                    UserUpdateRequest(name, email, profilePicture)
                 )
 
                 // Refleja los cambios en el usuario en sesión
