@@ -4,7 +4,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -114,7 +113,7 @@ fun EditProfileScreen(navController: NavController) {
                 )
             } else {
                 Image(
-                    painter = painterResource(id = R.drawable.user),
+                    painter = painterResource(id = R.drawable.user_msg_ic),
                     contentDescription = "Foto de perfil",
                     modifier = Modifier
                         .size(120.dp)
