@@ -322,7 +322,7 @@ fun Profile(navController: NavController) {
                 Spacer(modifier = Modifier.height(10.dp))
 
                 CustomOutlinedButton(
-                    text = "Cerrar Sesion",
+                    text = "Cerrar Sesión",
                     onClick = {
                         SessionManager.logout()
                         navController.navigate("welcome") {
