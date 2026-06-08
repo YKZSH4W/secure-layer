@@ -24,7 +24,6 @@ import com.example.securelayer.views.components.TopNavBar
 import com.example.securelayer.R
 import com.example.securelayer.data.SessionManager
 import com.example.securelayer.views.theme.Background
-import com.example.securelayer.views.theme.SecureBlue
 import com.example.securelayer.views.viewmodel.AdvicesViewModel
 import com.example.securelayer.views.viewmodel.EnrollsViewModel
 
@@ -71,27 +70,6 @@ fun AdvicesScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Acceso a los conceptos básicos (solo lectura, con botón de regresar)
-            ConsejoCard(
-                title = "Conceptos Básicos",
-                subtitle = "Aprende lo esencial para protegerte",
-                titleColor = SecureBlue,
-                iconContainerColor = SecureBlue,
-                onClick = {
-                    navController.navigate("BasicConcepts?fromConsejos=true")
-                },
-                iconContent = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.shield_route_ic),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
             enrollViewModel.currentRoutes.forEach { item ->
                 LaunchedEffect(item.id) {
                     adviceViewModel.getAdvicesByRoute(item.id)
@@ -107,8 +85,7 @@ fun AdvicesScreen(navController: NavController) {
 
                 ConsejoCard(
                     title = type,
-                    subtitle = "",
-                    titleColor = Color(0xFF0D47A1),
+                    titleColor = Color(0xFF181C1E),
                     iconContainerColor = mapAdvicesIconColor(type),
                     onClick = {
                         SessionManager.currentAdviceType = type
@@ -118,8 +95,8 @@ fun AdvicesScreen(navController: NavController) {
                         Icon(
                             painter = painterResource(id = mapAdvicesIcon(type)),
                             contentDescription = null,
-                            tint = Color.Unspecified,
-                            modifier = Modifier.size(45.dp)
+                            tint = mapIconTint(type),
+                            modifier = Modifier.size(26.dp)
                         )
                     }
                 )
@@ -178,10 +155,19 @@ fun AdvicesScreen(navController: NavController) {
 
 fun mapAdvicesIcon(icon: String): Int {
     return when (icon.lowercase()) {
-        "privacidad total"   -> R.drawable.circular_key_ic
-        "cuidado bancario"   -> R.drawable.bank
-        "mantente alerta"    -> R.drawable.gift
-        else              -> R.drawable.shield_route_ic
+        "privacidad total"   -> R.drawable.lock_ic
+        "cuidado bancario"   -> R.drawable.key_ic
+        "mantente alerta"    -> R.drawable.eye_exclamation
+        else              -> R.drawable.brain
+    }
+}
+
+fun mapIconTint(icon: String): Color {
+    return when (icon.lowercase()) {
+        "privacidad total"  -> Color(0xFF001C3B)
+        "cuidado bancario"  -> Color(0xFF087347)
+        "mantente alerta"   -> Color(0xFF2A1800)
+        else -> Color.Black
     }
 }
 
@@ -190,7 +176,7 @@ fun mapAdvicesIconColor(icon:String): Color {
         "privacidad total"  -> Color(0xFFD6E4FF)
         "cuidado bancario"  -> Color(0xFFB9F6CA)
         "mantente alerta"   -> Color(0xFFFFE0B2)
-        else -> Color(0xFFD6E4FF)
+        else -> Color(0xFFE1BEE7)
     }
 }
 

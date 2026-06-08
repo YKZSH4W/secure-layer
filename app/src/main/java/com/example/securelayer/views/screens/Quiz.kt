@@ -154,17 +154,24 @@ fun QuizScreen(navController: NavController) {
                                     val score = viewModel.validateAnswers()
                                     val activityXp = currentActivity?.xp ?: 0
                                     val alreadyCompleted = SessionManager.currentActivityCompleted
-                                    // Solo se aprueba (y se obtienen puntos) si TODAS están correctas
+                                    // El examen final da una calificación real y se completa en un
+                                    // solo intento (sin posibilidad de reintentarlo).
+                                    val isExam = currentActivity?.name
+                                        ?.trim()?.equals("Examen final", ignoreCase = true) == true
+                                    // Una actividad normal solo se aprueba con TODO correcto.
                                     val passed = total > 0 && score == total
+                                    // El examen se completa pase lo que pase; la normal, solo al aprobar.
+                                    val completes = isExam || passed
 
+                                    SessionManager.lastQuizWasExam = isExam
                                     SessionManager.lastQuizScore = score
                                     SessionManager.lastQuizTotal = total
-                                    // Da XP solo si aprobó y no estaba ya completada
+                                    // Da puntos al completar por primera vez (examen: siempre; normal: al aprobar)
                                     SessionManager.lastQuizEarnedXp =
-                                        if (passed && !alreadyCompleted) activityXp else 0
+                                        if (completes && !alreadyCompleted) activityXp else 0
                                     SessionManager.lastQuizFeedback = viewModel.buildFeedback()
 
-                                    // Registra este intento en el historial (siempre)
+                                    // Registra este intento en el historial (siempre) con la calificación real
                                     viewModel.registerAttempt(
                                         userId = SessionManager.currentUser?.id,
                                         activityId = currentActivity?.id,
@@ -172,10 +179,10 @@ fun QuizScreen(navController: NavController) {
                                         score = if (total > 0) score * 100 / total else 0
                                     )
 
-                                    // Marca la actividad completada (y suma XP) SOLO si aprobó
-                                    // por primera vez. Si falla, queda disponible para reintentar.
-                                    if (passed && !alreadyCompleted) {
-                                        // Suma la XP al usuario en sesión de inmediato,
+                                    // Marca la actividad completada (y suma puntos) en la primera
+                                    // finalización. El examen no se puede reintentar después.
+                                    if (completes && !alreadyCompleted) {
+                                        // Suma los puntos al usuario en sesión de inmediato,
                                         // así el perfil se muestra actualizado sin pedir a la BD.
                                         val newXp = (SessionManager.currentUser?.totalXp ?: 0) + activityXp
                                         SessionManager.currentUser =

@@ -32,6 +32,10 @@ class ProfileStatsViewModel : ViewModel() {
     var completedLessons by mutableIntStateOf(0)
         private set
 
+    // Promedio de calificación global, considerando SOLO los exámenes finales
+    var examAverage by mutableIntStateOf(0)
+        private set
+
     fun loadStats(userId: Int?) {
         viewModelScope.launch {
             try {
@@ -54,6 +58,16 @@ class ProfileStatsViewModel : ViewModel() {
                 completedLessons = allActivities
                     .groupBy { it.lessonId }
                     .count { (_, acts) -> acts.isNotEmpty() && acts.all { it.id in completedIds } }
+
+                // Promedio de calificación SOLO de los exámenes finales
+                val examActivityIds = allActivities
+                    .filter { it.name.trim().equals("Examen final", ignoreCase = true) }
+                    .map { it.id }
+                    .toSet()
+                val examAttempts = attempts.filter { it.activityId in examActivityIds }
+                examAverage = if (examAttempts.isNotEmpty()) {
+                    examAttempts.map { it.score }.average().toInt()
+                } else 0
             } catch (e: Exception) {
                 Log.e("ProfileStats", "Error al cargar estadísticas: ${e.message}")
             }

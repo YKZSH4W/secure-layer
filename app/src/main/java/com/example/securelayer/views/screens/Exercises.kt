@@ -184,11 +184,15 @@ fun ExercisesScreen(navController: NavController) {
 
                         activities.forEach { activity ->
                             val completed = activitiesViewModel.isCompleted(activity.id)
+                            val isExamActivity =
+                                activity.name.trim().equals("Examen final", ignoreCase = true)
+                            // El examen final ya calificado no se puede repetir
+                            val examLocked = isExamActivity && completed
 
-                            val (statusText, statusColor, statusTextColor) = if (completed) {
-                                Triple("Completada", Color(0xFFC8E6C9), Color(0xFF087347))
-                            } else {
-                                Triple("Disponible", Color(0xFFFFDDB5), Color(0xFFAF6C00))
+                            val (statusText, statusColor, statusTextColor) = when {
+                                examLocked -> Triple("Calificado", Color(0xFFC8E6C9), Color(0xFF087347))
+                                completed -> Triple("Completada", Color(0xFFC8E6C9), Color(0xFF087347))
+                                else -> Triple("Disponible", Color(0xFFFFDDB5), Color(0xFFAF6C00))
                             }
 
                             LessonCard(
@@ -199,14 +203,17 @@ fun ExercisesScreen(navController: NavController) {
                                 statusColor = statusColor,
                                 textColor = statusTextColor,
                                 onClick = {
-                                    SessionManager.currentActivity = activity
-                                    SessionManager.currentActivityCompleted = completed
-                                    // Las actividades de tipo "phishing" abren la simulación;
-                                    // el resto, el quiz normal.
-                                    if (activity.type?.equals("phishing", ignoreCase = true) == true) {
-                                        navController.navigate("activity1")
-                                    } else {
-                                        navController.navigate("quiz")
+                                    // El examen final ya calificado no se puede reintentar
+                                    if (!examLocked) {
+                                        SessionManager.currentActivity = activity
+                                        SessionManager.currentActivityCompleted = completed
+                                        // Las actividades de tipo "phishing" abren la simulación;
+                                        // el resto, el quiz normal.
+                                        if (activity.type?.equals("phishing", ignoreCase = true) == true) {
+                                            navController.navigate("activity1")
+                                        } else {
+                                            navController.navigate("quiz")
+                                        }
                                     }
                                 },
                                 iconTint = statusTextColor

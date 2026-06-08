@@ -88,7 +88,7 @@ fun Profile(navController: NavController) {
                         )
                     } else {
                         Image(
-                            painter = painterResource(id = R.drawable.user),
+                            painter = painterResource(id = R.drawable.user_msg_ic),
                             contentDescription = "Avatar",
                             modifier = Modifier
                                 .size(100.dp)
@@ -109,7 +109,7 @@ fun Profile(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    "Hola, ${SessionManager.currentUser?.name?.trim()?.substringBefore(" ")}",
+                    "Hola, ${SessionManager.currentUser?.name?.trim()}",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -302,8 +302,12 @@ fun Profile(navController: NavController) {
                         label = "Lecciones",
                         sublabel = "completadas"
                     )
-                    // Rellena la segunda columna para mantener el grid alineado
-                    Spacer(modifier = Modifier.weight(1f))
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        value = "${statsViewModel.examAverage}%",
+                        label = "Promedio exámenes",
+                        sublabel = "calif. global"
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

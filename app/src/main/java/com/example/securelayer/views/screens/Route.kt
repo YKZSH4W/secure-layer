@@ -204,6 +204,7 @@ fun mapLessonIcon(icon: String): Int {
         "key"             -> R.drawable.key_ic
         "message"         -> R.drawable.message_dots
         "lock"            -> R.drawable.lock_ic
+        "exam"            -> R.drawable.notebook
         else              -> R.drawable.shield_route_ic
     }
 }

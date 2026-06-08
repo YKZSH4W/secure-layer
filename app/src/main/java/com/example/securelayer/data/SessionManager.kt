@@ -35,6 +35,8 @@ object SessionManager {
     var lastQuizTotal: Int by mutableStateOf(0)
     var lastQuizEarnedXp: Int by mutableStateOf(0)
     var lastQuizFeedback: List<QuizFeedbackItem> by mutableStateOf(emptyList())
+    // Indica si el último quiz enviado era el examen final (calificación real, sin reintentos)
+    var lastQuizWasExam: Boolean by mutableStateOf(false)
 
     // Resultado de la encuesta inicial (usado en su pantalla de retroalimentación)
     var surveyScore: Int by mutableStateOf(0)
@@ -54,6 +56,7 @@ object SessionManager {
         lastQuizTotal = 0
         lastQuizEarnedXp = 0
         lastQuizFeedback = emptyList()
+        lastQuizWasExam = false
         newlyUnlockedAchievement = null
     }
 }

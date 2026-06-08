@@ -60,7 +60,6 @@ val SecureGreen = Color(0xFF2E7D32)
 @Composable
 fun ConsejoCard(
     title: String,
-    subtitle: String,
     titleColor: Color,
     iconContainerColor: Color,
     onClick: () -> Unit = {},
@@ -93,9 +92,8 @@ fun ConsejoCard(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
-                    Text(text = title, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = titleColor)
+                    Text(text = title, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = titleColor)
                     Spacer(modifier = Modifier.height(2.dp))
-                    Text(text = subtitle, fontSize = 12.sp, color = Color.DarkGray, lineHeight = 16.sp)
                 }
             }
 
@@ -109,12 +107,6 @@ fun ConsejoCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Ver más", fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Color(0xFF37474F))
-                Icon(
-                    painter = painterResource(id = R.drawable.right_arrow),
-                    contentDescription = "Ir",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(16.dp)
-                )
             }
         }
     }

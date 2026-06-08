@@ -57,12 +57,16 @@ fun FinishedActivityScreen(navController: NavController){
     val total = SessionManager.lastQuizTotal
     val earnedXp = SessionManager.lastQuizEarnedXp
     val feedback = SessionManager.lastQuizFeedback
+    val isExam = SessionManager.lastQuizWasExam
 
     val hasResults = total > 0
+    // Calificación real (porcentaje) del examen
+    val gradePercent = if (hasResults) score * 100 / total else 0
 
     // Mensaje según el desempeño
     val title = when {
         !hasResults -> "¡Excelente trabajo!"
+        isExam -> "¡Examen completado!"
         score == total -> "¡Perfecto!"
         score >= total / 2.0 -> "¡Buen trabajo!"
         else -> "¡Sigue practicando!"
@@ -93,7 +97,6 @@ fun FinishedActivityScreen(navController: NavController){
     }
 
     Scaffold(
-        topBar = { TopNavBar(navController, title = "SecureLayer") },
         bottomBar = { BottomNavBar(navController) }
     ) { padding ->
         Column(
@@ -245,6 +248,24 @@ fun FinishedActivityScreen(navController: NavController){
                     }
                 }
 
+                // Calificación real del examen (no se puede reintentar)
+                if (isExam && hasResults) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        "Tu calificación: $gradePercent%",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (gradePercent >= 60) Color(0xFF006d42) else Color(0xFFB3261E),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        "Este examen no se puede repetir.",
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(10.dp))
 
                 // Retroalimentación por pregunta
@@ -294,8 +315,10 @@ fun FinishedActivityScreen(navController: NavController){
 
                 // Se aprueba solo si todas fueron correctas
                 val passed = hasResults && score == total
-                // Debe reintentar si no aprobó Y la actividad aún no estaba completada
-                val needsRetry = !passed && !SessionManager.currentActivityCompleted
+
+                // Debe reintentar si no aprobó Y la actividad aún no estaba completada.
+                // El examen final nunca se reintenta (calificación real de un solo intento).
+                val needsRetry = !passed && !SessionManager.currentActivityCompleted && !isExam
 
                 if (needsRetry) {
                     // No aprobó: aviso y opción de reintentar la misma actividad
